@@ -1,57 +1,131 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# ============================
+# 📦 DEPENDENCIES
+# ============================
 /node_modules
 /.pnp
-.pnp.*
+.pnp.js
+.pnp.cjs
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+.yarn/install-state.gz
 
-# testing
+# ============================
+# 🧪 TESTING
+# ============================
 /coverage
 
-# next.js
+# ============================
+# ⚛️ NEXT.JS
+# ============================
 /.next/
 /out/
 
-# production
+# ============================
+# 🏗️ BUILD
+# ============================
 /build
+/dist
 
-# misc
+# ============================
+# 🪟 WINDOWS
+# ============================
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ============================
+# 🍎 MACOS
+# ============================
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
 *.pem
 
-# debug
+# ============================
+# 🐧 LINUX
+# ============================
+.directory
+*~
+
+# ============================
+# 🐛 DEBUG LOGS
+# ============================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
 
-# env files (can opt-in for committing if needed)
-.env*
+# ============================
+# 🔐 ENVIRONMENT FILES
+# ============================
+.env
+.env.*
+!.env.example
 
-# vercel
+# ============================
+# 🚀 VERCEL
+# ============================
 .vercel
 
-# typescript
+# ============================
+# 📘 TYPESCRIPT
+# ============================
 *.tsbuildinfo
 next-env.d.ts
 
-# project docs
+# ============================
+# 💻 IDE / EDITOR
+# ============================
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+
+# ============================
+# 🗄️ DATABASE
+# ============================
+*.sqlite
+*.sqlite3
+*.db
+
+# ============================
+# 📦 TURBOPACK (optional)
+# ============================
+.turbo/
+
+# ============================
+# 📝 PROJECT DOCS (not committed)
+# ============================
 AGENTS.md
 CLAUDE.md
 PROGRESS.md
 TROUBLESHOOTING_REFERENCE.md
-README.md
 
-# dev scripts & tools
+# ============================
+# 🛠️ DEV SCRIPTS & TOOLS
+# ============================
 devkit/
 
-# generated outputs
+# ============================
+# 📄 GENERATED OUTPUTS
+# ============================
 story_output*.html
 
-# planning docs
+# ============================
+# 📋 PLANNING DOCS
+# ============================
 plans/

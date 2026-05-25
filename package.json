@@ -10,8 +10,11 @@
     "validate:news": "node devkit/validate-daily-news.js"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.106.2",
     "gray-matter": "^4.0.3",
     "next": "16.2.6",
+    "razorpay": "^2.9.6",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

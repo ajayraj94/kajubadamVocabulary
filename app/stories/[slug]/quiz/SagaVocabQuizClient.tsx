@@ -459,21 +459,7 @@ export default function SagaVocabQuizClient({
                             </div>
                         </div>
 
-                        {/* Start Quiz Action Row */}
-                        <div className="px-5 md:px-6 py-3 md:py-4 flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Reading Passage</div>
-                                <div className="text-[13px] text-gray-600 mt-0.5">{totalQuestions} vocabulary questions</div>
-                            </div>
-                            <button
-                                onClick={handleStartQuiz}
-                                className="bg-[#008080] hover:bg-[#006666] active:bg-[#004d4d] text-white font-bold text-sm md:text-base px-5 md:px-7 py-2.5 md:py-3 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2"
-                            >
-                                <span className="text-lg">📝</span>
-                                <span>Start Quiz</span>
-                                <span className="text-[10px] bg-white/20 rounded px-1.5 py-0.5">{totalQuestions}</span>
-                            </button>
-                        </div>
+                        {/* Start Quiz Action Row removed – only bottom CTA and scroll button remain */}
 
                         {/* Scoring Info Bar */}
                         <div className="bg-amber-50 border-t border-amber-100 px-5 md:px-6 py-2 flex items-center gap-4 text-[11px] md:text-xs text-amber-700 font-medium">
@@ -908,19 +894,13 @@ export default function SagaVocabQuizClient({
                                     </div>
 
                                     {/* Sidebar Footer Buttons */}
-                                    <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-100 shrink-0">
+                                    <div className="grid grid-cols-1 gap-2 mt-3 pt-3 border-t border-slate-100 shrink-0">
                                         <button
                                             onClick={scrollToPassage}
                                             className="bg-[#d2e2f9] hover:bg-sky-200 text-[#0d3b66] text-xs font-bold py-2 px-1 rounded flex justify-center items-center gap-1 transition"
                                         >
                                             <span>↑ Reading Passage</span>
                                         </button>
-                                        <Link
-                                            href="/"
-                                            className="bg-[#d2e2f9] hover:bg-sky-200 text-[#0d3b66] text-xs font-bold py-2 px-1 rounded flex justify-center items-center gap-1 transition"
-                                        >
-                                            <span>Home</span>
-                                        </Link>
                                     </div>
                                 </div>
                             </div>

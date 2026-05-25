@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
+import { useRazorpay } from "@/hooks/useRazorpay";
 
 const PART1_FEATURES = [
   "48 bilingual story sets",
@@ -27,21 +28,61 @@ const PART2_FEATURES = [
 ];
 
 export default function PricingPage() {
-  const { hasPart1, hasPart2, isLoading, unlockPart1, unlockPart2 } = usePurchaseAccess();
+  const {
+    hasPart1,
+    hasPart2,
+    isLoading,
+    unlockPart1,
+    unlockPart2,
+    unlockBundle,
+    paymentError,
+    clearPaymentError
+  } = usePurchaseAccess();
   const [part1Clicked, setPart1Clicked] = useState(false);
   const [part2Clicked, setPart2Clicked] = useState(false);
+  const [email, setEmail] = useState('');
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<'part1' | 'part2' | 'bundle' | null>(null);
 
   const handleUnlockPart1 = () => {
-    // TODO: Integrate Razorpay / payment gateway here.
-    // For now: simulate purchase directly.
-    unlockPart1();
-    setPart1Clicked(true);
+    setSelectedProduct('part1');
+    setShowEmailModal(true);
   };
 
   const handleUnlockPart2 = () => {
-    // TODO: Integrate Razorpay / payment gateway here.
-    unlockPart2();
-    setPart2Clicked(true);
+    setSelectedProduct('part2');
+    setShowEmailModal(true);
+  };
+
+  const handleUnlockBundle = () => {
+    setSelectedProduct('bundle');
+    setShowEmailModal(true);
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) {
+      return;
+    }
+
+    try {
+      if (selectedProduct === 'part1') {
+        await unlockPart1(email);
+        setPart1Clicked(true);
+      } else if (selectedProduct === 'part2') {
+        await unlockPart2(email);
+        setPart2Clicked(true);
+      } else if (selectedProduct === 'bundle') {
+        await unlockBundle(email);
+        setPart1Clicked(true);
+        setPart2Clicked(true);
+      }
+      setShowEmailModal(false);
+      setEmail('');
+      setSelectedProduct(null);
+    } catch (err) {
+      // Error is handled by the hook
+    }
   };
 
   return (
@@ -276,7 +317,7 @@ export default function PricingPage() {
               </div>
             ) : (
               <button
-                onClick={() => { handleUnlockPart1(); handleUnlockPart2(); }}
+                onClick={handleUnlockBundle}
                 className="mt-4 inline-block bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 text-white font-bold text-[15px] px-10 py-3.5 rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98] shadow-xl"
               >
                 🚀 Get Full Bundle — ₹549
@@ -335,6 +376,79 @@ export default function PricingPage() {
           </div>
         </div>
       </div>
+
+      {/* Email Modal for Payment */}
+      {showEmailModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900/95 backdrop-blur-lg border border-gray-700/30 rounded-2xl p-6 max-w-md w-full shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-black text-lg">
+                Enter Your Email
+              </h3>
+              <button
+                onClick={() => {
+                  setShowEmailModal(false);
+                  setEmail('');
+                  setSelectedProduct(null);
+                  clearPaymentError();
+                }}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <p className="text-gray-400 text-sm mb-4">
+              {selectedProduct === 'bundle'
+                ? 'Enter your email to purchase the complete bundle (Part 1 + Part 2) at a discounted price.'
+                : `Enter your email to purchase ${selectedProduct === 'part1' ? 'Part 1' : 'Part 2'} access.`}
+            </p>
+
+            <form onSubmit={handleEmailSubmit} className="space-y-4">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                required
+              />
+
+              {paymentError && (
+                <p className="text-red-400 text-sm">{paymentError}</p>
+              )}
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold py-3 rounded-xl transition-all duration-200"
+              >
+                Proceed to Payment
+              </button>
+            </form>
+
+            <p className="text-gray-400 text-xs text-center mt-4">
+              Secure payment via Razorpay
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Error Toast */}
+      {paymentError && !showEmailModal && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-red-500/15 border border-red-500/30 text-red-400 px-6 py-3 rounded-xl flex items-center gap-3">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{paymentError}</span>
+          <button onClick={clearPaymentError} className="hover:text-red-300">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

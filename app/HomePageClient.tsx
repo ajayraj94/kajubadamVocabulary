@@ -6,6 +6,7 @@ import type { DailyNewsMeta } from "@/lib/daily-news";
 import DailyNewsPageClient from "./DailyNewsPageClient";
 import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
 import { FREE_SLUGS } from "@/lib/access";
+import LoginModal from "@/components/LoginModal";
 
 interface Story {
   slug: string;
@@ -24,7 +25,8 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
   const [activeTab, setActiveTab] = useState<"part1" | "part2" | "daily">("part1");
   const [currentPage, setCurrentPage] = useState(1);
   const [masteredSlugs, setMasteredSlugs] = useState<string[]>([]);
-  const { hasPart1, hasPart2, isLoading: accessLoading } = usePurchaseAccess();
+  const { hasPart1, hasPart2, isLoading: accessLoading, isLoggedIn, userEmail, loginAfterPurchase, logoutUser } = usePurchaseAccess();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   // Init tab from URL param / sessionStorage and load progress on mount
   useEffect(() => {
@@ -164,12 +166,33 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
                   <span className="bg-orange-50 text-orange-600 text-[11px] font-semibold px-3 py-1 rounded-md border border-orange-200">= 6,700 Vocab</span>
                 </div>
               </div>
-            </div>
-          </div>
+            </div>                          {/* Login / User info */}
+                          <div className="flex items-center gap-2">
+                            {isLoggedIn ? (
+                              <div className="flex items-center gap-2">
+                                <span className="hidden sm:inline text-[11px] text-gray-500 font-medium">
+                                  {userEmail}
+                                </span>
+                                <button
+                                  onClick={logoutUser}
+                                  className="text-[11px] font-bold text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 px-3 py-1 rounded-full transition-all"
+                                >
+                                  Logout
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => setShowLoginModal(true)}
+                                className="text-[11px] font-bold text-[#1c4a8a] bg-[#1c4a8a]/5 hover:bg-[#1c4a8a]/10 border border-[#1c4a8a]/20 px-3 py-1 rounded-full transition-all"
+                              >
+                                🔑 Restore Access
+                              </button>
+                            )}
+                          </div>
 
-
-        </div>
-      </header>
+                        </div>
+                      </div>
+                    </header>
 
       {/* Homepage Intro — SEO + AdSense content */}
       <div className="bg-[#f8fafc] border-b border-gray-100">
@@ -360,8 +383,8 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
                           : "border-gray-100 hover:shadow-lg"
                       }`}
                     >
-                      {/* Mastery button — only for unlocked */}
-                      {!isLocked && (
+                      {/* Mastery button — only for unlocked (and after loading) */}
+                      {!isLocked && !accessLoading && (
                         <button
                           onClick={() => toggleMastery(story.slug)}
                           className={`absolute top-3 right-3 p-1 rounded-full border transition-all active:scale-90 ${isMastered ? "bg-green-500 border-green-500 text-white shadow-sm" : "bg-white border-gray-200 text-gray-300 hover:text-gray-500 hover:border-gray-300"}`}
@@ -380,11 +403,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
                           <h3 className="text-[14px] font-bold text-gray-800 leading-snug">{story.title}</h3>
                         </div>
                         <div className="mt-3">
-                          <span className="inline-block text-[10px] font-bold text-gray-400 uppercase bg-gray-50 border border-gray-200/60 rounded px-2 py-0.5 mb-2">{story.vocabCount || 0} vocabulary words</span>
-                          <div className="flex gap-2">
-                            <div className="flex-1 text-center bg-gray-100/80 text-gray-700 text-[12px] font-bold py-1.5 rounded-full">Read</div>
-                            <div className="flex-1 text-center bg-[#1c4a8a] text-white text-[12px] font-bold py-1.5 rounded-full">Quiz</div>
-                          </div>
+                          <span className="inline-block text-[10px] font-bold text-gray-400 uppercase bg-gray-50 border border-gray-200/60 rounded px-2 py-0.5">{story.vocabCount || 0} vocabulary words</span>
                         </div>
                       </div>
 
@@ -411,7 +430,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
                       )}
 
                       {/* Unlocked card: normal links */}
-                      {!isLocked && (
+                      {!isLocked && !accessLoading && (
                         <div className="flex gap-2 mt-3">
                           <Link href={`/stories/${story.slug}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[12px] font-bold py-1.5 rounded-full transition">Read</Link>
                           <Link href={`/stories/${story.slug}/quiz`} className="flex-1 text-center bg-[#1c4a8a] hover:bg-blue-900 text-white text-[12px] font-bold py-1.5 rounded-full transition shadow-sm">Quiz</Link>
@@ -442,6 +461,15 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
           </>
         )}
       </main>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onLoginSuccess={(email, products) => {
+          loginAfterPurchase(email, products);
+        }}
+      />
     </div>
   );
 }
