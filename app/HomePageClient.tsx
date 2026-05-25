@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import type { DailyNewsMeta } from "@/lib/daily-news";
 import DailyNewsPageClient from "./DailyNewsPageClient";
+import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
+import { FREE_SLUGS } from "@/lib/access";
 
 interface Story {
   slug: string;
@@ -22,6 +24,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
   const [activeTab, setActiveTab] = useState<"part1" | "part2" | "daily">("part1");
   const [currentPage, setCurrentPage] = useState(1);
   const [masteredSlugs, setMasteredSlugs] = useState<string[]>([]);
+  const { hasPart1, hasPart2, isLoading: accessLoading } = usePurchaseAccess();
 
   // Init tab from URL param / sessionStorage and load progress on mount
   useEffect(() => {
@@ -339,31 +342,81 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-3">
                 {paginatedStories.map((story) => {
                   const isMastered = masteredSlugs.includes(story.slug);
+                  const isFree =
+                    story.slug === FREE_SLUGS.part1 ||
+                    story.slug === FREE_SLUGS.part2;
+                  const hasPartAccess =
+                    activeTab === "part1" ? hasPart1 : hasPart2;
+                  const isLocked = !accessLoading && !isFree && !hasPartAccess;
+
                   return (
                     <div
                       key={story.slug}
-                      className={`bg-white border rounded-xl p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] flex flex-col justify-between hover:shadow-lg transition-all duration-300 min-h-[150px] relative ${isMastered ? "border-green-200 bg-green-50/10" : "border-gray-100"}`}
+                      className={`bg-white border rounded-xl p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] flex flex-col justify-between transition-all duration-300 min-h-[150px] relative overflow-hidden ${
+                        isLocked
+                          ? "border-gray-100 select-none"
+                          : isMastered
+                          ? "border-green-200 bg-green-50/10 hover:shadow-lg"
+                          : "border-gray-100 hover:shadow-lg"
+                      }`}
                     >
-                      <button
-                        onClick={() => toggleMastery(story.slug)}
-                        className={`absolute top-3 right-3 p-1 rounded-full border transition-all active:scale-90 ${isMastered ? "bg-green-500 border-green-500 text-white shadow-sm" : "bg-white border-gray-200 text-gray-300 hover:text-gray-500 hover:border-gray-300"}`}
-                        title={isMastered ? "Marked as Mastered" : "Mark as Mastered"}
-                      >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                      </button>
-                      <div>
-                        <h4 className="text-[10px] font-black text-[#1c4a8a] uppercase tracking-wider mb-1 pr-6">{story.saga_id}</h4>
-                        <h3 className="text-[14px] font-bold text-gray-800 leading-snug">{story.title}</h3>
+                      {/* Mastery button — only for unlocked */}
+                      {!isLocked && (
+                        <button
+                          onClick={() => toggleMastery(story.slug)}
+                          className={`absolute top-3 right-3 p-1 rounded-full border transition-all active:scale-90 ${isMastered ? "bg-green-500 border-green-500 text-white shadow-sm" : "bg-white border-gray-200 text-gray-300 hover:text-gray-500 hover:border-gray-300"}`}
+                          title={isMastered ? "Marked as Mastered" : "Mark as Mastered"}
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.5" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </button>
+                      )}
+
+                      {/* Card content — blurred when locked */}
+                      <div className={isLocked ? "blur-[2px] pointer-events-none" : ""}>
+                        <div>
+                          <h4 className="text-[10px] font-black text-[#1c4a8a] uppercase tracking-wider mb-1 pr-6">{story.saga_id}</h4>
+                          <h3 className="text-[14px] font-bold text-gray-800 leading-snug">{story.title}</h3>
+                        </div>
+                        <div className="mt-3">
+                          <span className="inline-block text-[10px] font-bold text-gray-400 uppercase bg-gray-50 border border-gray-200/60 rounded px-2 py-0.5 mb-2">{story.vocabCount || 0} vocabulary words</span>
+                          <div className="flex gap-2">
+                            <div className="flex-1 text-center bg-gray-100/80 text-gray-700 text-[12px] font-bold py-1.5 rounded-full">Read</div>
+                            <div className="flex-1 text-center bg-[#1c4a8a] text-white text-[12px] font-bold py-1.5 rounded-full">Quiz</div>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <span className="inline-block text-[10px] font-bold text-gray-400 uppercase bg-gray-50 border border-gray-200/60 rounded px-2 py-0.5 mb-2">{story.vocabCount || 0} vocabulary words</span>
-                        <div className="flex gap-2">
+
+                      {/* Lock overlay */}
+                      {isLocked && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-[1px] rounded-xl">
+                          <div className="flex flex-col items-center gap-2 px-3 text-center">
+                            <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center">
+                              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                              </svg>
+                            </div>
+                            <p className="text-[11px] font-bold text-gray-600 leading-tight">
+                              {activeTab === "part1" ? "Part 1" : "Part 2"} Access Required
+                            </p>
+                            <Link
+                              href="/pricing"
+                              className="text-[11px] font-black text-[#1c4a8a] bg-[#1c4a8a]/8 hover:bg-[#1c4a8a]/15 border border-[#1c4a8a]/20 px-3 py-1 rounded-full transition-colors"
+                            >
+                              🔓 Unlock
+                            </Link>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Unlocked card: normal links */}
+                      {!isLocked && (
+                        <div className="flex gap-2 mt-3">
                           <Link href={`/stories/${story.slug}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[12px] font-bold py-1.5 rounded-full transition">Read</Link>
                           <Link href={`/stories/${story.slug}/quiz`} className="flex-1 text-center bg-[#1c4a8a] hover:bg-blue-900 text-white text-[12px] font-bold py-1.5 rounded-full transition shadow-sm">Quiz</Link>
                         </div>
-                      </div>
+                      )}
                     </div>
                   );
                 })}

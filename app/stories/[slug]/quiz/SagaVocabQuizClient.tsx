@@ -3,6 +3,8 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import ContentProtection from "@/app/_components/ContentProtection";
+import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
+import { FREE_SLUGS } from "@/lib/access";
 
 // ── Types ──
 
@@ -64,6 +66,12 @@ export default function SagaVocabQuizClient({
     const quizSectionRef = useRef<HTMLDivElement>(null);
     const paletteRef = useRef<HTMLDivElement>(null);
     const PALETTE_COLS = 10;
+
+    // ── Access control ──
+    const { hasPart1, hasPart2, isLoading: accessLoading } = usePurchaseAccess();
+    const isFreeStory = slug === FREE_SLUGS.part1 || slug === FREE_SLUGS.part2;
+    const hasPartAccess = vocabPart === "part 1" ? hasPart1 : hasPart2;
+    const isLocked = !accessLoading && !isFreeStory && !hasPartAccess;
 
     const currentQuestion = quizQuestions[currentQIndex];
     const totalQuestions = quizQuestions.length;
@@ -267,7 +275,108 @@ export default function SagaVocabQuizClient({
         return true;
     }, [filterMode, answers, quizQuestions, skipped]);
 
-    // ── Loading ──
+    // ── Access loading (hydration) ──
+    if (accessLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50/40 font-sans flex items-center justify-center">
+                <div className="text-center">
+                    <div className="w-6 h-6 border-4 border-[#008080] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                    <p className="text-[15px] font-bold text-gray-500">Loading...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // ── Paywall screen ──
+    if (isLocked) {
+        const partLabel = vocabPart === "part 1" ? "Part 1" : "Part 2";
+        const partColor = vocabPart === "part 1" ? "#1c4a8a" : "#f97316";
+        return (
+            <div className="min-h-screen bg-[#0a0f1e] font-sans flex flex-col">
+                {/* Header */}
+                <header className="bg-[#008080] text-white px-4 py-3 flex items-center gap-3 shadow-sm">
+                    <Link href="/" className="hover:bg-[#006666] p-1.5 rounded-full transition-colors">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </Link>
+                    <div>
+                        <h1 className="font-bold text-sm tracking-wide">Saga Vocab Quiz</h1>
+                        <p className="text-xs text-teal-100 font-semibold">{title}</p>
+                    </div>
+                </header>
+
+                {/* Paywall content */}
+                <div className="flex-1 flex items-center justify-center px-4 py-16">
+                    <div className="max-w-md w-full">
+                        {/* Lock icon */}
+                        <div className="flex justify-center mb-6">
+                            <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                                <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        {/* Message */}
+                        <div className="text-center mb-8">
+                            <div
+                                className="inline-block text-[11px] font-black px-3 py-1 rounded-full mb-3 uppercase tracking-wider"
+                                style={{ background: `${partColor}22`, color: partColor, border: `1px solid ${partColor}44` }}
+                            >
+                                {partLabel} — Premium Content
+                            </div>
+                            <h2 className="text-white text-[24px] font-black mb-2 leading-tight">
+                                {title}
+                            </h2>
+                            <p className="text-gray-400 text-[14px] leading-relaxed">
+                                Yeh story <strong className="text-white">{partLabel}</strong> ke premium content mein hai.
+                                Access karne ke liye <strong className="text-white">{partLabel}</strong> ko unlock karein.
+                            </p>
+                        </div>
+
+                        {/* What's included */}
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-6">
+                            <p className="text-gray-300 text-[12px] font-bold uppercase tracking-wider mb-3">Is story mein milega:</p>
+                            <ul className="space-y-2">
+                                {[
+                                    "Full bilingual story (English + Hindi)",
+                                    "Interactive fill-in-the-blank quiz",
+                                    "Detailed word explanations",
+                                    "SSC/Banking exam oriented words",
+                                ].map((f) => (
+                                    <li key={f} className="flex items-center gap-2.5">
+                                        <svg className="w-4 h-4 text-gray-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                        </svg>
+                                        <span className="text-gray-400 text-[13px]">{f}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* CTAs */}
+                        <div className="flex flex-col gap-3">
+                            <Link
+                                href="/pricing"
+                                className="w-full text-center bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-black text-[16px] py-4 rounded-xl transition-all duration-200 shadow-lg shadow-blue-900/30 active:scale-[0.98]"
+                            >
+                                🔓 Unlock {partLabel} Access
+                            </Link>
+                            <Link
+                                href="/"
+                                className="w-full text-center bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 font-bold text-[14px] py-3 rounded-xl transition-colors"
+                            >
+                                ← Back to Home
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // ── Quiz loading ──
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50/40 font-sans flex items-center justify-center">
