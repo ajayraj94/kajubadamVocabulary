@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { PRODUCT_IDS, PRODUCTS, getProductLabel, getProductBadgeClasses, getProduct } from "@/lib/products";
 
 interface Purchase {
   id: string;
@@ -22,17 +23,6 @@ interface Transaction {
 }
 
 const ADMIN_TOKEN_KEY = "kv_admin_token";
-const PRODUCTS = ["part1", "part2", "errorDetection"] as const;
-const PRODUCT_LABELS: Record<string, string> = {
-  part1: "Part 1 — ₹299",
-  part2: "Part 2 — ₹399",
-  errorDetection: "Error Detection — ₹110",
-};
-const PRODUCT_COLORS: Record<string, string> = {
-  part1: "bg-blue-100 text-blue-800",
-  part2: "bg-orange-100 text-orange-800",
-  errorDetection: "bg-red-100 text-red-800",
-};
 
 export default function AdminPage() {
   // Auth state
@@ -49,7 +39,7 @@ export default function AdminPage() {
 
   // Add user form
   const [newEmail, setNewEmail] = useState("");
-  const [newProduct, setNewProduct] = useState<string>("part1");
+  const [newProduct, setNewProduct] = useState<string>(PRODUCT_IDS[0] || "part1");
   const [addLoading, setAddLoading] = useState(false);
   const [addMessage, setAddMessage] = useState<string | null>(null);
 
@@ -195,7 +185,6 @@ export default function AdminPage() {
       const data = await res.json();
       setTestAcctResult(data);
 
-      // Refresh data on success
       if (data.success) {
         fetchData();
       }
@@ -248,21 +237,22 @@ export default function AdminPage() {
     setTransactions([]);
   };
 
+  // Tab title for display
+  const tabTitle = activeTab === "purchases" ? "Purchases" : "Transactions";
+  const tabCount = activeTab === "purchases" ? purchases.length : transactions.length;
+
   // ─── LOGIN GATE ───
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 max-w-sm w-full shadow-2xl">
-          {/* Lock icon */}
           <div className="w-14 h-14 bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-5">
             <svg className="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-
           <h1 className="text-white text-xl font-black text-center mb-1">Admin Panel</h1>
           <p className="text-gray-500 text-sm text-center mb-6">Enter admin password to continue</p>
-
           <form onSubmit={handleLogin} className="space-y-4">
             <input
               type="password"
@@ -270,14 +260,9 @@ export default function AdminPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Admin password"
               className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
-              autoFocus
-              required
+              autoFocus required
             />
-
-            {authError && (
-              <p className="text-red-400 text-sm text-center">{authError}</p>
-            )}
-
+            {authError && <p className="text-red-400 text-sm text-center">{authError}</p>}
             <button
               type="submit"
               disabled={authLoading || !password}
@@ -286,10 +271,6 @@ export default function AdminPage() {
               {authLoading ? "Verifying..." : "Unlock Admin Panel"}
             </button>
           </form>
-
-          <p className="text-gray-600 text-xs text-center mt-4">
-            Set <code className="text-gray-400 bg-gray-800 px-1 rounded">ADMIN_PASSWORD</code> in .env.local
-          </p>
         </div>
       </div>
     );
@@ -309,9 +290,6 @@ export default function AdminPage() {
 
   // ─── DASHBOARD ───
   const totalUsers = purchases.length;
-  const totalPart1 = purchases.filter((p) => p.products.includes("part1")).length;
-  const totalPart2 = purchases.filter((p) => p.products.includes("part2")).length;
-  const totalErrorDetection = purchases.filter((p) => p.products.includes("errorDetection")).length;
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
@@ -327,48 +305,53 @@ export default function AdminPage() {
             </div>
             <h1 className="text-lg font-black">Admin Panel</h1>
           </div>
-          <button
-            onClick={handleLogout}
-            className="text-sm text-gray-400 hover:text-red-400 bg-gray-800 hover:bg-red-900/30 px-3 py-1.5 rounded-lg transition-all"
-          >
+          <button onClick={handleLogout} className="text-sm text-gray-400 hover:text-red-400 bg-gray-800 hover:bg-red-900/30 px-3 py-1.5 rounded-lg transition-all">
             Logout
           </button>
         </div>
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-        {/* ── Error Banner ── */}
+        {/* Error Banner */}
         {error && (
           <div className="bg-red-900/30 border border-red-800/50 rounded-xl p-4 text-sm text-red-300">
             <strong className="font-bold">Error:</strong> {error}
             <p className="text-red-400/70 mt-1 text-xs">
-              Make sure <code className="bg-red-900/50 px-1 rounded">SUPABASE_SERVICE_ROLE_KEY</code> is set in your .env.local file.
-              Without it, the admin panel cannot read/write to the database.
+              Make sure <code className="bg-red-900/50 px-1 rounded">SUPABASE_SERVICE_ROLE_KEY</code> is set in .env.local.
             </p>
           </div>
         )}
 
-        {/* ── Stats Cards ── */}
+        {/* Stats Cards — dynamically generated from product config */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
             <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Total Users</p>
             <p className="text-2xl font-black text-white mt-1">{totalUsers}</p>
           </div>
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-            <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Part 1</p>
-            <p className="text-2xl font-black text-blue-400 mt-1">{totalPart1}</p>
-          </div>
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-            <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Part 2</p>
-            <p className="text-2xl font-black text-orange-400 mt-1">{totalPart2}</p>
-          </div>
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-            <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Error Detection</p>
-            <p className="text-2xl font-black text-red-400 mt-1">{totalErrorDetection}</p>
-          </div>
+          {PRODUCT_IDS.map((id) => {
+            const count = purchases.filter((p) => p.products.includes(id)).length;
+            const product = getProduct(id);
+            const colorMap: Record<string, string> = {
+              blue: "text-blue-400",
+              orange: "text-orange-400",
+              red: "text-red-400",
+              green: "text-green-400",
+              purple: "text-purple-400",
+              amber: "text-amber-400",
+              teal: "text-teal-400",
+              rose: "text-rose-400",
+              indigo: "text-indigo-400",
+            };
+            return (
+              <div key={id} className="bg-gray-900 border border-gray-800 rounded-xl p-4">
+                <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">{getProductLabel(id)}</p>
+                <p className={`text-2xl font-black mt-1 ${colorMap[product?.color || "blue"] || "text-white"}`}>{count}</p>
+              </div>
+            );
+          })}
         </div>
 
-        {/* ── Add User / Test Login ── */}
+        {/* Grant Access / Test Account */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
           <h2 className="text-sm font-black text-white uppercase tracking-wider mb-4">Manage Users</h2>
 
@@ -378,10 +361,7 @@ export default function AdminPage() {
               <input
                 type="email"
                 value={newEmail}
-                onChange={(e) => {
-                  setNewEmail(e.target.value);
-                  setAddMessage(null);
-                }}
+                onChange={(e) => { setNewEmail(e.target.value); setAddMessage(null); }}
                 placeholder="user@example.com"
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
                 required
@@ -394,8 +374,8 @@ export default function AdminPage() {
                 onChange={(e) => setNewProduct(e.target.value)}
                 className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
               >
-                {PRODUCTS.map((p) => (
-                  <option key={p} value={p}>{PRODUCT_LABELS[p]}</option>
+                {PRODUCT_IDS.map((id) => (
+                  <option key={id} value={id}>{getProductLabel(id)}</option>
                 ))}
               </select>
             </div>
@@ -408,18 +388,13 @@ export default function AdminPage() {
             </button>
           </form>
 
-          {addMessage && (
-            <p className="text-sm mt-3">{addMessage}</p>
-          )}
+          {addMessage && <p className="text-sm mt-3">{addMessage}</p>}
 
           <div className="mt-4 pt-4 border-t border-gray-800">
             <p className="text-xs text-gray-500 mb-2">Quick actions:</p>
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => {
-                  setNewEmail("test@kajubadamvocabulary.in");
-                  setNewProduct("part1");
-                }}
+                onClick={() => { setNewEmail("test@kajubadamvocabulary.in"); setNewProduct("part1"); }}
                 className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded-lg transition-colors"
               >
                 Fill test account
@@ -428,16 +403,13 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* ── Create Test Account ── */}
+        {/* Create Test Account */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="text-sm font-black text-white uppercase tracking-wider mb-1">
-                🧪 Create Test Account (for Razorpay Testing)
-              </h2>
+              <h2 className="text-sm font-black text-white uppercase tracking-wider mb-1">🧪 Create Test Account (for Razorpay Testing)</h2>
               <p className="text-xs text-gray-500 mb-3">
-                Creates a real Supabase Auth user with email + password and grants all purchases.
-                Share these credentials with Razorpay for integration testing.
+                Creates a real Supabase Auth user with email + password and grants all purchases dynamically.
               </p>
             </div>
             <button
@@ -451,25 +423,18 @@ export default function AdminPage() {
 
           {testAcctResult && (
             <div className={`mt-4 p-4 rounded-xl border ${testAcctResult.success ? "bg-emerald-900/20 border-emerald-800/50" : "bg-amber-900/20 border-amber-800/50"}`}>
-              {/* Credentials */}
               <div className="bg-gray-950 rounded-lg p-3 mb-3 font-mono text-sm space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="text-gray-500 w-16">Email:</span>
                   <span className="text-emerald-300 font-bold">{testAcctResult.email}</span>
-                  <button onClick={() => { navigator.clipboard.writeText(testAcctResult.email); }} className="text-gray-500 hover:text-white text-xs ml-auto">
-                    📋 Copy
-                  </button>
+                  <button onClick={() => { navigator.clipboard.writeText(testAcctResult.email); }} className="text-gray-500 hover:text-white text-xs ml-auto">📋 Copy</button>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-gray-500 w-16">Password:</span>
                   <span className="text-amber-300 font-bold">{testAcctResult.password}</span>
-                  <button onClick={() => { navigator.clipboard.writeText(testAcctResult.password); }} className="text-gray-500 hover:text-white text-xs ml-auto">
-                    📋 Copy
-                  </button>
+                  <button onClick={() => { navigator.clipboard.writeText(testAcctResult.password); }} className="text-gray-500 hover:text-white text-xs ml-auto">📋 Copy</button>
                 </div>
               </div>
-
-              {/* Results */}
               {testAcctResult.results?.map((r: string, i: number) => (
                 <p key={i} className="text-xs text-gray-400 mb-0.5">{r}</p>
               ))}
@@ -481,9 +446,8 @@ export default function AdminPage() {
           )}
         </div>
 
-        {/* ── Tabs: Purchases / Transactions ── */}
+        {/* Tabs: Purchases / Transactions */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-          {/* Tab bar */}
           <div className="flex border-b border-gray-800">
             <button
               onClick={() => setActiveTab("purchases")}
@@ -511,9 +475,7 @@ export default function AdminPage() {
           {activeTab === "purchases" && (
             <div className="overflow-x-auto">
               {purchases.length === 0 ? (
-                <div className="p-8 text-center text-gray-500 text-sm">
-                  No purchases found. Add a user above to get started.
-                </div>
+                <div className="p-8 text-center text-gray-500 text-sm">No purchases found.</div>
               ) : (
                 <table className="w-full text-sm">
                   <thead>
@@ -530,16 +492,16 @@ export default function AdminPage() {
                         <td className="px-4 py-3 text-white font-medium">{purchase.email}</td>
                         <td className="px-4 py-3">
                           <div className="flex flex-wrap gap-1.5">
-                            {PRODUCTS.map((product) => {
-                              const hasProduct = purchase.products.includes(product);
-                              return hasProduct ? (
+                            {PRODUCT_IDS.map((id) => {
+                              if (!purchase.products.includes(id)) return null;
+                              return (
                                 <span
-                                  key={product}
-                                  className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${PRODUCT_COLORS[product]}`}
+                                  key={id}
+                                  className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${getProductBadgeClasses(id)}`}
                                 >
-                                  {product}
+                                  {id}
                                 </span>
-                              ) : null;
+                              );
                             })}
                             {purchase.products.length === 0 && (
                               <span className="text-[11px] text-gray-600">None</span>
@@ -548,27 +510,24 @@ export default function AdminPage() {
                         </td>
                         <td className="px-4 py-3 text-gray-400 text-xs">
                           {new Date(purchase.updated_at).toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
+                            day: "numeric", month: "short", year: "numeric",
+                            hour: "2-digit", minute: "2-digit",
                           })}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex justify-end gap-1.5">
-                            {PRODUCTS.map((product) => {
-                              if (!purchase.products.includes(product)) return null;
-                              const isRemoving = removing === `${purchase.email}:${product}`;
+                            {PRODUCT_IDS.map((id) => {
+                              if (!purchase.products.includes(id)) return null;
+                              const isRemoving = removing === `${purchase.email}:${id}`;
                               return (
                                 <button
-                                  key={product}
-                                  onClick={() => handleRemoveProduct(purchase.email, product)}
+                                  key={id}
+                                  onClick={() => handleRemoveProduct(purchase.email, id)}
                                   disabled={isRemoving}
                                   className="text-[11px] font-bold px-2 py-1 rounded-lg bg-red-900/30 text-red-400 hover:bg-red-900/50 transition-colors disabled:opacity-50"
-                                  title={`Remove ${product}`}
+                                  title={`Remove ${id}`}
                                 >
-                                  {isRemoving ? "..." : `✕ ${product}`}
+                                  {isRemoving ? "..." : `✕ ${id}`}
                                 </button>
                               );
                             })}
@@ -586,9 +545,7 @@ export default function AdminPage() {
           {activeTab === "transactions" && (
             <div className="overflow-x-auto">
               {transactions.length === 0 ? (
-                <div className="p-8 text-center text-gray-500 text-sm">
-                  No transactions found.
-                </div>
+                <div className="p-8 text-center text-gray-500 text-sm">No transactions found.</div>
               ) : (
                 <table className="w-full text-sm">
                   <thead>
@@ -605,7 +562,7 @@ export default function AdminPage() {
                       <tr key={tx.id} className="border-b border-gray-800/50 hover:bg-gray-800/30">
                         <td className="px-4 py-3 text-white font-medium">{tx.email}</td>
                         <td className="px-4 py-3">
-                          <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${PRODUCT_COLORS[tx.product] || "bg-gray-700 text-gray-300"}`}>
+                          <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${getProductBadgeClasses(tx.product) || "bg-gray-700 text-gray-300"}`}>
                             {tx.product}
                           </span>
                         </td>
@@ -617,11 +574,8 @@ export default function AdminPage() {
                         </td>
                         <td className="px-4 py-3 text-right text-gray-400 text-xs">
                           {new Date(tx.created_at).toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
+                            day: "numeric", month: "short", year: "numeric",
+                            hour: "2-digit", minute: "2-digit",
                           })}
                         </td>
                       </tr>
@@ -633,12 +587,12 @@ export default function AdminPage() {
           )}
         </div>
 
-        {/* ── Configuration Info ── */}
+        {/* Configuration Info */}
         <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-4">
           <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Configuration</h3>
           <p className="text-xs text-gray-600">
-            Admin password set via <code className="text-gray-400 bg-gray-800 px-1 rounded">ADMIN_PASSWORD</code> env var. &middot;
-            Database access via <code className="text-gray-400 bg-gray-800 px-1 rounded">SUPABASE_SERVICE_ROLE_KEY</code> env var. &middot;
+            Products defined in <code className="text-gray-400 bg-gray-800 px-1 rounded">lib/products.ts</code> &middot;
+            {PRODUCT_IDS.length} products configured &middot;
             <a href="/" className="text-blue-500 hover:text-blue-400 ml-1">← Back to site</a>
           </p>
         </div>

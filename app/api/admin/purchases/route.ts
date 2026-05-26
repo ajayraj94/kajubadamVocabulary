@@ -4,14 +4,14 @@
  * POST /api/admin/purchases          — Add a purchase for a user
  * DELETE /api/admin/purchases        — Remove a product from a user
  *
- * All endpoints require the admin token via x-admin-token header
- * and SUPABASE_SERVICE_ROLE_KEY configured in .env.local.
+ * Uses dynamic product validation from lib/products.ts.
+ * New products work automatically — no code changes needed!
  */
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminSupabase } from "@/lib/supabase-admin";
 import { isAuthorized, unauthorized } from "@/lib/admin-auth";
+import { PRODUCT_IDS } from "@/lib/products";
 
-/** Minimal type for a purchase row from Supabase. */
 interface PurchaseRow {
   id: string;
   email: string;
@@ -71,9 +71,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!["part1", "part2", "errorDetection"].includes(product)) {
+    // ⭐ Dynamic product validation — works with any product in lib/products.ts!
+    if (!PRODUCT_IDS.includes(product)) {
       return NextResponse.json(
-        { success: false, error: "Invalid product. Must be: part1, part2, or errorDetection" },
+        { success: false, error: `Invalid product. Valid products: ${PRODUCT_IDS.join(", ")}` },
         { status: 400 }
       );
     }
@@ -123,7 +124,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Fetch current user
     const { data: user, error: fetchError } = await (supabase.from("purchases") as any)
       .select("products")
       .eq("email", email.toLowerCase().trim())

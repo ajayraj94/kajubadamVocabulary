@@ -3,24 +3,24 @@
  * POST /api/auth/create-test-account
  *
  * Creates a real Supabase Auth user with email + password
- * and grants all purchases (part1, part2, errorDetection).
+ * and grants ALL products dynamically from lib/products.ts.
  *
- * This is used by the admin panel to provision test accounts
- * that Razorpay can use for integration testing.
+ * New products added to the config are automatically included!
  *
  * Requires:
- *   - SUPABASE_SERVICE_ROLE_KEY in .env.local (to create Auth user via Admin API)
- *   - ADMIN_PASSWORD in .env.local (for admin token auth)
+ *   - SUPABASE_SERVICE_ROLE_KEY in .env.local
+ *   - ADMIN_PASSWORD in .env.local
  */
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminSupabase } from "@/lib/supabase-admin";
 import { isAuthorized, unauthorized } from "@/lib/admin-auth";
+import { PRODUCT_IDS } from "@/lib/products";
 
 const TEST_EMAIL = "test@kajubadamvocabulary.in";
 const TEST_PASSWORD = "TestPass@123";
 
 export async function POST(request: NextRequest) {
-  // 🚨 Production guard
+  // Production guard
   if (
     process.env.NODE_ENV === "production" &&
     !process.env.NEXT_PUBLIC_TEST_LOGIN_ENABLED
@@ -31,7 +31,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Require admin auth
   if (!isAuthorized(request)) return unauthorized();
 
   const supabase = createAdminSupabase();
@@ -39,10 +38,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error:
-          "Admin database not configured. Add SUPABASE_SERVICE_ROLE_KEY to .env.local " +
-          "to enable test account creation. " +
-          "Find it in Supabase Dashboard → Project Settings → API → service_role key",
+        error: "Admin database not configured. Add SUPABASE_SERVICE_ROLE_KEY to .env.local",
       },
       { status: 500 }
     );
@@ -56,7 +52,7 @@ export async function POST(request: NextRequest) {
     const results: string[] = [];
     const errors: string[] = [];
 
-    // ── Step 1: Create Supabase Auth user (email + password) ──
+    // Step 1: Create Supabase Auth user
     try {
       const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
         email: finalEmail,
@@ -66,12 +62,8 @@ export async function POST(request: NextRequest) {
       });
 
       if (authError) throw authError;
-
-      results.push(
-        `✅ Auth user created: ${finalEmail} (UID: ${authUser.user?.id?.slice(0, 8)}...)`
-      );
+      results.push(`✅ Auth user created: ${finalEmail} (UID: ${authUser.user?.id?.slice(0, 8)}...)`);
     } catch (err: any) {
-      // If user already exists, that's okay
       if (err.message?.includes("already exists") || err.message?.includes("duplicate")) {
         results.push(`ℹ️ Auth user already exists: ${finalEmail}`);
       } else {
@@ -79,9 +71,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // ── Step 2: Grant all purchases ──
-    const products = ["part1", "part2", "errorDetection"];
-    for (const product of products) {
+    // Step 2: Grant ALL products dynamically from config
+    for (const product of PRODUCT_IDS) {
       try {
         const { error: rpcError } = await (supabase.rpc as any)("add_purchase", {
           p_email: finalEmail,
@@ -94,17 +85,7 @@ export async function POST(request: NextRequest) {
         if (rpcError) throw rpcError;
         results.push(`✅ ${product} access granted`);
       } catch (err: any) {
-        // If errorDetection fails due to DB constraint, note it
-        if (product === "errorDetection" && err.message?.includes("violates")) {
-          errors.push(
-            `⚠️ Could not grant ${product} — the transactions table CHECK constraint only allows 'part1','part2'. ` +
-            `Run this SQL in Supabase dashboard to fix:\n` +
-            `ALTER TABLE transactions DROP CONSTRAINT transactions_product_check;\n` +
-            `ALTER TABLE transactions ADD CHECK (product IN ('part1', 'part2', 'errorDetection'));`
-          );
-        } else {
-          errors.push(`❌ Failed to grant ${product}: ${err.message}`);
-        }
+        errors.push(`❌ Failed to grant ${product}: ${err.message}`);
       }
     }
 
@@ -116,7 +97,7 @@ export async function POST(request: NextRequest) {
       errors: errors.length > 0 ? errors : undefined,
       message:
         errors.length === 0
-          ? "Test account created successfully!"
+          ? "Test account created successfully with all products!"
           : "Test account created with some warnings",
     });
   } catch (error: any) {

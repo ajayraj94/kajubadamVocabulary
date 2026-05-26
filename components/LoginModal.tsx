@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getProductStorageKey } from "@/lib/products";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -77,22 +78,19 @@ export default function LoginModal({
       // Store user email
       localStorage.setItem("kv_user_email", data.user.email);
 
-      // Grant all access
+      // Grant access for ALL products dynamically
       const products = data.purchases?.products || [];
-      if (products.includes("part1")) {
-        localStorage.setItem("kv_part1_purchased", "true");
-      }
-      if (products.includes("part2")) {
-        localStorage.setItem("kv_part2_purchased", "true");
-      }
-      if (products.includes("errorDetection")) {
-        localStorage.setItem("kv_error_detection_purchased", "true");
+      for (const id of products) {
+        localStorage.setItem(getProductStorageKey(id), "true");
       }
 
-      // Callback with full access
+      // Also set legacy keys for backward compatibility
+      if (products.includes("part1")) localStorage.setItem("kv_part1_purchased", "true");
+      if (products.includes("part2")) localStorage.setItem("kv_part2_purchased", "true");
+      if (products.includes("errorDetection")) localStorage.setItem("kv_error_detection_purchased", "true");
+
       onLoginSuccess(data.user.email, products);
 
-      // Reset & close
       resetForm();
       onClose();
     } catch (err: any) {
@@ -123,27 +121,22 @@ export default function LoginModal({
         return;
       }
 
-      // Store session token in localStorage for persistence
       if (data.session?.access_token) {
         localStorage.setItem("kv_supabase_session", data.session.access_token);
       }
 
-      // Store user email for recovery
       localStorage.setItem("kv_user_email", email);
 
-      // Restore purchases to localStorage
       const products = data.purchases?.products || [];
-      if (products.includes("part1")) {
-        localStorage.setItem("kv_part1_purchased", "true");
+      // Store all products dynamically
+      for (const id of products) {
+        localStorage.setItem(getProductStorageKey(id), "true");
       }
-      if (products.includes("part2")) {
-        localStorage.setItem("kv_part2_purchased", "true");
-      }
+      if (products.includes("part1")) localStorage.setItem("kv_part1_purchased", "true");
+      if (products.includes("part2")) localStorage.setItem("kv_part2_purchased", "true");
 
-      // Callback to parent with email
       onLoginSuccess(email, products);
 
-      // Reset & close
       resetForm();
       onClose();
     } catch (err: any) {
@@ -173,22 +166,9 @@ export default function LoginModal({
           <h3 className="text-white font-black text-lg">
             {step === "email" ? "Restore Your Access" : "Enter OTP"}
           </h3>
-          <button
-            onClick={handleClose}
-            className="text-gray-400 hover:text-white transition-colors"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
+          <button onClick={handleClose} className="text-gray-400 hover:text-white transition-colors">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
@@ -210,9 +190,7 @@ export default function LoginModal({
               className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
               required
             />
-
             {error && <p className="text-red-400 text-sm">{error}</p>}
-
             <button
               type="submit"
               disabled={loading}
@@ -235,9 +213,7 @@ export default function LoginModal({
               className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 text-center text-2xl tracking-[0.5em] focus:outline-none focus:border-blue-500 transition-colors"
               required
             />
-
             {error && <p className="text-red-400 text-sm">{error}</p>}
-
             <button
               type="submit"
               disabled={loading || otp.length < 4}
@@ -245,7 +221,6 @@ export default function LoginModal({
             >
               {loading ? "Verifying..." : "Verify & Restore Access"}
             </button>
-
             <button
               type="button"
               onClick={() => setStep("email")}
@@ -256,7 +231,7 @@ export default function LoginModal({
           </form>
         )}
 
-        {/* ── Divider ── */}
+        {/* Divider */}
         <div className="relative my-5">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-700/30"></div>
@@ -266,7 +241,7 @@ export default function LoginModal({
           </div>
         </div>
 
-        {/* ── Test Login Button (development only) ── */}
+        {/* Test Login Button */}
         <button
           onClick={handleTestLogin}
           disabled={testLoading}

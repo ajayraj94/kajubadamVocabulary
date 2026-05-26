@@ -1,20 +1,23 @@
 /**
  * API Route: Create Razorpay Order
  * POST /api/payment/create-order
- * Creates a new Razorpay order for Part 1 or Part 2 purchase
+ * Creates a new Razorpay order for product purchase
+ *
+ * Uses dynamic product validation from lib/products.ts
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createRazorpayOrder } from '@/lib/razorpay';
+import { PRODUCT_IDS } from '@/lib/products';
 
 export async function POST(request: NextRequest) {
     try {
         const { product, email } = await request.json();
 
-        // Validate product type
-        if (!['part1', 'part2', 'errorDetection'].includes(product)) {
+        // ⭐ Dynamic product validation — works with any product in lib/products.ts!
+        if (!PRODUCT_IDS.includes(product)) {
             return NextResponse.json(
-                { success: false, error: 'Invalid product type. Must be part1, part2, or errorDetection' },
+                { success: false, error: `Invalid product type. Valid: ${PRODUCT_IDS.join(", ")}` },
                 { status: 400 }
             );
         }
@@ -28,7 +31,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Create Razorpay order
-        const result = await createRazorpayOrder(product as 'part1' | 'part2' | 'errorDetection', email);
+        const result = await createRazorpayOrder(product, email);
 
         if (!result.success) {
             return NextResponse.json(

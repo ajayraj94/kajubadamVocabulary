@@ -2,11 +2,14 @@
  * API Route: Verify Razorpay Payment
  * POST /api/payment/verify
  * Verifies payment signature and updates access status
+ *
+ * Uses dynamic product validation from lib/products.ts
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyPaymentSignature, fetchPaymentDetails } from '@/lib/razorpay';
 import { createServerSupabase } from '@/lib/supabase-server';
+import { PRODUCT_IDS } from '@/lib/products';
 
 export async function POST(request: NextRequest) {
     try {
@@ -20,10 +23,10 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Validate product type
-        if (!['part1', 'part2', 'errorDetection'].includes(product)) {
+        // ⭐ Dynamic product validation — works with any product in lib/products.ts!
+        if (!PRODUCT_IDS.includes(product)) {
             return NextResponse.json(
-                { success: false, error: 'Invalid product type' },
+                { success: false, error: `Invalid product type. Valid: ${PRODUCT_IDS.join(", ")}` },
                 { status: 400 }
             );
         }
@@ -76,11 +79,10 @@ export async function POST(request: NextRequest) {
                 console.log(`Purchase saved to Supabase: ${userEmail} - ${product}`);
             }
         } catch (dbError) {
-            // Log but don't fail the request — localStorage fallback still works
+            // Log but don't fail — localStorage fallback still works
             console.error('Failed to save purchase to Supabase:', dbError);
         }
 
-        // Return success with transaction details
         return NextResponse.json({
             success: true,
             message: 'Payment verified successfully',

@@ -2,12 +2,8 @@
 
 import { useState, useEffect } from "react";
 import {
-  hasPart1Access,
-  hasPart2Access,
-  hasErrorDetectionAccess,
-  setPart1Purchased,
-  setPart2Purchased,
-  setErrorDetectionPurchased,
+  hasAccess,
+  setAccess,
   restoreAccessFromTransactions,
   isLoggedIn,
   getUserEmail,
@@ -15,6 +11,7 @@ import {
   logout,
 } from "@/lib/access";
 import { useRazorpay } from "./useRazorpay";
+
 
 interface PurchaseAccess {
   hasPart1: boolean;
@@ -35,16 +32,14 @@ interface PurchaseAccess {
 
 /**
  * Hook that reads purchase access state from localStorage.
- * isLoading = true during SSR/hydration (localStorage not available server-side).
- * Now integrated with Razorpay for real payments.
- *
- * Access Recovery: If user clears cache, transaction IDs are stored separately
- * and can be used to restore access via restoreAccessFromTransactions().
+ * Products are now DYNAMIC — defined in lib/products.ts.
+ * New products work automatically.
  */
 export function usePurchaseAccess(): PurchaseAccess {
   const [hasPart1, setHasPart1] = useState(false);
   const [hasPart2, setHasPart2] = useState(false);
   const [hasErrorDetection, setHasErrorDetection] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -53,13 +48,12 @@ export function usePurchaseAccess(): PurchaseAccess {
   const { openRazorpayCheckout, error: razorpayError } = useRazorpay();
 
   useEffect(() => {
-    // Try to restore access from transaction IDs first
     restoreAccessFromTransactions();
 
-    // Then set the state from localStorage
-    setHasPart1(hasPart1Access());
-    setHasPart2(hasPart2Access());
-    setHasErrorDetection(hasErrorDetectionAccess());
+    setHasPart1(hasAccess("part1"));
+    setHasPart2(hasAccess("part2"));
+    setHasErrorDetection(hasAccess("errorDetection"));
+
     setLoggedIn(isLoggedIn());
     setUserEmailState(getUserEmail());
     setIsLoading(false);
@@ -74,8 +68,7 @@ export function usePurchaseAccess(): PurchaseAccess {
 
   const unlockPart1 = async (email?: string) => {
     if (!email) {
-      // For backward compatibility, simulate purchase
-      setPart1Purchased(true);
+      setAccess("part1", true);
       setHasPart1(true);
       return;
     }
@@ -83,8 +76,7 @@ export function usePurchaseAccess(): PurchaseAccess {
     try {
       await openRazorpayCheckout('part1', email, (product, transactionId) => {
         if (product === 'part1') {
-          // Store with transaction ID for recovery
-          setPart1Purchased(true, transactionId);
+          setAccess("part1", true, transactionId);
           setHasPart1(true);
         }
       });
@@ -95,8 +87,7 @@ export function usePurchaseAccess(): PurchaseAccess {
 
   const unlockPart2 = async (email?: string) => {
     if (!email) {
-      // For backward compatibility, simulate purchase
-      setPart2Purchased(true);
+      setAccess("part2", true);
       setHasPart2(true);
       return;
     }
@@ -104,8 +95,7 @@ export function usePurchaseAccess(): PurchaseAccess {
     try {
       await openRazorpayCheckout('part2', email, (product, transactionId) => {
         if (product === 'part2') {
-          // Store with transaction ID for recovery
-          setPart2Purchased(true, transactionId);
+          setAccess("part2", true, transactionId);
           setHasPart2(true);
         }
       });
@@ -116,24 +106,21 @@ export function usePurchaseAccess(): PurchaseAccess {
 
   const unlockBundle = async (email?: string) => {
     if (!email) {
-      // For backward compatibility, simulate purchase
-      setPart1Purchased(true);
-      setPart2Purchased(true);
+      setAccess("part1", true);
+      setAccess("part2", true);
       setHasPart1(true);
       setHasPart2(true);
       return;
     }
 
     try {
-      // Process Part 1 payment first
       await openRazorpayCheckout('part1', email, (product, transactionId) => {
         if (product === 'part1') {
-          setPart1Purchased(true, transactionId);
+          setAccess("part1", true, transactionId);
           setHasPart1(true);
-          // Then process Part 2 payment
           openRazorpayCheckout('part2', email, (product, transactionId) => {
             if (product === 'part2') {
-              setPart2Purchased(true, transactionId);
+              setAccess("part2", true, transactionId);
               setHasPart2(true);
             }
           });
@@ -146,8 +133,7 @@ export function usePurchaseAccess(): PurchaseAccess {
 
   const unlockErrorDetection = async (email?: string) => {
     if (!email) {
-      // For backward compatibility, simulate purchase
-      setErrorDetectionPurchased(true);
+      setAccess("errorDetection", true);
       setHasErrorDetection(true);
       return;
     }
@@ -155,7 +141,7 @@ export function usePurchaseAccess(): PurchaseAccess {
     try {
       await openRazorpayCheckout('errorDetection', email, (product, transactionId) => {
         if (product === 'errorDetection') {
-          setErrorDetectionPurchased(true, transactionId);
+          setAccess("errorDetection", true, transactionId);
           setHasErrorDetection(true);
         }
       });
@@ -174,18 +160,13 @@ export function usePurchaseAccess(): PurchaseAccess {
     setLoggedIn(true);
     setUserEmailState(email);
 
-    if (products.includes('part1')) {
-      setPart1Purchased(true);
-      setHasPart1(true);
+    for (const id of products) {
+      setAccess(id, true);
     }
-    if (products.includes('part2')) {
-      setPart2Purchased(true);
-      setHasPart2(true);
-    }
-    if (products.includes('errorDetection')) {
-      setErrorDetectionPurchased(true);
-      setHasErrorDetection(true);
-    }
+
+    if (products.includes('part1')) setHasPart1(true);
+    if (products.includes('part2')) setHasPart2(true);
+    if (products.includes('errorDetection')) setHasErrorDetection(true);
   };
 
   const logoutUser = () => {

@@ -5,24 +5,17 @@
  * - Part 1: Saga 1-01 "shadows-of-the-forsaken"
  * - Part 2: Saga 2-01 "the-fall-of-a-kingdom"
  * 
- * Purchase status is stored in localStorage (UI-only lock for now).
- * For production, implement database-backed storage.
- * 
- * Recovery mechanism: If user clears cache, they lose access.
- * Solution: Store purchase data in database with user identification.
+ * Products are now DYNAMIC — defined in lib/products.ts.
+ * New products work automatically without code changes.
  */
 
-// Storage keys for access status
+import { PRODUCTS, PRODUCT_IDS, getProductStorageKey, getProductTxStorageKey } from "./products";
+
+// Storage keys
 const STORAGE_KEYS = {
-  part1: "kv_part1_purchased",
-  part2: "kv_part2_purchased",
-  errorDetection: "kv_error_detection_purchased",
   userId: "kv_user_id",
   userEmail: "kv_user_email",
   supabaseSession: "kv_supabase_session",
-  part1Transaction: "kv_part1_transaction_id",
-  part2Transaction: "kv_part2_transaction_id",
-  errorDetectionTransaction: "kv_error_detection_transaction_id",
 } as const;
 
 // Free story slugs
@@ -69,105 +62,92 @@ function getUserId(): string {
   return userId;
 }
 
-/** Check if user has purchased Part 1 access (localStorage). */
+// ═══════════════════════════════════════════════
+// DYNAMIC ACCESS FUNCTIONS (using product config)
+// ═══════════════════════════════════════════════
+
+/** Check if user has purchased a specific product (localStorage). */
+export function hasAccess(productId: string): boolean {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem(getProductStorageKey(productId)) === "true";
+}
+
+/** Set purchase status for a product. Also stores transaction ID for recovery. */
+export function setAccess(productId: string, value: boolean, transactionId?: string): void {
+  if (typeof window === "undefined") return;
+  if (value) {
+    localStorage.setItem(getProductStorageKey(productId), "true");
+    if (transactionId) {
+      localStorage.setItem(getProductTxStorageKey(productId), transactionId);
+    }
+  } else {
+    localStorage.removeItem(getProductStorageKey(productId));
+    localStorage.removeItem(getProductTxStorageKey(productId));
+  }
+}
+
+/** Get transaction ID for a product (for recovery). */
+export function getTransactionId(productId: string): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(getProductTxStorageKey(productId));
+}
+
+/** Get all purchased product IDs. */
+export function getPurchasedProducts(): string[] {
+  return PRODUCT_IDS.filter((id) => hasAccess(id));
+}
+
+// ═══════════════════════════════════════════════
+// LEGACY ACCESS FUNCTIONS (backward compatible)
+// These still work — but new code should use hasAccess()/setAccess()
+// ═══════════════════════════════════════════════
+
+/** Check if user has purchased Part 1 access. */
 export function hasPart1Access(): boolean {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem(STORAGE_KEYS.part1) === "true";
+  return hasAccess("part1");
 }
 
-/** Check if user has purchased Part 2 access (localStorage). */
+/** Check if user has purchased Part 2 access. */
 export function hasPart2Access(): boolean {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem(STORAGE_KEYS.part2) === "true";
+  return hasAccess("part2");
 }
 
-/**
- * Get transaction ID for Part 1 purchase
- * Can be used to verify with Razorpay API if access is lost
- */
-export function getPart1TransactionId(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(STORAGE_KEYS.part1Transaction);
-}
-
-/**
- * Get transaction ID for Part 2 purchase
- * Can be used to verify with Razorpay API if access is lost
- */
-export function getPart2TransactionId(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(STORAGE_KEYS.part2Transaction);
-}
-
-/**
- * Simulate Part 1 purchase (UI-only). Call this after real payment success.
- * Also stores transaction ID for recovery.
- */
-export function setPart1Purchased(value: boolean, transactionId?: string): void {
-  if (typeof window === "undefined") return;
-  if (value) {
-    localStorage.setItem(STORAGE_KEYS.part1, "true");
-    if (transactionId) {
-      localStorage.setItem(STORAGE_KEYS.part1Transaction, transactionId);
-    }
-  } else {
-    localStorage.removeItem(STORAGE_KEYS.part1);
-    localStorage.removeItem(STORAGE_KEYS.part1Transaction);
-  }
-}
-
-/**
- * Simulate Part 2 purchase (UI-only). Call this after real payment success.
- * Also stores transaction ID for recovery.
- */
-export function setPart2Purchased(value: boolean, transactionId?: string): void {
-  if (typeof window === "undefined") return;
-  if (value) {
-    localStorage.setItem(STORAGE_KEYS.part2, "true");
-    if (transactionId) {
-      localStorage.setItem(STORAGE_KEYS.part2Transaction, transactionId);
-    }
-  } else {
-    localStorage.removeItem(STORAGE_KEYS.part2);
-    localStorage.removeItem(STORAGE_KEYS.part2Transaction);
-  }
-}
-
-/** Check if user has purchased Error Detection access (localStorage). */
+/** Check if user has purchased Error Detection access. */
 export function hasErrorDetectionAccess(): boolean {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem(STORAGE_KEYS.errorDetection) === "true";
+  return hasAccess("errorDetection");
 }
 
-/**
- * Get transaction ID for Error Detection purchase
- */
+/** Get transaction ID for Part 1. */
+export function getPart1TransactionId(): string | null {
+  return getTransactionId("part1");
+}
+
+/** Get transaction ID for Part 2. */
+export function getPart2TransactionId(): string | null {
+  return getTransactionId("part2");
+}
+
+/** Get transaction ID for Error Detection. */
 export function getErrorDetectionTransactionId(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(STORAGE_KEYS.errorDetectionTransaction);
+  return getTransactionId("errorDetection");
 }
 
-/**
- * Set Error Detection purchase status. Call this after real payment success.
- */
+/** Set Part 1 purchase status. */
+export function setPart1Purchased(value: boolean, transactionId?: string): void {
+  setAccess("part1", value, transactionId);
+}
+
+/** Set Part 2 purchase status. */
+export function setPart2Purchased(value: boolean, transactionId?: string): void {
+  setAccess("part2", value, transactionId);
+}
+
+/** Set Error Detection purchase status. */
 export function setErrorDetectionPurchased(value: boolean, transactionId?: string): void {
-  if (typeof window === "undefined") return;
-  if (value) {
-    localStorage.setItem(STORAGE_KEYS.errorDetection, "true");
-    if (transactionId) {
-      localStorage.setItem(STORAGE_KEYS.errorDetectionTransaction, transactionId);
-    }
-  } else {
-    localStorage.removeItem(STORAGE_KEYS.errorDetection);
-    localStorage.removeItem(STORAGE_KEYS.errorDetectionTransaction);
-  }
+  setAccess("errorDetection", value, transactionId);
 }
 
-/**
- * Check if a user can access a story.
- * @param slug - The story's slug
- * @param vocabPart - "part 1" or "part 2"
- */
+/** Check if a user can access a story. */
 export function canAccessStory(slug: string, vocabPart: string): boolean {
   if (isStoryFree(slug)) return true;
   if (vocabPart === "part 1") return hasPart1Access();
@@ -177,32 +157,24 @@ export function canAccessStory(slug: string, vocabPart: string): boolean {
 
 /**
  * Recovery function: Check if user has valid transactions stored
- * and restore access if needed. This should be called on app load.
+ * and restore access if needed. Call on app load.
  */
 export function restoreAccessFromTransactions(): void {
   if (typeof window === "undefined") return;
 
-  // If access is already set, no need to restore
-  if (hasPart1Access() && hasPart2Access()) return;
-
-  // Check for transaction IDs and restore access
-  const part1Tx = localStorage.getItem(STORAGE_KEYS.part1Transaction);
-  const part2Tx = localStorage.getItem(STORAGE_KEYS.part2Transaction);
-
-  if (part1Tx && !hasPart1Access()) {
-    // User had Part 1 access before, restore it
-    localStorage.setItem(STORAGE_KEYS.part1, "true");
-  }
-
-  if (part2Tx && !hasPart2Access()) {
-    // User had Part 2 access before, restore it
-    localStorage.setItem(STORAGE_KEYS.part2, "true");
+  for (const id of PRODUCT_IDS) {
+    if (!hasAccess(id)) {
+      const txId = getTransactionId(id);
+      if (txId) {
+        localStorage.setItem(getProductStorageKey(id), "true");
+      }
+    }
   }
 }
 
-/**
- * Supabase-based access functions
- */
+// ═══════════════════════════════════════════════
+// SUPABASE SESSION FUNCTIONS
+// ═══════════════════════════════════════════════
 
 /** Check if user has a valid Supabase session stored. */
 export function hasSupabaseSession(): boolean {
@@ -222,26 +194,14 @@ export function setUserEmail(email: string): void {
   localStorage.setItem(STORAGE_KEYS.userEmail, email);
 }
 
-/**
- * Is the user logged in via Supabase?
- * Checks for stored session token and user email.
- */
+/** Is the user logged in via Supabase? */
 export function isLoggedIn(): boolean {
   return hasSupabaseSession() && !!getUserEmail();
 }
 
-/**
- * Logout: clear Supabase session and user data.
- * Note: localStorage purchase data is preserved so user doesn't lose
- * access in the current browser until they clear data.
- */
+/** Logout: clear session and user data. */
 export function logout(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_KEYS.supabaseSession);
   localStorage.removeItem(STORAGE_KEYS.userEmail);
 }
-
-/**
- * Export storage keys for reference
- */
-export { STORAGE_KEYS };
