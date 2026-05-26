@@ -290,19 +290,24 @@ export default function SagaVocabQuizClient({
     // ── Paywall screen ──
     if (isLocked) {
         const partLabel = vocabPart === "part 1" ? "Part 1" : "Part 2";
-        const partColor = vocabPart === "part 1" ? "#1c4a8a" : "#f97316";
+        const headerColor = vocabPart === "part 1" ? "#1c4a8a" : "#f97316";
+        const accentColor = vocabPart === "part 1" ? "blue-600" : "orange-500";
+        const priceText = vocabPart === "part 1" ? "₹299" : "₹399";
+        const gradientFrom = vocabPart === "part 1" ? "from-blue-600" : "from-orange-500";
+        const gradientTo = vocabPart === "part 1" ? "to-blue-700" : "to-orange-600";
+        const shadowColor = vocabPart === "part 1" ? "shadow-blue-900/30" : "shadow-orange-900/30";
         return (
             <div className="min-h-screen bg-[#0a0f1e] font-sans flex flex-col">
                 {/* Header */}
-                <header className="bg-[#008080] text-white px-4 py-3 flex items-center gap-3 shadow-sm">
-                    <Link href="/" className="hover:bg-[#006666] p-1.5 rounded-full transition-colors">
+                <header style={{ backgroundColor: headerColor }} className="text-white px-4 py-3 flex items-center gap-3 shadow-sm">
+                    <Link href="/" className="hover:opacity-80 p-1.5 rounded-full transition-colors">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                         </svg>
                     </Link>
                     <div>
                         <h1 className="font-bold text-sm tracking-wide">Saga Vocab Quiz</h1>
-                        <p className="text-xs text-teal-100 font-semibold">{title}</p>
+                        <p className="text-xs opacity-80 font-semibold">{title}</p>
                     </div>
                 </header>
 
@@ -322,16 +327,16 @@ export default function SagaVocabQuizClient({
                         <div className="text-center mb-8">
                             <div
                                 className="inline-block text-[11px] font-black px-3 py-1 rounded-full mb-3 uppercase tracking-wider"
-                                style={{ background: `${partColor}22`, color: partColor, border: `1px solid ${partColor}44` }}
+                                style={{ background: `${headerColor}22`, color: headerColor, border: `1px solid ${headerColor}44` }}
                             >
-                                {partLabel} — Premium Content
+                                Premium Content &mdash; {priceText}
                             </div>
                             <h2 className="text-white text-[24px] font-black mb-2 leading-tight">
                                 {title}
                             </h2>
                             <p className="text-gray-400 text-[14px] leading-relaxed">
                                 Yeh story <strong className="text-white">{partLabel}</strong> ke premium content mein hai.
-                                Access karne ke liye <strong className="text-white">{partLabel}</strong> ko unlock karein.
+                                Ek baar <strong className="text-white">{partLabel}</strong> unlock karo, lifetime access pao.
                             </p>
                         </div>
 
@@ -359,9 +364,9 @@ export default function SagaVocabQuizClient({
                         <div className="flex flex-col gap-3">
                             <Link
                                 href="/pricing"
-                                className="w-full text-center bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-black text-[16px] py-4 rounded-xl transition-all duration-200 shadow-lg shadow-blue-900/30 active:scale-[0.98]"
+                                className={`w-full text-center bg-gradient-to-r ${gradientFrom} ${gradientTo} hover:opacity-90 text-white font-black text-[16px] py-4 rounded-xl transition-all duration-200 ${shadowColor} active:scale-[0.98]`}
                             >
-                                🔓 Unlock {partLabel} Access
+                                🔓 Unlock {partLabel} &mdash; {priceText}
                             </Link>
                             <Link
                                 href="/"
