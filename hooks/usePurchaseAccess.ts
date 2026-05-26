@@ -182,6 +182,10 @@ export function usePurchaseAccess(): PurchaseAccess {
       setPart2Purchased(true);
       setHasPart2(true);
     }
+    if (products.includes('errorDetection')) {
+      setErrorDetectionPurchased(true);
+      setHasErrorDetection(true);
+    }
   };
 
   const logoutUser = () => {
