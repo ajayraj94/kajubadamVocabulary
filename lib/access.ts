@@ -16,11 +16,13 @@
 const STORAGE_KEYS = {
   part1: "kv_part1_purchased",
   part2: "kv_part2_purchased",
+  errorDetection: "kv_error_detection_purchased",
   userId: "kv_user_id",
   userEmail: "kv_user_email",
   supabaseSession: "kv_supabase_session",
   part1Transaction: "kv_part1_transaction_id",
   part2Transaction: "kv_part2_transaction_id",
+  errorDetectionTransaction: "kv_error_detection_transaction_id",
 } as const;
 
 // Free story slugs
@@ -128,6 +130,36 @@ export function setPart2Purchased(value: boolean, transactionId?: string): void 
   } else {
     localStorage.removeItem(STORAGE_KEYS.part2);
     localStorage.removeItem(STORAGE_KEYS.part2Transaction);
+  }
+}
+
+/** Check if user has purchased Error Detection access (localStorage). */
+export function hasErrorDetectionAccess(): boolean {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem(STORAGE_KEYS.errorDetection) === "true";
+}
+
+/**
+ * Get transaction ID for Error Detection purchase
+ */
+export function getErrorDetectionTransactionId(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(STORAGE_KEYS.errorDetectionTransaction);
+}
+
+/**
+ * Set Error Detection purchase status. Call this after real payment success.
+ */
+export function setErrorDetectionPurchased(value: boolean, transactionId?: string): void {
+  if (typeof window === "undefined") return;
+  if (value) {
+    localStorage.setItem(STORAGE_KEYS.errorDetection, "true");
+    if (transactionId) {
+      localStorage.setItem(STORAGE_KEYS.errorDetectionTransaction, transactionId);
+    }
+  } else {
+    localStorage.removeItem(STORAGE_KEYS.errorDetection);
+    localStorage.removeItem(STORAGE_KEYS.errorDetectionTransaction);
   }
 }
 

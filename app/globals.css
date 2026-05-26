@@ -2,6 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══ Reading Typography — SSC Error Detection ═══ */
+.reading-body {
+  font-size: 17px;
+  line-height: 1.75;
+  color: #1e293b;
+  letter-spacing: 0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.reading-body p {
+  margin-bottom: 0.5rem;
+}
+
+.reading-body strong {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.reading-body ul,
+.reading-body ol {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.75rem;
+}
+
+.reading-body li {
+  margin-bottom: 0.35rem;
+}
+
+.reading-body hr {
+  margin: 1.25rem 0;
+  border-color: #e2e8f0;
+}
+
+.reading-body h3 {
+  font-size: 19px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+.reading-body table {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.reading-body th,
+.reading-body td {
+  padding: 0.5rem 0.75rem;
+}
+
 /* ═══ Content Protection Styles ═══ */
 /* 100% Google-safe — search bots read raw HTML, they ignore these CSS rules */
 

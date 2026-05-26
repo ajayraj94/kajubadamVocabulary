@@ -12,6 +12,8 @@ declare global {
     }
 }
 
+type ProductType = 'part1' | 'part2' | 'errorDetection';
+
 interface RazorpayOrder {
     id: string;
     amount: number;
@@ -49,7 +51,7 @@ export function useRazorpay() {
     /**
      * Create an order via API
      */
-    const createOrder = useCallback(async (product: 'part1' | 'part2', email: string) => {
+    const createOrder = useCallback(async (product: ProductType, email: string) => {
         setIsLoading(true);
         setError(null);
 
@@ -84,7 +86,7 @@ export function useRazorpay() {
         orderId: string,
         paymentId: string,
         signature: string,
-        product: 'part1' | 'part2'
+        product: ProductType
     ) => {
         setIsLoading(true);
         setError(null);
@@ -117,7 +119,7 @@ export function useRazorpay() {
      * Open Razorpay checkout popup
      */
     const openRazorpayCheckout = useCallback(
-        async (product: 'part1' | 'part2', email: string, onSuccess: (product: string, transactionId: string) => void) => {
+        async (product: ProductType, email: string, onSuccess: (product: string, transactionId: string) => void) => {
             if (!razorpayLoaded) {
                 setError('Razorpay is still loading. Please wait...');
                 return;

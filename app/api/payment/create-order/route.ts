@@ -12,9 +12,9 @@ export async function POST(request: NextRequest) {
         const { product, email } = await request.json();
 
         // Validate product type
-        if (!['part1', 'part2'].includes(product)) {
+        if (!['part1', 'part2', 'errorDetection'].includes(product)) {
             return NextResponse.json(
-                { success: false, error: 'Invalid product type. Must be part1 or part2' },
+                { success: false, error: 'Invalid product type. Must be part1, part2, or errorDetection' },
                 { status: 400 }
             );
         }
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Create Razorpay order
-        const result = await createRazorpayOrder(product as 'part1' | 'part2', email);
+        const result = await createRazorpayOrder(product as 'part1' | 'part2' | 'errorDetection', email);
 
         if (!result.success) {
             return NextResponse.json(

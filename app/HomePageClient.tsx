@@ -19,13 +19,15 @@ interface Props {
   part1Stories: Story[];
   part2Stories: Story[];
   dailyNews: DailyNewsMeta[];
+  totalErrorDetectionQuestions: number;
+  errorDetectionTotalPages: number;
 }
 
-export default function HomePageClient({ part1Stories, part2Stories, dailyNews }: Props) {
-  const [activeTab, setActiveTab] = useState<"part1" | "part2" | "daily">("part1");
+export default function HomePageClient({ part1Stories, part2Stories, dailyNews, totalErrorDetectionQuestions, errorDetectionTotalPages }: Props) {
+  const [activeTab, setActiveTab] = useState<"part1" | "part2" | "daily" | "error-detection">("part1");
   const [currentPage, setCurrentPage] = useState(1);
   const [masteredSlugs, setMasteredSlugs] = useState<string[]>([]);
-  const { hasPart1, hasPart2, isLoading: accessLoading, isLoggedIn, userEmail, loginAfterPurchase, logoutUser } = usePurchaseAccess();
+  const { hasPart1, hasPart2, hasErrorDetection, isLoading: accessLoading, isLoggedIn, userEmail, loginAfterPurchase, logoutUser } = usePurchaseAccess();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   // Init tab from URL param / sessionStorage and load progress on mount
@@ -35,10 +37,10 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
     const savedTab = sessionStorage.getItem("activeTab");
 
     // Priority: URL param > sessionStorage (back-nav) > default "part1"
-    if (tabParam === "part1" || tabParam === "part2" || tabParam === "daily") {
+    if (tabParam === "part1" || tabParam === "part2" || tabParam === "daily" || tabParam === "error-detection") {
       setActiveTab(tabParam);
       sessionStorage.setItem("activeTab", tabParam);
-    } else if (savedTab === "part1" || savedTab === "part2" || savedTab === "daily") {
+    } else if (savedTab === "part1" || savedTab === "part2" || savedTab === "daily" || savedTab === "error-detection") {
       setActiveTab(savedTab);
     }
 
@@ -77,11 +79,23 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
   // For daily tab, use dailyNews directly
   const dailyItems = activeTab === "daily" ? dailyNews : [];
 
+  // Error detection pages
+  const errorDetectionPages = errorDetectionTotalPages;
+
   // Pagination Configuration
   const PAGE_SIZE = 10;
   const totalPages = activeTab === "daily"
     ? Math.max(1, Math.ceil(dailyItems.length / PAGE_SIZE))
+    : activeTab === "error-detection"
+    ? 1
     : Math.max(1, Math.ceil(activeStories.length / PAGE_SIZE));
+
+  // Generate error detection page blocks
+  const errorDetectionBlocks = Array.from({ length: errorDetectionPages }, (_, i) => ({
+    page: i + 1,
+    startQ: i * 50 + 1,
+    endQ: Math.min((i + 1) * 50, totalErrorDetectionQuestions),
+  }));
 
   // Reset pagination on tab change
   useEffect(() => {
@@ -327,13 +341,120 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews }
           >
             DAILY NEWS VOCAB
           </button>
+          <button
+            onClick={() => setActiveTab("error-detection")}
+            className={`font-bold text-[13px] md:text-[15px] tracking-wide py-4 px-4 md:px-6 transition-all ${activeTab === "error-detection"
+              ? "text-[#8B0000] border-b-4 border-[#8B0000]"
+              : "text-gray-400 hover:text-gray-700"
+              }`}
+          >
+            SSC ERROR DETECTION
+          </button>
         </div>
       </div>
 
       {/* MAIN CONTENT */}
       <main className="max-w-[1600px] mx-auto px-4 lg:px-8 py-3">
-        {/* ── DAILY NEWS TAB ── */}
-        {activeTab === "daily" ? (
+        {/* ── SSC ERROR DETECTION TAB ── */}
+        {activeTab === "error-detection" ? (
+          <div className="py-4">
+            {/* Header */}
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="bg-[#8B0000] text-white w-10 h-10 rounded-xl flex items-center justify-center text-lg font-black shadow-md">
+                  ED
+                </div>
+                <div>
+                  <h2 className="text-[22px] font-extrabold text-gray-800 tracking-tight leading-none">
+                    SSC Error Detection 716 PYQ
+                  </h2>
+                  <p className="text-[13px] text-gray-500 mt-1">
+                    {totalErrorDetectionQuestions} previous year questions with detailed bilingual explanations
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Access status */}
+            {!accessLoading && !hasErrorDetection && (
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🔒</span>
+                  <div>
+                    <p className="text-[13px] font-bold text-amber-800">Premium Content — ₹110</p>
+                    <p className="text-[12px] text-amber-600">Ek baar purchase karo, lifetime access pao.</p>
+                  </div>
+                </div>
+                <Link
+                  href="/pricing"
+                  className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-[13px] px-5 py-2 rounded-lg transition-all active:scale-95 shadow-md"
+                >
+                  🔓 Unlock for ₹110
+                </Link>
+              </div>
+            )}
+
+            {/* Blocks Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-3">
+              {errorDetectionBlocks.map((block) => {
+                const isUnlocked = hasErrorDetection || block.page === 1;
+                return isUnlocked ? (
+                  <div
+                    key={block.page}
+                    className="bg-white border border-gray-100 rounded-xl p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300 hover:border-red-200 group"
+                  >
+                    <Link href={`/error-detection/${block.page}`} className="block">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="bg-[#8B0000] text-white text-[10px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
+                        <span className="text-[10px] font-semibold text-gray-400">{errorDetectionPages} pages</span>
+                      </div>
+                      <h3 className="text-[14px] font-bold text-gray-800 group-hover:text-[#8B0000] transition-colors">
+                        Q.{block.startQ} – Q.{block.endQ}
+                        {block.page === 1 && <span className="ml-2 text-[9px] text-emerald-600 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full font-bold align-middle">FREE</span>}
+                      </h3>
+                      <p className="text-[11px] text-gray-400 mt-1">{block.endQ - block.startQ + 1} questions</p>
+                    </Link>
+                    <div className="mt-3 flex gap-2">
+                      <Link href={`/error-detection/${block.page}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[12px] font-bold py-1.5 rounded-full transition">
+                        📖 Read
+                      </Link>
+                      <Link href={`/error-detection/${block.page}#quiz`} className="flex-1 text-center bg-[#8B0000] hover:bg-[#6B0000] text-white text-[12px] font-bold py-1.5 rounded-full transition shadow-sm">
+                        📝 Quiz
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    key={block.page}
+                    className="bg-white border border-gray-100 rounded-xl p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] relative overflow-hidden blur-[2px] pointer-events-none select-none"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="bg-gray-300 text-white text-[10px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
+                    </div>
+                    <h3 className="text-[14px] font-bold text-gray-400">Q.{block.startQ} – Q.{block.endQ}</h3>
+                    <p className="text-[11px] text-gray-300 mt-1">{block.endQ - block.startQ + 1} questions</p>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg className="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* If no pages */}
+            {errorDetectionBlocks.length === 0 && (
+              <div className="bg-white rounded-xl p-16 text-center border border-gray-100 shadow-sm max-w-lg mx-auto">
+                <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 className="text-[18px] font-bold text-gray-700 mb-1">No Questions Found</h3>
+                <p className="text-gray-400 text-[14px]">Error detection questions are being prepared.</p>
+              </div>
+            )}
+          </div>
+        ) : activeTab === "daily" ? (
           <DailyNewsPageClient dailyNews={dailyNews} />
         ) : (
           <>

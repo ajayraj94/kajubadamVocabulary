@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Validate product type
-        if (!['part1', 'part2'].includes(product)) {
+        if (!['part1', 'part2', 'errorDetection'].includes(product)) {
             return NextResponse.json(
                 { success: false, error: 'Invalid product type' },
                 { status: 400 }

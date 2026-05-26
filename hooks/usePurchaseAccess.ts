@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import {
   hasPart1Access,
   hasPart2Access,
+  hasErrorDetectionAccess,
   setPart1Purchased,
   setPart2Purchased,
+  setErrorDetectionPurchased,
   restoreAccessFromTransactions,
   isLoggedIn,
   getUserEmail,
@@ -17,12 +19,14 @@ import { useRazorpay } from "./useRazorpay";
 interface PurchaseAccess {
   hasPart1: boolean;
   hasPart2: boolean;
+  hasErrorDetection: boolean;
   isLoading: boolean;
   isLoggedIn: boolean;
   userEmail: string | null;
   unlockPart1: (email?: string) => Promise<void>;
   unlockPart2: (email?: string) => Promise<void>;
   unlockBundle: (email?: string) => Promise<void>;
+  unlockErrorDetection: (email?: string) => Promise<void>;
   paymentError: string | null;
   clearPaymentError: () => void;
   loginAfterPurchase: (email: string, products: string[]) => void;
@@ -40,6 +44,7 @@ interface PurchaseAccess {
 export function usePurchaseAccess(): PurchaseAccess {
   const [hasPart1, setHasPart1] = useState(false);
   const [hasPart2, setHasPart2] = useState(false);
+  const [hasErrorDetection, setHasErrorDetection] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -54,6 +59,7 @@ export function usePurchaseAccess(): PurchaseAccess {
     // Then set the state from localStorage
     setHasPart1(hasPart1Access());
     setHasPart2(hasPart2Access());
+    setHasErrorDetection(hasErrorDetectionAccess());
     setLoggedIn(isLoggedIn());
     setUserEmailState(getUserEmail());
     setIsLoading(false);
@@ -138,6 +144,26 @@ export function usePurchaseAccess(): PurchaseAccess {
     }
   };
 
+  const unlockErrorDetection = async (email?: string) => {
+    if (!email) {
+      // For backward compatibility, simulate purchase
+      setErrorDetectionPurchased(true);
+      setHasErrorDetection(true);
+      return;
+    }
+
+    try {
+      await openRazorpayCheckout('errorDetection', email, (product, transactionId) => {
+        if (product === 'errorDetection') {
+          setErrorDetectionPurchased(true, transactionId);
+          setHasErrorDetection(true);
+        }
+      });
+    } catch (err: any) {
+      setPaymentError(err.message || 'Failed to process payment');
+    }
+  };
+
   const clearPaymentError = () => {
     setPaymentError(null);
   };
@@ -167,12 +193,14 @@ export function usePurchaseAccess(): PurchaseAccess {
   return {
     hasPart1,
     hasPart2,
+    hasErrorDetection,
     isLoading,
     isLoggedIn: loggedIn,
     userEmail,
     unlockPart1,
     unlockPart2,
     unlockBundle,
+    unlockErrorDetection,
     paymentError,
     clearPaymentError,
     loginAfterPurchase,

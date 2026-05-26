@@ -1,5 +1,6 @@
 import { getAllStories } from "@/lib/stories";
 import { getAllDailyNews } from "@/lib/daily-news";
+import { getErrorDetectionData } from "@/lib/error-detection";
 import HomePageClient from "./HomePageClient";
 
 export default function Home() {
@@ -12,11 +13,19 @@ export default function Home() {
   // Load daily news articles
   const dailyNews = getAllDailyNews();
 
+  // Load error detection data
+  const errorDetectionData = getErrorDetectionData();
+  const PAGE_SIZE = 50;
+  const totalErrorDetectionQuestions = errorDetectionData.totalQuestions;
+  const errorDetectionTotalPages = Math.ceil(totalErrorDetectionQuestions / PAGE_SIZE);
+
   return (
     <HomePageClient
       part1Stories={part1Stories}
       part2Stories={part2Stories}
       dailyNews={dailyNews}
+      totalErrorDetectionQuestions={totalErrorDetectionQuestions}
+      errorDetectionTotalPages={errorDetectionTotalPages}
     />
   );
 }
