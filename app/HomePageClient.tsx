@@ -473,6 +473,25 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
               </div>
             </div>
 
+            {/* Premium banner — like Error Detection */}
+            {!accessLoading && !(activeTab === "part1" ? hasPart1 : hasPart2) && (
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🔒</span>
+                  <div>
+                    <p className="text-[13px] font-bold text-amber-800">Premium Content — {activeTab === "part1" ? "₹299" : "₹399"}</p>
+                    <p className="text-[12px] text-amber-600">Ek baar {activeTab === "part1" ? "Part 1" : "Part 2"} unlock karo, lifetime access pao.</p>
+                  </div>
+                </div>
+                <Link
+                  href="/pricing"
+                  className={`bg-gradient-to-r ${activeTab === "part1" ? "from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500" : "from-orange-500 to-red-500 hover:from-orange-400 hover:to-red-400"} text-white font-bold text-[13px] px-5 py-2 rounded-lg transition-all active:scale-95 shadow-md`}
+                >
+                  🔓 Unlock {activeTab === "part1" ? "Part 1" : "Part 2"} — {activeTab === "part1" ? "₹299" : "₹399"}
+                </Link>
+              </div>
+            )}
+
             {/* Stories Grid */}
             {paginatedStories.length === 0 ? (
               <div className="bg-white rounded-xl p-16 text-center border border-gray-100 shadow-sm max-w-lg mx-auto">
@@ -530,23 +549,10 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
 
                       {/* Lock overlay */}
                       {isLocked && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-[1px] rounded-xl">
-                          <div className="flex flex-col items-center gap-2 px-3 text-center">
-                            <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center">
-                              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                              </svg>
-                            </div>
-                            <p className="text-[11px] font-bold text-gray-600 leading-tight">
-                              {activeTab === "part1" ? "Part 1" : "Part 2"} Access Required
-                            </p>
-                            <Link
-                              href="/pricing"
-                              className="text-[11px] font-black text-[#1c4a8a] bg-[#1c4a8a]/8 hover:bg-[#1c4a8a]/15 border border-[#1c4a8a]/20 px-3 py-1 rounded-full transition-colors"
-                            >
-                              🔓 Unlock
-                            </Link>
-                          </div>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <svg className="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                          </svg>
                         </div>
                       )}
 
