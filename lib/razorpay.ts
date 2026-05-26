@@ -20,11 +20,13 @@ export const PRODUCT_NAMES = {
     errorDetection: 'SSC Error Detection 716 PYQ - Lifetime Access',
 } as const;
 
-// Initialize Razorpay client (server-side only)
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID!,
-    key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+// Lazy Razorpay instance — initialized only when first used (not at import/build time)
+function getRazorpay() {
+    return new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID!,
+        key_secret: process.env.RAZORPAY_KEY_SECRET!,
+    });
+}
 
 /**
  * Create a Razorpay order for a product
@@ -42,7 +44,7 @@ export async function createRazorpayOrder(product: 'part1' | 'part2' | 'errorDet
     };
 
     try {
-        const order = await razorpay.orders.create({
+        const order = await getRazorpay().orders.create({
             amount,
             currency: 'INR',
             receipt,
@@ -94,7 +96,7 @@ export function verifyPaymentSignature(
  */
 export async function fetchPaymentDetails(paymentId: string) {
     try {
-        const payment = await razorpay.payments.fetch(paymentId);
+        const payment = await getRazorpay().payments.fetch(paymentId);
         return { success: true, payment };
     } catch (error: any) {
         console.error('Error fetching payment details:', error);
