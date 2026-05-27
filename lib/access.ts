@@ -11,12 +11,43 @@
 
 import { PRODUCTS, PRODUCT_IDS, getProductStorageKey, getProductTxStorageKey } from "./products";
 
+// ── Version check (bumps on deploy to purge stale localStorage) ──
+export const KV_VERSION = "2"; // Increment this when paywall/lock logic changes
+const KV_VERSION_KEY = "kv_version";
+
 // Storage keys
 const STORAGE_KEYS = {
   userId: "kv_user_id",
   userEmail: "kv_user_email",
   supabaseSession: "kv_supabase_session",
 } as const;
+
+/**
+ * Purge all stored access data when version mismatch is detected.
+ * This ensures anyone who visited BEFORE the paywall was locked
+ * doesn't retain stale unlocked state in localStorage.
+ */
+function purgeIfVersionMismatch(): void {
+  if (typeof window === "undefined") return;
+
+  const storedVersion = localStorage.getItem(KV_VERSION_KEY);
+  if (storedVersion === KV_VERSION) return; // Same version, nothing to do
+
+  // Version mismatch — clear ALL kv_* keys
+  const keysToRemove: string[] = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith("kv_")) {
+      keysToRemove.push(key);
+    }
+  }
+  for (const key of keysToRemove) {
+    localStorage.removeItem(key);
+  }
+
+  // Set new version
+  localStorage.setItem(KV_VERSION_KEY, KV_VERSION);
+}
 
 // Free story slugs
 export const FREE_SLUGS = {
@@ -162,6 +193,10 @@ export function canAccessStory(slug: string, vocabPart: string): boolean {
 export function restoreAccessFromTransactions(): void {
   if (typeof window === "undefined") return;
 
+  // On every app load, check version and purge stale data if needed
+  purgeIfVersionMismatch();
+
+  // Restore access from stored transaction IDs
   for (const id of PRODUCT_IDS) {
     if (!hasAccess(id)) {
       const txId = getTransactionId(id);
