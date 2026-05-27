@@ -83,8 +83,6 @@ export default function LoginModal({
       for (const id of products) {
         localStorage.setItem(getProductStorageKey(id), "true");
       }
-      if (products.includes("part1")) localStorage.setItem("kv_part1_purchased", "true");
-      if (products.includes("part2")) localStorage.setItem("kv_part2_purchased", "true");
 
       onLoginSuccess(email, products);
 

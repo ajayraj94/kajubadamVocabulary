@@ -80,6 +80,13 @@ export const PRODUCTS: Record<string, ProductConfig> = {
     storageKey: "kv_error_detection_purchased",
     txStorageKey: "kv_error_detection_transaction_id",
   },
+  bundle: {
+    id: "bundle",
+    label: "Bundle (Part 1 + Part 2) — ₹549",
+    defaultPrice: 549,
+    color: "purple",
+    description: "Complete Bundle: Part 1 + Part 2",
+  },
 };
 
 /** Array of all product IDs for iteration. */
@@ -128,6 +135,7 @@ export function getProductReceiptName(id: string): string {
     part1: "Kajubadam Vocabulary - Part 1 Lifetime Access",
     part2: "Kajubadam Vocabulary - Part 2 Lifetime Access",
     errorDetection: "SSC Error Detection 716 PYQ - Lifetime Access",
+    bundle: "Kajubadam Vocabulary - Complete Bundle (Part 1 + Part 2)",
   };
   return names[id] || `Kajubadam - ${id} Access`;
 }

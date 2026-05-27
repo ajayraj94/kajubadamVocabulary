@@ -120,18 +120,15 @@ export function usePurchaseAccess(): PurchaseAccess {
     }
 
     try {
-      await openRazorpayCheckout('part1', email, (product, transactionId) => {
-        if (product === 'part1') {
+      await openRazorpayCheckout('bundle', email, (product, transactionId) => {
+        if (product === 'bundle') {
+          // Bundle payment successful — grant access to BOTH Part 1 and Part 2
           setAccess("part1", true, transactionId);
+          setAccess("part2", true, transactionId);
           setHasPart1(true);
+          setHasPart2(true);
           onSuccess?.('part1');
-          openRazorpayCheckout('part2', email, (product, transactionId) => {
-            if (product === 'part2') {
-              setAccess("part2", true, transactionId);
-              setHasPart2(true);
-              onSuccess?.('part2');
-            }
-          });
+          onSuccess?.('part2');
         }
       });
     } catch (err: any) {

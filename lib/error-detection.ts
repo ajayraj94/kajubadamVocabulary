@@ -39,19 +39,7 @@ export function clearCache(): void {
   cached = null;
 }
 
-// ── Parsers ──
-
-function parseOptions(optionsBlock: string): string[] {
-  const options: string[] = [];
-  const lines = optionsBlock.split("\n").map((l) => l.trim()).filter(Boolean);
-  for (const line of lines) {
-    const match = line.match(/^\(([A-D])\)\s*(.*)$/);
-    if (match) {
-      options.push(match[2].trim());
-    }
-  }
-  return options;
-}
+// ── Parser helpers ──
 
 /**
  * Parse the full 716-question markdown file into structured data.
