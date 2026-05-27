@@ -39,14 +39,14 @@ export interface ProductConfig {
 }
 
 const COLOR_MAP: Record<string, { bg: string; text: string; border: string }> = {
-  blue:   { bg: "bg-blue-100",   text: "text-blue-800",   border: "border-blue-200" },
+  blue: { bg: "bg-blue-100", text: "text-blue-800", border: "border-blue-200" },
   orange: { bg: "bg-orange-100", text: "text-orange-800", border: "border-orange-200" },
-  red:    { bg: "bg-red-100",    text: "text-red-800",    border: "border-red-200" },
-  green:  { bg: "bg-green-100",  text: "text-green-800",  border: "border-green-200" },
+  red: { bg: "bg-red-100", text: "text-red-800", border: "border-red-200" },
+  green: { bg: "bg-green-100", text: "text-green-800", border: "border-green-200" },
   purple: { bg: "bg-purple-100", text: "text-purple-800", border: "border-purple-200" },
-  amber:  { bg: "bg-amber-100",  text: "text-amber-800",  border: "border-amber-200" },
-  teal:   { bg: "bg-teal-100",   text: "text-teal-800",   border: "border-teal-200" },
-  rose:   { bg: "bg-rose-100",   text: "text-rose-800",   border: "border-rose-200" },
+  amber: { bg: "bg-amber-100", text: "text-amber-800", border: "border-amber-200" },
+  teal: { bg: "bg-teal-100", text: "text-teal-800", border: "border-teal-200" },
+  rose: { bg: "bg-rose-100", text: "text-rose-800", border: "border-rose-200" },
   indigo: { bg: "bg-indigo-100", text: "text-indigo-800", border: "border-indigo-200" },
 };
 
@@ -72,8 +72,8 @@ export const PRODUCTS: Record<string, ProductConfig> = {
   },
   errorDetection: {
     id: "errorDetection",
-    label: "Error Detection — ₹1",
-    defaultPrice: 1,
+    label: "Error Detection — ₹110",
+    defaultPrice: 110,
     color: "red",
     description: "SSC Error Detection 716 PYQ",
     // Legacy storage key — uses underscore format (backward compatible)
