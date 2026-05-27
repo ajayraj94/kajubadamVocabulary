@@ -81,8 +81,13 @@ export default function AdminPage() {
         }),
       ]);
 
-      if (!purchasesRes.ok || !transactionsRes.ok) {
-        throw new Error("Failed to fetch data. Check that SUPABASE_SERVICE_ROLE_KEY is configured.");
+      if (!purchasesRes.ok) {
+        const err = await purchasesRes.json().catch(() => ({ error: "Unknown error" }));
+        throw new Error(err.error || "Failed to fetch purchases");
+      }
+      if (!transactionsRes.ok) {
+        const err = await transactionsRes.json().catch(() => ({ error: "Unknown error" }));
+        throw new Error(err.error || "Failed to fetch transactions");
       }
 
       const purchasesData = await purchasesRes.json();
@@ -276,9 +281,6 @@ export default function AdminPage() {
         {error && (
           <div className="bg-red-900/30 border border-red-800/50 rounded-xl p-4 text-sm text-red-300">
             <strong className="font-bold">Error:</strong> {error}
-            <p className="text-red-400/70 mt-1 text-xs">
-              Make sure <code className="bg-red-900/50 px-1 rounded">SUPABASE_SERVICE_ROLE_KEY</code> is set in .env.local.
-            </p>
           </div>
         )}
 
