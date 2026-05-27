@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 
-const SITE_URL = process.env.SITE_URL || "https://kajubadam.vercel.app";
+const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

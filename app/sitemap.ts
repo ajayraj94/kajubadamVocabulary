@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { getAllStories } from "@/lib/stories";
 import { getAllDailyNews } from "@/lib/daily-news";
 
-const SITE_URL = process.env.SITE_URL || "https://kajubadam.vercel.app";
+const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const stories = getAllStories();
