@@ -192,7 +192,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
               { value: '11,762+', label: 'Exam Words', sub: 'SSC • Banking • Railway', color: 'from-blue-400 to-blue-600' },
               { value: '716', label: 'Error Detection PYQ', sub: 'Bilingual Solutions', color: 'from-rose-400 to-rose-600' },
               { value: '67', label: 'Story Batches', sub: '6,700 Contextual Words', color: 'from-amber-400 to-orange-500' },
-              { value: '₹0', label: 'Start Free', sub: '30+ Stories Free Access', color: 'from-emerald-400 to-emerald-600' },
+              { value: '₹0', label: 'Start Free', sub: '2 Free Stories + Daily News', color: 'from-emerald-400 to-emerald-600' },
             ].map((stat, i) => (
               <div key={stat.label} className={`bg-white/5 backdrop-blur-sm rounded-2xl p-4 md:p-5 border border-white/10 text-center hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 group ${i === 1 ? 'md:mt-3' : i === 3 ? 'md:mt-3' : ''}`}>
                 <div className={`inline-flex text-[22px] md:text-[28px] font-black bg-gradient-to-br ${stat.color} bg-clip-text text-transparent leading-none`}>
@@ -252,8 +252,8 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
           {/* Scrolling marquee — Urgency */}
           <div className="mt-8 md:mt-10 overflow-hidden">
             <div className="flex gap-8 animate-marquee whitespace-nowrap">
-              <span className="text-[11px] md:text-[12px] text-blue-200/40 font-medium">• 500+ Students Already Learning • New Daily News Vocab Added • SSC CGL 2025 Ready • 30+ Free Stories Available • Bilingual Explanations •</span>
-              <span className="text-[11px] md:text-[12px] text-blue-200/40 font-medium">• 500+ Students Already Learning • New Daily News Vocab Added • SSC CGL 2025 Ready • 30+ Free Stories Available • Bilingual Explanations •</span>
+              <span className="text-[11px] md:text-[12px] text-blue-200/40 font-medium">• 500+ Students Already Learning • New Daily News Vocab Added • SSC CGL 2025 Ready • 2 Free Stories + Daily News • Bilingual Explanations •</span>
+              <span className="text-[11px] md:text-[12px] text-blue-200/40 font-medium">• 500+ Students Already Learning • New Daily News Vocab Added • SSC CGL 2025 Ready • 2 Free Stories + Daily News • Bilingual Explanations •</span>
             </div>
           </div>
         </div>
