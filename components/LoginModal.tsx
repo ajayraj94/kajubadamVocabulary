@@ -18,7 +18,6 @@ export default function LoginModal({
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-  const [testLoading, setTestLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
@@ -49,54 +48,6 @@ export default function LoginModal({
       setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleTestLogin = async () => {
-    setTestLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch("/api/auth/test-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: "test@kajubadamvocabulary.in" }),
-      });
-
-      const data = await res.json();
-
-      if (!data.success) {
-        setError(data.error || "Test login failed");
-        return;
-      }
-
-      // Store session token
-      if (data.session?.access_token) {
-        localStorage.setItem("kv_supabase_session", data.session.access_token);
-      }
-
-      // Store user email
-      localStorage.setItem("kv_user_email", data.user.email);
-
-      // Grant access for ALL products dynamically
-      const products = data.purchases?.products || [];
-      for (const id of products) {
-        localStorage.setItem(getProductStorageKey(id), "true");
-      }
-
-      // Also set legacy keys for backward compatibility
-      if (products.includes("part1")) localStorage.setItem("kv_part1_purchased", "true");
-      if (products.includes("part2")) localStorage.setItem("kv_part2_purchased", "true");
-      if (products.includes("errorDetection")) localStorage.setItem("kv_error_detection_purchased", "true");
-
-      onLoginSuccess(data.user.email, products);
-
-      resetForm();
-      onClose();
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
-    } finally {
-      setTestLoading(false);
     }
   };
 
@@ -231,36 +182,7 @@ export default function LoginModal({
           </form>
         )}
 
-        {/* Divider */}
-        <div className="relative my-5">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-700/30"></div>
-          </div>
-          <div className="relative flex justify-center">
-            <span className="bg-gray-900/95 px-3 text-[11px] text-gray-500 font-medium">OR</span>
-          </div>
-        </div>
 
-        {/* Test Login Button */}
-        <button
-          onClick={handleTestLogin}
-          disabled={testLoading}
-          className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/20"
-        >
-          {testLoading ? (
-            "Logging in..."
-          ) : (
-            <>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              🧪 Test Login (Quick Access)
-            </>
-          )}
-        </button>
-        <p className="text-[11px] text-gray-500/70 text-center mt-1.5">
-          Bypasses OTP — grants full access for testing
-        </p>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ADMIN_TOKEN } from "@/lib/admin-auth";
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "1om@13494";
 
 export async function POST(request: NextRequest) {
   try {

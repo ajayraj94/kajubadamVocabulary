@@ -4,7 +4,7 @@
  */
 import { NextRequest, NextResponse } from "next/server";
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "1om@13494";
 
 /**
  * The admin token is derived from the password.
