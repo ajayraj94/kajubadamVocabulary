@@ -136,3 +136,8 @@ plans/
 # 📢 ADS CAMPAIGN (internal strategies, not for deployment)
 # ============================
 ads/
+
+# ============================
+# 🖼️ GENERATED CAROUSEL SLIDES (for image conversion, not committed)
+# ============================
+carousel-slides/
