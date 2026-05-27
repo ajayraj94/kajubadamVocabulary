@@ -20,10 +20,10 @@ interface PurchaseAccess {
   isLoading: boolean;
   isLoggedIn: boolean;
   userEmail: string | null;
-  unlockPart1: (email?: string) => Promise<void>;
-  unlockPart2: (email?: string) => Promise<void>;
-  unlockBundle: (email?: string) => Promise<void>;
-  unlockErrorDetection: (email?: string) => Promise<void>;
+  unlockPart1: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
+  unlockPart2: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
+  unlockBundle: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
+  unlockErrorDetection: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
   paymentError: string | null;
   clearPaymentError: () => void;
   loginAfterPurchase: (email: string, products: string[]) => void;
@@ -66,10 +66,11 @@ export function usePurchaseAccess(): PurchaseAccess {
     }
   }, [razorpayError]);
 
-  const unlockPart1 = async (email?: string) => {
+  const unlockPart1 = async (email?: string, onSuccess?: (product: string) => void) => {
     if (!email) {
       setAccess("part1", true);
       setHasPart1(true);
+      onSuccess?.('part1');
       return;
     }
 
@@ -78,6 +79,7 @@ export function usePurchaseAccess(): PurchaseAccess {
         if (product === 'part1') {
           setAccess("part1", true, transactionId);
           setHasPart1(true);
+          onSuccess?.('part1');
         }
       });
     } catch (err: any) {
@@ -85,10 +87,11 @@ export function usePurchaseAccess(): PurchaseAccess {
     }
   };
 
-  const unlockPart2 = async (email?: string) => {
+  const unlockPart2 = async (email?: string, onSuccess?: (product: string) => void) => {
     if (!email) {
       setAccess("part2", true);
       setHasPart2(true);
+      onSuccess?.('part2');
       return;
     }
 
@@ -97,6 +100,7 @@ export function usePurchaseAccess(): PurchaseAccess {
         if (product === 'part2') {
           setAccess("part2", true, transactionId);
           setHasPart2(true);
+          onSuccess?.('part2');
         }
       });
     } catch (err: any) {
@@ -104,12 +108,14 @@ export function usePurchaseAccess(): PurchaseAccess {
     }
   };
 
-  const unlockBundle = async (email?: string) => {
+  const unlockBundle = async (email?: string, onSuccess?: (product: string) => void) => {
     if (!email) {
       setAccess("part1", true);
       setAccess("part2", true);
       setHasPart1(true);
       setHasPart2(true);
+      onSuccess?.('part1');
+      onSuccess?.('part2');
       return;
     }
 
@@ -118,10 +124,12 @@ export function usePurchaseAccess(): PurchaseAccess {
         if (product === 'part1') {
           setAccess("part1", true, transactionId);
           setHasPart1(true);
+          onSuccess?.('part1');
           openRazorpayCheckout('part2', email, (product, transactionId) => {
             if (product === 'part2') {
               setAccess("part2", true, transactionId);
               setHasPart2(true);
+              onSuccess?.('part2');
             }
           });
         }
@@ -131,10 +139,11 @@ export function usePurchaseAccess(): PurchaseAccess {
     }
   };
 
-  const unlockErrorDetection = async (email?: string) => {
+  const unlockErrorDetection = async (email?: string, onSuccess?: (product: string) => void) => {
     if (!email) {
       setAccess("errorDetection", true);
       setHasErrorDetection(true);
+      onSuccess?.('errorDetection');
       return;
     }
 
@@ -143,6 +152,7 @@ export function usePurchaseAccess(): PurchaseAccess {
         if (product === 'errorDetection') {
           setAccess("errorDetection", true, transactionId);
           setHasErrorDetection(true);
+          onSuccess?.('errorDetection');
         }
       });
     } catch (err: any) {

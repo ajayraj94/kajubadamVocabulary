@@ -129,3 +129,8 @@ story_output*.html
 # 📋 PLANNING DOCS
 # ============================
 plans/
+
+# ============================
+# 📢 ADS CAMPAIGN (internal strategies, not for deployment)
+# ============================
+ads/

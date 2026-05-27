@@ -67,6 +67,27 @@ export default function SagaVocabQuizClient({
     const paletteRef = useRef<HTMLDivElement>(null);
     const PALETTE_COLS = 10;
 
+    // ── Theme colors ──
+    const isPart1 = vocabPart === "part 1";
+    const theme = {
+        accent: isPart1 ? "#7c3aed" : "#059669",
+        accentDark: isPart1 ? "#5b21b6" : "#047857",
+        accentLight: isPart1 ? "#a78bfa" : "#34d399",
+        orbsColor1: isPart1 ? "bg-violet-500/10" : "bg-emerald-500/10",
+        orbsColor2: isPart1 ? "bg-purple-500/10" : "bg-teal-500/10",
+        orbsColor1Hex: isPart1 ? "#8b5cf6" : "#10b981",
+        orbsColor2Hex: isPart1 ? "#a855f7" : "#14b8a6",
+        subTextColor: isPart1 ? "text-purple-100/80" : "text-emerald-100/80",
+        subDotColor: isPart1 ? "bg-purple-300/50" : "bg-emerald-300/50",
+        headerTextColor: isPart1 ? "text-purple-100" : "text-emerald-100",
+        headerScoreColor: isPart1 ? "text-purple-200" : "text-emerald-200",
+        sidebarBg: isPart1 ? "bg-purple-50" : "bg-emerald-50",
+        sidebarBorder: isPart1 ? "border-purple-100" : "border-emerald-100",
+        ringClass: isPart1 ? "ring-purple-300" : "ring-emerald-300",
+        scrollBtnBg: isPart1 ? "bg-purple-100 hover:bg-purple-200 text-purple-800" : "bg-emerald-100 hover:bg-emerald-200 text-emerald-800",
+        gradientVia: isPart1 ? "#7c3aed" : "#059669",
+    };
+
     // ── Access control ──
     const { hasPart1, hasPart2, isLoading: accessLoading } = usePurchaseAccess();
     const isFreeStory = slug === FREE_SLUGS.part1 || slug === FREE_SLUGS.part2;
@@ -280,7 +301,7 @@ export default function SagaVocabQuizClient({
         return (
             <div className="min-h-screen bg-gray-50/40 font-sans flex items-center justify-center">
                 <div className="text-center">
-                    <div className="w-6 h-6 border-4 border-[#008080] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                    <div className="w-6 h-6 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-3" style={{ borderColor: `${theme.accent} transparent transparent transparent` }} />
                     <p className="text-[15px] font-bold text-gray-500">Loading...</p>
                 </div>
             </div>
@@ -386,7 +407,7 @@ export default function SagaVocabQuizClient({
         return (
             <div className="min-h-screen bg-gray-50/40 font-sans flex items-center justify-center">
                 <div className="text-center">
-                    <div className="w-6 h-6 border-4 border-[#008080] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                    <div className="w-6 h-6 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-3" style={{ borderColor: `${theme.accent} transparent transparent transparent` }} />
                     <p className="text-[15px] font-bold text-gray-500">
                         Loading quiz...
                     </p>
@@ -410,12 +431,12 @@ export default function SagaVocabQuizClient({
     return (
         <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
 
-            {/* ═══ TOP HEADER (Teal) ═══ */}
-            <header className="bg-[#008080] text-white px-4 py-3 flex justify-between items-center shadow-sm sticky top-0 z-30">
+            {/* ═══ TOP HEADER ═══ */}
+            <header className="text-white px-4 py-3 flex justify-between items-center shadow-sm sticky top-0 z-30" style={{ backgroundColor: theme.accent }}>
                 <div className="flex items-center space-x-3">
                     <Link
                         href="/"
-                        className="hover:bg-[#006666] p-1.5 rounded-full transition-colors"
+                        className="hover:brightness-90 p-1.5 rounded-full transition-all"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -423,7 +444,7 @@ export default function SagaVocabQuizClient({
                     </Link>
                     <div>
                         <h1 className="font-bold text-sm tracking-wide">Saga Vocab Quiz</h1>
-                        <p className="text-xs text-teal-100 font-semibold truncate max-w-[300px] md:max-w-[500px]">
+                        <p className="text-xs font-semibold truncate max-w-[300px] md:max-w-[500px] opacity-80">
                             {title.length > 60 ? title.slice(0, 60) + "..." : title}
                         </p>
                     </div>
@@ -434,7 +455,7 @@ export default function SagaVocabQuizClient({
                             <div className="font-bold tracking-wider text-xs">
                                 Score: {netScore.toFixed(2)}
                             </div>
-                            <div className="text-[10px] text-teal-200">
+                            <div className="text-[10px] opacity-70">
                                 +{correctCount} / -{(wrongCount * 0.25).toFixed(2)}
                             </div>
                         </div>
@@ -448,23 +469,54 @@ export default function SagaVocabQuizClient({
                 <div className="max-w-[800px] mx-auto px-4 py-8 md:py-10">
                     {/* Passage Header with inline Start Quiz */}
                     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
-                        {/* Title Banner */}
-                        <div className="bg-gradient-to-r from-[#008080] to-[#006666] px-5 md:px-6 py-4 md:py-5">
-                            <h1 className="text-[20px] md:text-[24px] leading-tight font-bold text-white">
-                                {title}
-                            </h1>
-                            <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-teal-100 mt-2 flex-wrap">
-                                <span className="font-semibold">{sagaId}</span>
-                                {vocabPart && (
-                                    <>
-                                        <span className="w-1 h-1 rounded-full bg-teal-300/50 shrink-0" />
-                                        <span>{vocabPart.charAt(0).toUpperCase() + vocabPart.slice(1)}</span>
-                                    </>
-                                )}
+                        {/* Title Banner — Hero style */}
+                        <div className="px-5 md:px-6 py-4 md:py-5 relative overflow-hidden" style={{ background: `linear-gradient(135deg, #0f172a, ${theme.gradientVia}, #0f172a)` }}>
+                            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                                <div className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl animate-pulse ${theme.orbsColor1}`} style={{animationDuration: '4s'}}></div>
+                                <div className={`absolute -bottom-20 -left-20 w-48 h-48 rounded-full blur-3xl animate-pulse ${theme.orbsColor2}`} style={{animationDuration: '6s'}}></div>
+                            </div>
+                            <div className="relative">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="inline-flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-400/20">
+                                        <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                                        {vocabPart === "part 1" ? "Part 1 — Core Vocabulary" : "Part 2 — Story Vocabulary"}
+                                    </span>
+                                </div>
+                                <h1 className="text-[20px] md:text-[24px] leading-tight font-black text-white">
+                                    <span className="bg-gradient-to-r from-yellow-200 via-amber-200 to-orange-200 bg-clip-text text-transparent">
+                                        {title}
+                                    </span>
+                                </h1>
+                                <div className={`flex items-center gap-2 md:gap-3 text-xs md:text-sm mt-2 flex-wrap ${theme.subTextColor}`}>
+                                    <span className="font-semibold">{sagaId}</span>
+                                    {vocabPart && (
+                                        <>
+                                            <span className={`w-1 h-1 rounded-full shrink-0 ${theme.subDotColor}`} />
+                                            <span>{vocabPart.charAt(0).toUpperCase() + vocabPart.slice(1)}</span>
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
-                        {/* Start Quiz Action Row removed – only bottom CTA and scroll button remain */}
+                        {/* Start Quiz Action Row — same as Daily News */}
+                        <div className="px-5 md:px-6 py-3 md:py-4 flex items-center justify-between flex-wrap gap-3">
+                            <div>
+                                <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Reading Passage</div>
+                                <div className="text-[13px] text-gray-600 mt-0.5">{rawQuestions.length} words · {totalQuestions} questions</div>
+                            </div>
+                            <button
+                                onClick={handleStartQuiz}
+                                className="text-white font-bold text-sm md:text-base px-5 md:px-7 py-2.5 md:py-3 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2"
+                                style={{ backgroundColor: theme.accent }}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = theme.accentDark}
+                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = theme.accent}
+                            >
+                                <span className="text-lg">📝</span>
+                                <span>Start Quiz</span>
+                                <span className="text-[10px] bg-white/20 rounded px-1.5 py-0.5">{totalQuestions}</span>
+                            </button>
+                        </div>
 
                         {/* Scoring Info Bar */}
                         <div className="bg-amber-50 border-t border-amber-100 px-5 md:px-6 py-2 flex items-center gap-4 text-[11px] md:text-xs text-amber-700 font-medium">
@@ -476,10 +528,10 @@ export default function SagaVocabQuizClient({
                         </div>
                     </div>
 
-                    {/* Story Content */}
+                    {/* Story Content — Gemini-style readability */}
                     <ContentProtection mode="full">
                         <div
-                            className="bg-white rounded-lg p-5 md:p-6 border border-gray-100 shadow-sm prose prose-slate max-w-none"
+                            className="reading-card story-passage"
                             dangerouslySetInnerHTML={{ __html: contentHtml }}
                         />
                     </ContentProtection>
@@ -488,7 +540,10 @@ export default function SagaVocabQuizClient({
                     <div className="text-center mt-6">
                         <button
                             onClick={handleStartQuiz}
-                            className="bg-[#008080] hover:bg-[#006666] active:bg-[#004d4d] text-white font-black text-base md:text-lg px-8 md:px-14 py-3 md:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-3"
+                            className="text-white font-black text-base md:text-lg px-8 md:px-14 py-3 md:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-3"
+                            style={{ backgroundColor: theme.accent }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = theme.accentDark}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = theme.accent}
                         >
                             <span className="text-xl md:text-2xl">📝</span>
                             <span>Start Quiz — {totalQuestions} Questions</span>
@@ -501,7 +556,7 @@ export default function SagaVocabQuizClient({
                     {/* Compact Story Content (above quiz, collapsible) */}
                     <div className="max-w-[800px] mx-auto px-4 py-4 md:py-6">
                         <details className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden">
-                            <summary className="px-4 md:px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors text-sm font-bold text-[#008080] flex items-center gap-2 select-none">
+                            <summary className="px-4 md:px-5 py-3 cursor-pointer hover:opacity-90 transition-opacity text-sm font-bold text-white flex items-center gap-2 select-none" style={{ background: `linear-gradient(90deg, #0f172a, ${theme.gradientVia}, #0f172a)` }}>
                                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                                 </svg>
@@ -510,7 +565,7 @@ export default function SagaVocabQuizClient({
                             <div className="px-4 md:px-5 pb-4 md:pb-5 border-t border-gray-100">
                                 <ContentProtection mode="full">
                                     <div
-                                        className="prose prose-slate max-w-none text-[14px] leading-relaxed mt-3"
+                                        className="story-passage mt-3"
                                         dangerouslySetInnerHTML={{ __html: contentHtml }}
                                     />
                                 </ContentProtection>
@@ -527,13 +582,13 @@ export default function SagaVocabQuizClient({
                     >
                         {/* ── Top Section Bar ── */}
                         <div className="bg-slate-100 border-b border-slate-200 px-4 py-2 flex items-center overflow-x-auto whitespace-nowrap text-xs gap-1 shrink-0">
-                            <span className="text-[#008080] font-black uppercase mr-2 border-r border-slate-300 pr-2 tracking-wider text-[11px]">
+                            <span className="font-black uppercase mr-2 border-r border-slate-300 pr-2 tracking-wider text-[11px]" style={{ color: theme.accent }}>
                                 Saga Vocab Quiz
                             </span>
                             <span className="text-slate-500 font-bold uppercase mr-2">
                                 Sections
                             </span>
-                            <button className="bg-[#008080] text-white px-4 py-1.5 rounded-t font-semibold">
+                            <button className="text-white px-4 py-1.5 rounded-t font-semibold" style={{ backgroundColor: theme.accent }}>
                                 Fill Blnk
                             </button>
                         </div>
@@ -586,8 +641,11 @@ export default function SagaVocabQuizClient({
                                                     disabled={currentQIndex >= totalQuestions - 1}
                                                     className={`flex items-center gap-1 font-bold text-xs px-3 py-1.5 rounded-full shadow-sm transition-all duration-150 active:scale-95 ${currentQIndex >= totalQuestions - 1
                                                         ? "bg-slate-100 text-slate-300 cursor-not-allowed shadow-none"
-                                                        : "bg-[#008080] hover:bg-[#006666] text-white hover:shadow-md hover:scale-105"
+                                                        : "text-white hover:shadow-md hover:scale-105"
                                                         }`}
+                                                        style={currentQIndex >= totalQuestions - 1 ? undefined : { backgroundColor: theme.accent }}
+                                                        onMouseEnter={(e) => { if (currentQIndex < totalQuestions - 1) e.currentTarget.style.backgroundColor = theme.accentDark; }}
+                                                        onMouseLeave={(e) => { if (currentQIndex < totalQuestions - 1) e.currentTarget.style.backgroundColor = theme.accent; }}
                                                 >
                                                     <span>Next</span>
                                                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -610,7 +668,7 @@ export default function SagaVocabQuizClient({
                                         </div>
 
                                         {currentQuestion?.hindiSentence && (
-                                            <div className="text-[12px] text-[#008080] mb-[6px] font-medium leading-relaxed">
+                                            <div className="text-[12px] mb-[6px] font-medium leading-relaxed" style={{ color: theme.accent }}>
                                                 &ldquo;{currentQuestion.hindiSentence}&rdquo;
                                             </div>
                                         )}

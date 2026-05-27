@@ -53,6 +53,9 @@ export default function PricingPage() {
   const [part1Clicked, setPart1Clicked] = useState(false);
   const [part2Clicked, setPart2Clicked] = useState(false);
   const [errorDetectionClicked, setErrorDetectionClicked] = useState(false);
+  const [part1Success, setPart1Success] = useState(false);
+  const [part2Success, setPart2Success] = useState(false);
+  const [errorDetectionSuccess, setErrorDetectionSuccess] = useState(false);
   const [email, setEmail] = useState('');
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<'part1' | 'part2' | 'bundle' | 'errorDetection' | null>(null);
@@ -67,23 +70,35 @@ export default function PricingPage() {
     if (!email || !email.includes('@')) return;
 
     try {
+      const onSuccess = (product: string) => {
+        if (product === 'part1') {
+          setPart1Success(true);
+          setPart1Clicked(true);
+        } else if (product === 'part2') {
+          setPart2Success(true);
+          setPart2Clicked(true);
+        } else if (product === 'errorDetection') {
+          setErrorDetectionSuccess(true);
+          setErrorDetectionClicked(true);
+        }
+      };
+
       if (selectedProduct === 'part1') {
-        await unlockPart1(email);
-        setPart1Clicked(true);
+        await unlockPart1(email, onSuccess);
       } else if (selectedProduct === 'part2') {
-        await unlockPart2(email);
-        setPart2Clicked(true);
+        await unlockPart2(email, onSuccess);
       } else if (selectedProduct === 'bundle') {
-        await unlockBundle(email);
-        setPart1Clicked(true);
-        setPart2Clicked(true);
+        await unlockBundle(email, onSuccess);
       } else if (selectedProduct === 'errorDetection') {
-        await unlockErrorDetection(email);
-        setErrorDetectionClicked(true);
+        await unlockErrorDetection(email, onSuccess);
       }
-      setShowEmailModal(false);
-      setEmail('');
-      setSelectedProduct(null);
+
+      // Only close modal if there's no payment error (success or not needed)
+      if (!paymentError) {
+        setShowEmailModal(false);
+        setEmail('');
+        setSelectedProduct(null);
+      }
     } catch (err) {
       // Error is handled by the hook
     }

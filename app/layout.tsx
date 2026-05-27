@@ -79,7 +79,7 @@ export default function RootLayout({
 
         {/* Subtle site-wide footer */}
         <footer className="mt-auto border-t border-gray-100 bg-white">
-          <div className="max-w-[1600px] mx-auto px-4 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400">
+          <div className="max-w-[1600px] mx-auto px-4 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-1 text-xs text-gray-400">
             <span>
               &copy; {new Date().getFullYear()} kajubadam Vocabulary &mdash; Free English-Hindi Vocabulary Learning
             </span>

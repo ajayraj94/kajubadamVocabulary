@@ -2,18 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ═══ Reading Typography — SSC Error Detection ═══ */
+/* ═══════════════════════════════════════════
+   GEMINI-PREMIUM READING TYPOGRAPHY
+   Google Gemini-grade readability — airy, warm, effortless on eyes
+   Designed for long-form reading without fatigue
+   ═══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@300;400;700;900&display=swap');
+
+/* ── READING BODY (Error Detection / general markdown) ── */
 .reading-body {
-  font-size: 17px;
-  line-height: 1.75;
-  color: #1e293b;
-  letter-spacing: 0.02em;
+  font-family: 'Merriweather', 'Georgia', 'Times New Roman', serif;
+  font-size: 18px;
+  line-height: 2.05;
+  color: #1a2332;
+  letter-spacing: 0.006em;
+  word-spacing: 0.03em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: common-ligatures;
+  font-feature-settings: "kern" 1;
 }
 
 .reading-body p {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.9rem;
+  font-weight: 400;
 }
 
 .reading-body strong {
@@ -23,30 +37,45 @@
 
 .reading-body ul,
 .reading-body ol {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
   padding-left: 1.75rem;
 }
 
 .reading-body li {
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.45rem;
+  line-height: 1.8;
 }
 
 .reading-body hr {
-  margin: 1.25rem 0;
-  border-color: #e2e8f0;
+  margin: 1.5rem 0;
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e2e8f0, transparent);
 }
 
 .reading-body h3 {
-  font-size: 19px;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 21px;
   font-weight: 800;
   color: #0f172a;
-  margin-top: 1.25rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.025em;
+  line-height: 1.4;
+}
+
+.reading-body h4 {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 1.35rem;
   margin-bottom: 0.5rem;
-  letter-spacing: 0.01em;
 }
 
 .reading-body table {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
   font-size: 15px;
   line-height: 1.6;
 }
@@ -55,6 +84,115 @@
 .reading-body td {
   padding: 0.5rem 0.75rem;
 }
+
+.reading-body code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9em;
+  background: #f1f5f9;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  color: #334155;
+}
+
+.reading-body blockquote {
+  border-left: 3px solid #cbd5e1;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #475569;
+  font-style: italic;
+}
+
+@media (min-width: 768px) {
+  .reading-body {
+    font-size: 19px;
+    line-height: 2.1;
+  }
+}
+
+/* ═══ READING PASSAGE CARD (Gemini warm card) ═══ */
+.reading-card {
+  background: #fefcfb;
+  border: 1px solid #ede9e3;
+  border-radius: 20px;
+  padding: 28px 30px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 4px 12px rgba(0,0,0,0.02);
+  transition: box-shadow 0.25s ease;
+}
+
+.reading-card:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04), 0 8px 20px rgba(0,0,0,0.03);
+}
+
+@media (min-width: 768px) {
+  .reading-card {
+    padding: 36px 40px;
+    border-radius: 24px;
+  }
+}
+
+/* ═══ STORY PASSAGE (Gemini-Premium) ═══ */
+.story-passage {
+  font-family: 'Merriweather', 'Georgia', 'Times New Roman', serif;
+  font-size: 18px;
+  line-height: 2.05;
+  color: #1a2332;
+  letter-spacing: 0.006em;
+  word-spacing: 0.03em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: common-ligatures;
+  font-feature-settings: "kern" 1;
+}
+
+.story-passage p {
+  margin-bottom: 0.9rem;
+}
+
+.story-passage strong {
+  font-weight: 700;
+  color: #075985;
+}
+
+@media (min-width: 768px) {
+  .story-passage {
+    font-size: 19px;
+    line-height: 2.1;
+  }
+  .story-passage p {
+    margin-bottom: 1rem;
+  }
+}
+
+/* ═══ DAILY NEWS PASSAGE ═══ */
+.daily-news-passage p {
+  font-family: 'Merriweather', 'Georgia', 'Times New Roman', serif;
+  font-size: 18px;
+  line-height: 2.05;
+  color: #1a2332;
+  letter-spacing: 0.006em;
+  word-spacing: 0.03em;
+  margin-bottom: 0.9rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: common-ligatures;
+  font-feature-settings: "kern" 1;
+}
+
+.daily-news-passage strong {
+  font-weight: 700;
+  color: #CC5500;
+}
+
+@media (min-width: 768px) {
+  .daily-news-passage p {
+    font-size: 19px;
+    line-height: 2.1;
+    margin-bottom: 1rem;
+  }
+}
+
 
 /* ═══ Content Protection Styles ═══ */
 /* 100% Google-safe — search bots read raw HTML, they ignore these CSS rules */
@@ -71,4 +209,18 @@
     .content-protected {
         display: none !important;
     }
+}
+
+/* ═══ MARQUEE ANIMATION ═══ */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
 }

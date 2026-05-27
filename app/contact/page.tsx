@@ -10,22 +10,20 @@ export const metadata: Metadata = {
 export default function ContactPage() {
     return (
         <LegalPageClient title="Contact">
-            <h2>We'd Love to Hear From You!</h2>
+            <h2>Get in Touch</h2>
             <p>
-                Whether you have feedback, found a bug, want to suggest a feature, or
-                just want to say hello — we're all ears.
+                Have a question, feedback, or need help? Drop us an email — we typically respond within 24 hours.
             </p>
 
-            <h2>Email</h2>
-            <p>
-                📧{" "}
-                <a href="mailto:ajaykrc3737@gmail.com">
-                    ajaykrc3737@gmail.com
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center my-6">
+                <p className="text-[15px] text-gray-600 mb-3 font-medium">📧 Send us an email:</p>
+                <a
+                    href="mailto:contact@kajubadamvocabulary.in"
+                    className="text-[20px] font-bold text-blue-600 hover:text-blue-800 underline underline-offset-4 transition-colors"
+                >
+                    contact@kajubadamvocabulary.in
                 </a>
-            </p>
-            <p className="text-sm text-gray-500 mt-1">
-                We typically respond within 24-48 hours.
-            </p>
+            </div>
 
             <h2>Common Topics</h2>
             <ul>
@@ -38,18 +36,18 @@ export default function ContactPage() {
                     us what would make your learning better.
                 </li>
                 <li>
-                    <strong>Content errors:</strong> If you spot a mistake in a story,
-                    quiz, or translation — please let us know.
+                    <strong>Payment issues:</strong> If you purchased but haven't received
+                    access, include your transaction/email details.
                 </li>
                 <li>
-                    <strong>Collaboration:</strong> Interested in contributing content or
+                    <strong>Collaboration:</strong> Interested in contributing or
                     partnering? Reach out!
                 </li>
             </ul>
 
             <h2>Feedback Matters</h2>
             <p>
-                kajubadam Vocabulary is built for learners like you. Your feedback
+                Kajubadam Vocabulary is built for learners like you. Your feedback
                 directly shapes what we build next. Don't hesitate to reach out!
             </p>
         </LegalPageClient>

@@ -243,12 +243,12 @@ export default function DailyNewsVocabQuizClient({
     return (
         <div className="min-h-screen bg-gray-50 font-sans">
 
-            {/* ═══ TOP HEADER (Blue) ═══ */}
-            <header className="bg-[#0b849e] text-white px-4 py-3 flex justify-between items-center shadow-sm sticky top-0 z-30">
+            {/* ═══ TOP HEADER (Amber) ═══ */}
+            <header className="bg-[#d97706] text-white px-4 py-3 flex justify-between items-center shadow-sm sticky top-0 z-30">
                 <div className="flex items-center space-x-3">
                     <Link
                         href="/?tab=daily"
-                        className="hover:bg-[#097188] p-1.5 rounded-full transition-colors"
+                        className="hover:bg-[#b45309] p-1.5 rounded-full transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -256,7 +256,7 @@ export default function DailyNewsVocabQuizClient({
                     </Link>
                     <div>
                         <h1 className="font-bold text-sm tracking-wide">Daily News Vocab Quiz</h1>
-                        <p className="text-xs text-cyan-100 font-semibold truncate max-w-[300px] md:max-w-[500px]">
+                        <p className="text-xs text-amber-100 font-semibold truncate max-w-[300px] md:max-w-[500px]">
                             {title.length > 60 ? title.slice(0, 60) + "..." : title}
                         </p>
                     </div>
@@ -267,7 +267,7 @@ export default function DailyNewsVocabQuizClient({
                             <div className="font-bold tracking-wider text-xs">
                                 Score: {totalScore.toFixed(2)}
                             </div>
-                            <div className="text-[10px] text-cyan-200">
+                            <div className="text-[10px] text-amber-200">
                                 +{correctCount} / -{(incorrectCount * 0.25).toFixed(2)}
                             </div>
                         </div>
@@ -281,15 +281,29 @@ export default function DailyNewsVocabQuizClient({
                 <div className="max-w-[800px] mx-auto px-4 py-8 md:py-10">
                     {/* Passage Header with inline Start Quiz */}
                     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
-                        {/* Title Banner */}
-                        <div className="bg-gradient-to-r from-[#0b849e] to-[#097188] px-5 md:px-6 py-4 md:py-5">
-                            <h1 className="text-[20px] md:text-[24px] leading-tight font-bold text-white">
-                                {title}
-                            </h1>
-                            <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-cyan-100 mt-2 flex-wrap">
-                                <span className="font-semibold">{date}</span>
-                                <span className="w-1 h-1 rounded-full bg-cyan-300/50 shrink-0" />
-                                <span>{source}</span>
+                        {/* Title Banner — Hero style */}
+                        <div className="bg-gradient-to-br from-[#0f172a] via-[#d97706] to-[#0f172a] px-5 md:px-6 py-4 md:py-5 relative overflow-hidden">
+                            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                                <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-amber-500/10 blur-3xl animate-pulse" style={{animationDuration: '4s'}}></div>
+                                <div className="absolute -bottom-20 -left-20 w-48 h-48 rounded-full bg-orange-500/10 blur-3xl animate-pulse" style={{animationDuration: '6s'}}></div>
+                            </div>
+                            <div className="relative">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="inline-flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-400/20">
+                                        <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                                        Daily News Vocab
+                                    </span>
+                                </div>
+                                <h1 className="text-[20px] md:text-[24px] leading-tight font-black text-white">
+                                    <span className="bg-gradient-to-r from-yellow-200 via-amber-200 to-orange-200 bg-clip-text text-transparent">
+                                        {title}
+                                    </span>
+                                </h1>
+                                <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-amber-100/80 mt-2 flex-wrap">
+                                    <span className="font-semibold">{date}</span>
+                                    <span className="w-1 h-1 rounded-full bg-amber-300/50 shrink-0" />
+                                    <span>{source}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -301,7 +315,7 @@ export default function DailyNewsVocabQuizClient({
                             </div>
                             <button
                                 onClick={handleStartQuiz}
-                                className="bg-[#0b849e] hover:bg-[#097188] active:bg-[#066d7a] text-white font-bold text-sm md:text-base px-5 md:px-7 py-2.5 md:py-3 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2"
+                                className="bg-[#d97706] hover:bg-[#b45309] active:bg-[#92400e] text-white font-bold text-sm md:text-base px-5 md:px-7 py-2.5 md:py-3 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2"
                             >
                                 <span className="text-lg">📝</span>
                                 <span>Start Quiz</span>
@@ -321,16 +335,16 @@ export default function DailyNewsVocabQuizClient({
 
                     {/* Passage Body */}
                     <ContentProtection mode="full">
-                        <div className="bg-gray-50 rounded-lg p-4 md:p-5 border border-gray-100">
+                        <div className="reading-card daily-news-passage">
                             {editorialParagraphs.map((para, idx) => (
-                                <div key={idx} className={idx > 0 ? "mt-3 pt-3 border-t border-gray-200/60" : ""}>
+                                <div key={idx} className={idx > 0 ? "mt-4 pt-4 border-t border-gray-100" : ""}>
                                     {para.english && (
-                                        <p className="text-[14px] md:text-[16px] text-gray-800 leading-[1.8] md:leading-[1.9]">
+                                        <p>
                                             {renderBold(para.english)}
                                         </p>
                                     )}
                                     {para.hindi && (
-                                        <p className="text-[14px] md:text-[15px] text-gray-800 leading-[1.8] md:leading-[1.9]">
+                                        <p>
                                             {renderBold(para.hindi)}
                                         </p>
                                     )}
@@ -343,7 +357,7 @@ export default function DailyNewsVocabQuizClient({
                     <div className="text-center mt-6">
                         <button
                             onClick={handleStartQuiz}
-                            className="bg-[#0b849e] hover:bg-[#097188] active:bg-[#066d7a] text-white font-black text-base md:text-lg px-8 md:px-14 py-3 md:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-3"
+                            className="bg-[#d97706] hover:bg-[#b45309] active:bg-[#92400e] text-white font-black text-base md:text-lg px-8 md:px-14 py-3 md:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-3"
                         >
                             <span className="text-xl md:text-2xl">📝</span>
                             <span>Start Quiz — {totalQuestions} Questions</span>
@@ -356,16 +370,16 @@ export default function DailyNewsVocabQuizClient({
                     {/* Passage Body (compact, above quiz) */}
                     <ContentProtection mode="full">
                         <div className="max-w-[800px] mx-auto px-4 py-6 md:py-8">
-                            <div className="bg-gray-50 rounded-lg p-4 md:p-5 border border-gray-100">
+                            <div className="reading-card daily-news-passage">
                                 {editorialParagraphs.map((para, idx) => (
-                                    <div key={idx} className={idx > 0 ? "mt-3 pt-3 border-t border-gray-200/60" : ""}>
+                                    <div key={idx} className={idx > 0 ? "mt-4 pt-4 border-t border-gray-100" : ""}>
                                         {para.english && (
-                                            <p className="text-[14px] md:text-[16px] text-gray-800 leading-[1.8] md:leading-[1.9]">
+                                            <p>
                                                 {renderBold(para.english)}
                                             </p>
                                         )}
                                         {para.hindi && (
-                                            <p className="text-[14px] md:text-[15px] text-gray-800 leading-[1.8] md:leading-[1.9]">
+                                            <p>
                                                 {renderBold(para.hindi)}
                                             </p>
                                         )}
@@ -396,8 +410,8 @@ export default function DailyNewsVocabQuizClient({
                                                 if (idx >= 0) goToQuestion(idx);
                                             }}
                                             className={`shrink-0 px-2.5 py-1.5 rounded-sm text-[10px] font-bold transition ${isActive
-                                                ? "bg-[#0b849e] text-white"
-                                                : "hover:bg-gray-100 text-gray-600"
+                                              ? "bg-[#d97706] text-white"
+                                              : "hover:bg-gray-100 text-gray-600"
                                                 }`}
                                         >
                                             {SECTION_SHORT[sec.type] || sec.typeName}
@@ -459,7 +473,7 @@ export default function DailyNewsVocabQuizClient({
                                                         disabled={currentQIndex >= totalQuestions - 1}
                                                         className={`flex items-center gap-1 font-bold text-xs px-3 py-1.5 rounded-full shadow-sm transition-all duration-150 active:scale-95 ${currentQIndex >= totalQuestions - 1
                                                             ? "bg-slate-100 text-slate-300 cursor-not-allowed shadow-none"
-                                                            : "bg-[#0b849e] hover:bg-[#096b80] text-white hover:shadow-md hover:scale-105"
+                                                            : "bg-[#d97706] hover:bg-[#b45309] text-white hover:shadow-md hover:scale-105"
                                                             }`}
                                                     >
                                                         <span>Next</span>
@@ -469,7 +483,7 @@ export default function DailyNewsVocabQuizClient({
                                                     </button>
                                                 </div>
 
-                                                <span className="bg-[#0b849e] text-white font-semibold text-xs px-2.5 py-1 rounded-full">
+                                                <span className="bg-[#d97706] text-white font-semibold text-xs px-2.5 py-1 rounded-full">
                                                     Q {currentQIndex + 1}/{totalQuestions}
                                                 </span>
                                             </div>
@@ -490,7 +504,7 @@ export default function DailyNewsVocabQuizClient({
                                                     const isCorrect = letter === currentQuestion.correctAnswer;
 
                                                     let labelClass = "border-gray-200 hover:bg-gray-50";
-                                                    let radioClass = "text-[#0b849e] focus:ring-[#0b849e]";
+                                                    let radioClass = "text-[#d97706] focus:ring-[#d97706]";
 
                                                     if (selectedAns) {
                                                         if (isCorrect) {
@@ -576,7 +590,7 @@ export default function DailyNewsVocabQuizClient({
                                 {/* User / Title Row with Filter — compact */}
                                 <div className="flex justify-between items-center px-2 py-1.5 border-b border-gray-200 bg-white shrink-0 relative">
                                     <div className="flex items-center space-x-1.5">
-                                        <div className="w-6 h-6 rounded-full bg-[#0b849e] flex items-center justify-center text-white text-[9px] font-bold shrink-0">
+                                        <div className="w-6 h-6 rounded-full bg-[#d97706] flex items-center justify-center text-white text-[9px] font-bold shrink-0">
                                             DN
                                         </div>
                                         <span className="font-bold text-gray-700 text-[11px] leading-none">Daily News</span>
@@ -638,10 +652,10 @@ export default function DailyNewsVocabQuizClient({
                                         </div>
                                     </div>
                                     {/* Total Score */}
-                                    <div className="bg-[#0b849e]/5 border border-[#0b849e]/20 rounded p-1.5 text-center">
-                                        <div className="text-[9px] font-bold text-[#0b849e] uppercase tracking-wider leading-tight">Total Score</div>
-                                        <div className="text-lg font-black text-[#0b849e] leading-none mt-0.5">{totalScore.toFixed(2)}</div>
-                                        <div className="text-[8px] text-[#0b849e]/70 leading-tight mt-0.5">{correctCount}/{totalQuestions} correct</div>
+                                    <div className="bg-[#d97706]/5 border border-[#d97706]/20 rounded p-1.5 text-center">
+                                        <div className="text-[9px] font-bold text-[#d97706] uppercase tracking-wider leading-tight">Total Score</div>
+                                        <div className="text-lg font-black text-[#d97706] leading-none mt-0.5">{totalScore.toFixed(2)}</div>
+                                        <div className="text-[8px] text-[#d97706]/70 leading-tight mt-0.5">{correctCount}/{totalQuestions} correct</div>
                                     </div>
                                     {/* Restart Quiz — always visible */}
                                     <button
@@ -686,7 +700,7 @@ export default function DailyNewsVocabQuizClient({
 
                                                         let circleClass = "border border-gray-300 bg-white text-gray-500";
                                                         if (isActive) {
-                                                            circleClass = "bg-[#0b849e] text-white border-[#0b849e] ring-1 ring-cyan-200";
+                                                            circleClass = "bg-[#d97706] text-white border-[#d97706] ring-1 ring-amber-200";
                                                         } else if (isAnswered) {
                                                             if (isCorrect) {
                                                                 circleClass = "bg-emerald-500 text-white border-emerald-500";
@@ -723,13 +737,13 @@ export default function DailyNewsVocabQuizClient({
                                 <div className="p-2 bg-white border-t border-gray-200 grid grid-cols-2 gap-1.5 shrink-0">
                                     <button
                                         onClick={scrollToPassage}
-                                        className="bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold py-2.5 rounded text-center transition-colors"
+                                        className="bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold py-2.5 rounded text-center transition-colors"
                                     >
                                         ↑ Reading Passage
                                     </button>
                                     <Link
                                         href="/?tab=daily"
-                                        className="bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold py-2.5 rounded text-center transition-colors"
+                                        className="bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold py-2.5 rounded text-center transition-colors"
                                     >
                                         Home
                                     </Link>

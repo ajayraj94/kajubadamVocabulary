@@ -375,14 +375,24 @@ export default function ErrorDetectionQuizClient({
         <div className="max-w-[860px] mx-auto px-5 py-8 md:py-10">
           {/* Hero Header */}
           <div className="bg-white rounded-xl border border-amber-200/60 shadow-md overflow-hidden mb-6 md:mb-8">
-            <div className="bg-gradient-to-r from-[#8B0000] via-[#7a0000] to-[#6B0000] px-6 md:px-8 py-6 md:py-7 relative overflow-hidden">
-              <div className="absolute inset-0 opacity-[0.03]">
-                <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white" />
-                <div className="absolute -bottom-5 -left-5 w-24 h-24 rounded-full bg-white" />
+            <div className="bg-gradient-to-br from-[#0f172a] via-[#8B0000] to-[#0f172a] px-6 md:px-8 py-6 md:py-7 relative overflow-hidden">
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-red-500/10 blur-3xl animate-pulse" style={{animationDuration: '4s'}}></div>
+                <div className="absolute -bottom-20 -left-20 w-48 h-48 rounded-full bg-rose-500/10 blur-3xl animate-pulse" style={{animationDuration: '6s'}}></div>
               </div>
               <div className="relative">
-                <h1 className="text-[26px] md:text-[32px] leading-tight font-black text-white tracking-tight">SSC Error Detection 716 PYQ</h1>
-                <div className="flex items-center gap-2 text-sm md:text-base text-red-200 mt-2 flex-wrap">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="inline-flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-400/20">
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                    SSC Error Detection 716 PYQ
+                  </span>
+                </div>
+                <h1 className="text-[26px] md:text-[32px] leading-tight font-black text-white tracking-tight">
+                  <span className="bg-gradient-to-r from-yellow-200 via-amber-200 to-orange-200 bg-clip-text text-transparent">
+                    SSC Error Detection 716 PYQ
+                  </span>
+                </h1>
+                <div className="flex items-center gap-2 text-sm md:text-base text-red-200/80 mt-2 flex-wrap">
                   <span className="font-bold">Page {page} of {totalPages}</span>
                   <span className="w-1 h-1 rounded-full bg-red-300/50 shrink-0" />
                   <span>Q.{(page - 1) * 50 + 1} &ndash; {Math.min(page * 50, totalQuestions)}</span>
@@ -398,14 +408,14 @@ export default function ErrorDetectionQuizClient({
             </div>
           </div>
 
-          {/* Question List */}
-          <div className="space-y-10 md:space-y-12">
-            {questions.map((q, qIdx) => (
-              <div
-                key={q.id}
-                id={`reading-q-${q.id}`}
-                className="bg-gradient-to-b from-amber-50/30 to-white rounded-xl border border-amber-200/50 shadow-md hover:shadow-lg transition-shadow overflow-hidden"
-              >
+      {/* Question List — Gemini-style readability */}
+      <div className="space-y-8 md:space-y-10">
+        {questions.map((q, qIdx) => (
+          <div
+            key={q.id}
+            id={`reading-q-${q.id}`}
+            className="bg-white rounded-2xl border border-amber-200/40 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
+          >
                 {/* Question Header */}
                 <div className="relative flex items-stretch">
                   <div className="w-1.5 bg-[#8B0000] shrink-0" />
@@ -430,46 +440,46 @@ export default function ErrorDetectionQuizClient({
                   </div>
                 </div>
                 <div className="px-4 md:px-5 pb-3 md:pb-4 pt-0">
-                  {/* Question Text */}
+                  {/* Question Text — Gemini-style */}
                   {q.questionText && (
-                    <div className="text-[17px] md:text-[19px] text-slate-800 font-medium mb-3 leading-[1.7] bg-gradient-to-br from-amber-50/70 to-orange-50/30 border border-amber-200/70 rounded-lg p-3 md:p-4 shadow-sm">
-                      <span className="text-amber-400 text-[15px]">&ldquo;</span>
+                    <div className="reading-body text-[17px] md:text-[19px] text-slate-800 font-medium mb-3 leading-[1.8] bg-gradient-to-br from-amber-50/60 to-white border border-amber-200/50 rounded-xl p-4 md:p-5 shadow-sm">
+                      <span className="text-amber-400 text-[16px] mr-1">&ldquo;</span>
                       {q.questionText}
-                      <span className="text-amber-400 text-[15px]">&rdquo;</span>
+                      <span className="text-amber-400 text-[16px] ml-1">&rdquo;</span>
                     </div>
                   )}
 
-                  {/* Options */}
-                  <div className="space-y-[2px] mb-4">
+                  {/* Options — cleaner layout */}
+                  <div className="space-y-1.5 mb-4">
                     {q.options.map((opt, idx) => {
                       const isCorrectOpt = OPTION_LETTERS[idx] === q.correctAnswer;
                       return (
                         <div
                           key={idx}
-                          className={`flex items-center gap-2 text-[16px] md:text-[17px] leading-relaxed px-4 py-2.5 rounded-lg ${
+                          className={`flex items-center gap-3 text-[16px] md:text-[17px] leading-relaxed px-4 py-3 rounded-xl ${
                             isCorrectOpt
-                              ? "bg-gradient-to-r from-emerald-50/80 to-white border border-emerald-200/70"
-                              : "bg-white border border-amber-100/40"
+                              ? "bg-gradient-to-r from-emerald-50/90 to-white border border-emerald-200/60"
+                              : "bg-white border border-amber-100/30"
                           }`}
                         >
-                          <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-[12px] font-bold shrink-0 shadow-sm ${
+                          <span className={`w-8 h-8 rounded-xl flex items-center justify-center text-[13px] font-bold shrink-0 shadow-sm ${
                             isCorrectOpt
                               ? "bg-emerald-500 text-white shadow-emerald-200"
                               : "bg-gray-100 text-gray-500 border border-gray-200"
                           }`}>
                             {OPTION_LETTERS[idx]}
                           </span>
-                          <span className={isCorrectOpt ? "font-semibold text-emerald-800" : "text-gray-700"}>
+                          <span className={`${isCorrectOpt ? "font-semibold text-emerald-800" : "text-gray-700"}`}>
                             {opt}
                           </span>
                           {isCorrectOpt && (
-                            <div className="ml-auto flex items-center gap-1 shrink-0">
+                            <div className="ml-auto flex items-center gap-1.5 shrink-0">
                               <div className="bg-emerald-500 rounded-full p-0.5">
-                                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                                 </svg>
                               </div>
-                              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Correct</span>
+                              <span className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Correct</span>
                             </div>
                           )}
                         </div>
@@ -477,16 +487,16 @@ export default function ErrorDetectionQuizClient({
                     })}
                   </div>
 
-                  {/* Full Explanation */}
+                  {/* Full Explanation — Gemini-style card */}
                   {q.fullExplanation && (
-                    <div className="relative bg-gradient-to-br from-amber-50/90 to-orange-50/40 border border-amber-200/70 rounded-lg p-5 md:p-6 mt-4 shadow-sm">
-                      <div className="absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b from-amber-400 to-orange-400 rounded-r-full" />
-                      <div className="pl-3">
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="inline-flex items-center gap-1.5 text-[12px] font-black text-amber-800 uppercase tracking-wider bg-amber-100/70 border border-amber-200/70 px-3 py-1 rounded-full">
+                    <div className="relative bg-gradient-to-br from-amber-50 to-white border border-amber-200/50 rounded-xl p-5 md:p-7 mt-4 shadow-sm">
+                      <div className="absolute left-0 top-3 bottom-3 w-1 bg-gradient-to-b from-amber-400 to-orange-400 rounded-r-full" />
+                      <div className="pl-4">
+                        <div className="flex items-center gap-3 mb-3 flex-wrap">
+                          <span className="inline-flex items-center gap-1.5 text-[13px] font-black text-amber-800 uppercase tracking-wider bg-amber-100/70 border border-amber-200/70 px-3 py-1 rounded-full">
                             &#128161; Detailed Explanation
                           </span>
-                          <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                          <span className="text-[12px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-0.5 rounded-full">
                             &#10003; Answer: {q.correctAnswer}
                           </span>
                         </div>
@@ -609,7 +619,7 @@ export default function ErrorDetectionQuizClient({
           <div className="border-t border-slate-200">
             <div className="max-w-[860px] mx-auto px-5 py-4">
               <details className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden">
-                <summary className="px-5 md:px-6 py-3.5 cursor-pointer hover:bg-gray-50 transition-colors text-[14px] font-bold text-[#8B0000] flex items-center gap-2 select-none">
+                <summary className="bg-gradient-to-r from-[#0f172a] via-[#8B0000] to-[#0f172a] px-5 md:px-6 py-3.5 cursor-pointer hover:opacity-90 transition-opacity text-[14px] font-bold text-white flex items-center gap-2 select-none">
                   <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                   </svg>
