@@ -43,10 +43,6 @@ export default function AdminPage() {
   const [addLoading, setAddLoading] = useState(false);
   const [addMessage, setAddMessage] = useState<string | null>(null);
 
-  // Create test account
-  const [testAcctLoading, setTestAcctLoading] = useState(false);
-  const [testAcctResult, setTestAcctResult] = useState<any>(null);
-
   // Remove product
   const [removing, setRemoving] = useState<string | null>(null);
 
@@ -161,42 +157,6 @@ export default function AdminPage() {
       setAddMessage(`❌ ${err.message}`);
     } finally {
       setAddLoading(false);
-    }
-  };
-
-  // Create test account
-  const handleCreateTestAccount = async () => {
-    setTestAcctLoading(true);
-    setTestAcctResult(null);
-
-    try {
-      const res = await fetch("/api/auth/create-test-account", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-admin-token": getToken(),
-        },
-        body: JSON.stringify({
-          email: "test@kajubadamvocabulary.in",
-          password: "TestPass@123",
-        }),
-      });
-
-      const data = await res.json();
-      setTestAcctResult(data);
-
-      if (data.success) {
-        fetchData();
-      }
-    } catch (err: any) {
-      setTestAcctResult({
-        success: false,
-        message: err.message || "Something went wrong",
-        email: "test@kajubadamvocabulary.in",
-        password: "TestPass@123",
-      });
-    } finally {
-      setTestAcctLoading(false);
     }
   };
 
@@ -390,60 +350,7 @@ export default function AdminPage() {
 
           {addMessage && <p className="text-sm mt-3">{addMessage}</p>}
 
-          <div className="mt-4 pt-4 border-t border-gray-800">
-            <p className="text-xs text-gray-500 mb-2">Quick actions:</p>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => { setNewEmail("test@kajubadamvocabulary.in"); setNewProduct("part1"); }}
-                className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded-lg transition-colors"
-              >
-                Fill test account
-              </button>
-            </div>
-          </div>
-        </div>
 
-        {/* Create Test Account */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="text-sm font-black text-white uppercase tracking-wider mb-1">🧪 Create Test Account (for Razorpay Testing)</h2>
-              <p className="text-xs text-gray-500 mb-3">
-                Creates a real Supabase Auth user with email + password and grants all purchases dynamically.
-              </p>
-            </div>
-            <button
-              onClick={handleCreateTestAccount}
-              disabled={testAcctLoading}
-              className="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-5 py-2.5 rounded-lg transition-all disabled:opacity-50 shadow-lg shadow-emerald-900/30"
-            >
-              {testAcctLoading ? "Creating..." : "Create Test Account"}
-            </button>
-          </div>
-
-          {testAcctResult && (
-            <div className={`mt-4 p-4 rounded-xl border ${testAcctResult.success ? "bg-emerald-900/20 border-emerald-800/50" : "bg-amber-900/20 border-amber-800/50"}`}>
-              <div className="bg-gray-950 rounded-lg p-3 mb-3 font-mono text-sm space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-500 w-16">Email:</span>
-                  <span className="text-emerald-300 font-bold">{testAcctResult.email}</span>
-                  <button onClick={() => { navigator.clipboard.writeText(testAcctResult.email); }} className="text-gray-500 hover:text-white text-xs ml-auto">📋 Copy</button>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-500 w-16">Password:</span>
-                  <span className="text-amber-300 font-bold">{testAcctResult.password}</span>
-                  <button onClick={() => { navigator.clipboard.writeText(testAcctResult.password); }} className="text-gray-500 hover:text-white text-xs ml-auto">📋 Copy</button>
-                </div>
-              </div>
-              {testAcctResult.results?.map((r: string, i: number) => (
-                <p key={i} className="text-xs text-gray-400 mb-0.5">{r}</p>
-              ))}
-              {testAcctResult.errors?.map((e: string, i: number) => (
-                <p key={i} className="text-xs text-red-400 mb-0.5 whitespace-pre-line">{e}</p>
-              ))}
-              <p className="text-sm font-bold mt-2">{testAcctResult.message}</p>
-            </div>
-          )}
         </div>
 
         {/* Tabs: Purchases / Transactions */}
