@@ -7,6 +7,7 @@ import DailyNewsPageClient from "./DailyNewsPageClient";
 import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
 import { FREE_SLUGS } from "@/lib/access";
 import LoginModal from "@/components/LoginModal";
+import { getProductPrice } from "@/lib/products";
 
 interface Story {
   slug: string;
@@ -369,11 +370,11 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 <div className="flex items-center gap-2">
                   <span className="text-xl">🔒</span>
                   <div>
-                    <p className="text-[12px] font-bold text-amber-800">Premium Content — ₹110</p>
+                    <p className="text-[12px] font-bold text-amber-800">Premium Content — ₹{getProductPrice('errorDetection')}</p>
                     <p className="text-[11px] text-amber-600">Ek baar purchase karo, lifetime access pao.</p>
                   </div>
                 </div>
-                <Link href="/pricing" className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-[12px] px-4 py-1.5 rounded-lg transition-all active:scale-95 shadow-md">🔓 Unlock for ₹110</Link>
+                <Link href="/pricing" className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-[12px] px-4 py-1.5 rounded-lg transition-all active:scale-95 shadow-md">🔓 Unlock for ₹{getProductPrice('errorDetection')}</Link>
               </div>
             )}
 
@@ -446,13 +447,13 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 <div className="flex items-center gap-2">
                   <span className="text-xl">🔒</span>
                   <div>
-                    <p className="text-[12px] font-bold text-amber-800">Premium Content — {activeTab === "part1" ? "₹299" : "₹399"}</p>
+                    <p className="text-[12px] font-bold text-amber-800">Premium Content — {activeTab === "part1" ? `₹${getProductPrice('part1')}` : `₹${getProductPrice('part2')}`}</p>
                     <p className="text-[11px] text-amber-600">Ek baar {activeTab === "part1" ? "Part 1" : "Part 2"} unlock karo, lifetime access pao.</p>
                   </div>
                 </div>
                 <Link href="/pricing"
                   className={`bg-gradient-to-r ${activeTab === "part1" ? "from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500" : "from-orange-500 to-red-500 hover:from-orange-400 hover:to-red-400"} text-white font-bold text-[12px] px-4 py-1.5 rounded-lg transition-all active:scale-95 shadow-md`}>
-                  🔓 Unlock {activeTab === "part1" ? "Part 1" : "Part 2"} — {activeTab === "part1" ? "₹299" : "₹399"}
+                  🔓 Unlock {activeTab === "part1" ? "Part 1" : "Part 2"} — {activeTab === "part1" ? `₹${getProductPrice('part1')}` : `₹${getProductPrice('part2')}`}
                 </Link>
               </div>
             )}

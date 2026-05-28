@@ -208,6 +208,73 @@ export function restoreAccessFromTransactions(): void {
 }
 
 // ═══════════════════════════════════════════════
+// PAYMENT VERIFICATION RECOVERY
+// ═══════════════════════════════════════════════
+
+const FAILED_VERIFICATION_KEY = "kv_failed_verifications";
+
+interface FailedVerification {
+  orderId: string;
+  paymentId: string;
+  signature: string;
+  product: string;
+  timestamp: number;
+}
+
+/** Store a failed payment verification for later recovery. */
+export function storeFailedVerification(
+  orderId: string,
+  paymentId: string,
+  signature: string,
+  product: string
+): void {
+  if (typeof window === "undefined") return;
+  try {
+    const existing = getFailedVerifications();
+    // Don't store duplicates
+    if (existing.some((v) => v.paymentId === paymentId)) return;
+    existing.push({ orderId, paymentId, signature, product, timestamp: Date.now() });
+    localStorage.setItem(FAILED_VERIFICATION_KEY, JSON.stringify(existing));
+  } catch (e) {
+    console.error("Failed to store verification data:", e);
+  }
+}
+
+/** Get all stored failed verifications. */
+export function getFailedVerifications(): FailedVerification[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(FAILED_VERIFICATION_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Remove a recovered verification. */
+export function removeFailedVerification(paymentId: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    const existing = getFailedVerifications().filter((v) => v.paymentId !== paymentId);
+    localStorage.setItem(FAILED_VERIFICATION_KEY, JSON.stringify(existing));
+  } catch (e) {
+    console.error("Failed to remove verification data:", e);
+  }
+}
+
+/** Clear all failed verifications older than the given age in ms. */
+export function clearOldFailedVerifications(maxAgeMs: number = 7 * 24 * 60 * 60 * 1000): void {
+  if (typeof window === "undefined") return;
+  try {
+    const cutoff = Date.now() - maxAgeMs;
+    const remaining = getFailedVerifications().filter((v) => v.timestamp > cutoff);
+    localStorage.setItem(FAILED_VERIFICATION_KEY, JSON.stringify(remaining));
+  } catch (e) {
+    console.error("Failed to clear old verifications:", e);
+  }
+}
+
+// ═══════════════════════════════════════════════
 // SUPABASE SESSION FUNCTIONS
 // ═══════════════════════════════════════════════
 

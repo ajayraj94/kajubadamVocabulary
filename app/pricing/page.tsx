@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
 import { useRazorpay } from "@/hooks/useRazorpay";
+import { getProductPrice } from "@/lib/products";
 
 const PART1_FEATURES = [
   "48 bilingual story sets",
@@ -265,7 +266,7 @@ export default function PricingPage() {
               <p className="text-gray-400 text-[13px]">Homonyms, Idioms, Phrasal Verbs, Prepositions & Proverbs</p>
             </div>
             <div className="flex items-baseline gap-2 mb-6">
-              <span className="text-white text-[42px] font-black leading-none">₹299</span>
+              <span className="text-white text-[42px] font-black leading-none">₹{getProductPrice('part1')}</span>
               <span className="text-gray-400 text-[14px]">one-time</span>
             </div>
             <ul className="space-y-2.5 mb-8 flex-1">
@@ -278,7 +279,7 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            {getButton('part1', hasPart1, part1Clicked, '₹299', 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 shadow-blue-900/30 hover:shadow-blue-800/40', 'Part 1', '/?tab=part1')}
+            {getButton('part1', hasPart1, part1Clicked, `₹${getProductPrice('part1')}`, 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 shadow-blue-900/30 hover:shadow-blue-800/40', 'Part 1', '/?tab=part1')}
           </div>
 
           {/* Part 2 Card */}
@@ -294,7 +295,7 @@ export default function PricingPage() {
               <p className="text-gray-400 text-[13px]">67 bilingual story sets with 6,700 high-yield exam words</p>
             </div>
             <div className="flex items-baseline gap-2 mb-6">
-              <span className="text-white text-[42px] font-black leading-none">₹399</span>
+              <span className="text-white text-[42px] font-black leading-none">₹{getProductPrice('part2')}</span>
               <span className="text-gray-400 text-[14px]">one-time</span>
             </div>
             <ul className="space-y-2.5 mb-8 flex-1">
@@ -307,7 +308,7 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            {getButton('part2', hasPart2, part2Clicked, '₹399', 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 shadow-orange-900/30 hover:shadow-orange-800/40', 'Part 2', '/?tab=part2')}
+            {getButton('part2', hasPart2, part2Clicked, `₹${getProductPrice('part2')}`, 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 shadow-orange-900/30 hover:shadow-orange-800/40', 'Part 2', '/?tab=part2')}
           </div>
 
           {/* SSC Error Detection Card */}
@@ -320,7 +321,7 @@ export default function PricingPage() {
               <p className="text-gray-400 text-[13px]">716 previous year questions with detailed bilingual explanations</p>
             </div>
             <div className="flex items-baseline gap-2 mb-6">
-              <span className="text-white text-[42px] font-black leading-none">₹110</span>
+              <span className="text-white text-[42px] font-black leading-none">₹{getProductPrice('errorDetection')}</span>
               <span className="text-gray-400 text-[14px]">one-time</span>
             </div>
             <ul className="space-y-2.5 mb-8 flex-1">
@@ -333,7 +334,7 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            {getButton('errorDetection', hasErrorDetection, errorDetectionClicked, '₹110', 'bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 shadow-red-900/30 hover:shadow-red-800/40', 'SSC Error Detection', '/?tab=error-detection')}
+            {getButton('errorDetection', hasErrorDetection, errorDetectionClicked, `₹${getProductPrice('errorDetection')}`, 'bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 shadow-red-900/30 hover:shadow-red-800/40', 'SSC Error Detection', '/?tab=error-detection')}
           </div>
         </div>
 
@@ -344,8 +345,8 @@ export default function PricingPage() {
             <p className="text-white font-black text-[18px] mb-1">🎯 Complete Bundle: Part 1 + Part 2</p>
             <p className="text-gray-300 text-[14px] mb-3">Full 11,762+ word curriculum • All 115 stories • Lifetime access</p>
             <div className="flex items-center justify-center gap-3">
-              <span className="text-gray-400 text-[14px] line-through">₹698</span>
-              <span className="text-white text-[28px] font-black">₹549</span>
+              <span className="text-gray-400 text-[14px] line-through">₹{getProductPrice('part1') + getProductPrice('part2')}</span>
+              <span className="text-white text-[28px] font-black">₹{getProductPrice('bundle')}</span>
               <span className="bg-green-500/20 border border-green-500/30 text-green-400 text-[11px] font-bold px-2.5 py-1 rounded-full">Save ₹149</span>
             </div>
             {isLoading ? (
@@ -360,7 +361,7 @@ export default function PricingPage() {
             ) : (
               <button onClick={() => handleUnlock('bundle')}
                 className="mt-4 inline-block bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 text-white font-bold text-[15px] px-10 py-3.5 rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98] shadow-xl">
-                🚀 Get Full Bundle — ₹549
+                🚀 Get Full Bundle — ₹{getProductPrice('bundle')}
               </button>
             )}
           </div>
@@ -389,7 +390,7 @@ export default function PricingPage() {
               { q: "Free mein kya milega?", a: "Dono parts ki pehli story bilkul free hai — Saga 1-01 (Part 1) aur Saga 2-01 (Part 2). Daily News Vocabulary section aur kuch bhi aane wale content hamesha free rahega." },
               { q: "Kya yeh lifetime access hai?", a: "Haan! Ek baar purchase karo, hamesha ke liye access pao. Koi monthly subscription nahi." },
               { q: "Kya main Part 1 aur Part 2 alag alag khareed sakta hoon?", a: "Bilkul! Dono plans alag hain. Pehle Part 1 kharido, baad mein Part 2 add kar sakte ho." },
-              { q: "SSC Error Detection bhi alag se khareedna hoga?", a: "Haan, Error Detection module alag hai (₹110). Isme 716 fully solved SSC PYQs hain jo exam-oriented hain." },
+              { q: "SSC Error Detection bhi alag se khareedna hoga?", a: `Haan, Error Detection module alag hai (₹${getProductPrice('errorDetection')}). Isme 716 fully solved SSC PYQs hain jo exam-oriented hain.` },
               { q: "Payment ke baad access kaise milega?", a: "Payment successful hone ke turant baad aapka account unlock ho jaayega. Page refresh karne ki zaroorat nahi." },
             ].map(({ q, a }) => (
               <div key={q} className="border-b border-white/5 pb-5 last:border-0 last:pb-0">
@@ -424,7 +425,7 @@ export default function PricingPage() {
                   {selectedProduct === 'bundle'
                     ? 'Enter your Gmail to purchase the complete bundle (Part 1 + Part 2) at a discounted price.'
                     : selectedProduct === 'errorDetection'
-                    ? 'Enter your Gmail to purchase SSC Error Detection 716 PYQ access for ₹110.'
+                    ? `Enter your Gmail to purchase SSC Error Detection 716 PYQ access for ₹${getProductPrice('errorDetection')}.`
                     : `Enter your Gmail to purchase ${selectedProduct === 'part1' ? 'Part 1' : 'Part 2'} access.`}
                 </p>
                 <form onSubmit={handleSendOtp} className="space-y-4">

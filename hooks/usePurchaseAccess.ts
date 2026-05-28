@@ -11,6 +11,11 @@ import {
   logout,
 } from "@/lib/access";
 import { useRazorpay } from "./useRazorpay";
+import {
+  getFailedVerifications,
+  removeFailedVerification,
+  clearOldFailedVerifications,
+} from "@/lib/access";
 
 
 interface PurchaseAccess {
@@ -57,7 +62,41 @@ export function usePurchaseAccess(): PurchaseAccess {
     setLoggedIn(isLoggedIn());
     setUserEmailState(getUserEmail());
     setIsLoading(false);
+
+    // ── Recover any failed payment verifications ──
+    recoverFailedVerifications();
   }, []);
+
+  /** Try to re-verify any payments that failed during initial verification. */
+  const recoverFailedVerifications = async () => {
+    const failed = getFailedVerifications();
+    if (failed.length === 0) return;
+
+    // Clear old entries (older than 7 days)
+    clearOldFailedVerifications();
+
+    for (const item of getFailedVerifications()) {
+      try {
+        const res = await fetch("/api/payment/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderId: item.orderId,
+            paymentId: item.paymentId,
+            signature: item.signature,
+            product: item.product,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          console.log(`Recovered verification for ${item.product}: ${item.paymentId}`);
+          removeFailedVerification(item.paymentId);
+        }
+      } catch (e) {
+        console.warn(`Failed to recover verification for ${item.paymentId}:`, e);
+      }
+    }
+  };
 
   // Sync Razorpay errors
   useEffect(() => {

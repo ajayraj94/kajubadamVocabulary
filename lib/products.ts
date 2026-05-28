@@ -72,8 +72,8 @@ export const PRODUCTS: Record<string, ProductConfig> = {
   },
   errorDetection: {
     id: "errorDetection",
-    label: "Error Detection — ₹2",
-    defaultPrice: 2,
+    label: "Error Detection — ₹1",
+    defaultPrice: 1,
     color: "red",
     description: "SSC Error Detection 716 PYQ",
     // Legacy storage key — uses underscore format (backward compatible)

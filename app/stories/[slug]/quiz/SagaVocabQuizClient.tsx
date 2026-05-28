@@ -5,6 +5,7 @@ import Link from "next/link";
 import ContentProtection from "@/app/_components/ContentProtection";
 import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
 import { FREE_SLUGS } from "@/lib/access";
+import { getProductPrice } from "@/lib/products";
 
 // ── Types ──
 
@@ -313,7 +314,7 @@ export default function SagaVocabQuizClient({
         const partLabel = vocabPart === "part 1" ? "Part 1" : "Part 2";
         const headerColor = vocabPart === "part 1" ? "#1c4a8a" : "#f97316";
         const accentColor = vocabPart === "part 1" ? "blue-600" : "orange-500";
-        const priceText = vocabPart === "part 1" ? "₹299" : "₹399";
+        const priceText = vocabPart === "part 1" ? `₹${getProductPrice('part1')}` : `₹${getProductPrice('part2')}`;
         const gradientFrom = vocabPart === "part 1" ? "from-blue-600" : "from-orange-500";
         const gradientTo = vocabPart === "part 1" ? "to-blue-700" : "to-orange-600";
         const shadowColor = vocabPart === "part 1" ? "shadow-blue-900/30" : "shadow-orange-900/30";
