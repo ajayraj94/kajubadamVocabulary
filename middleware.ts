@@ -34,12 +34,12 @@ const SECURITY_HEADERS: Record<string, string> = {
   // Content Security Policy
   "Content-Security-Policy": [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://www.googletagmanager.com https://www.google-analytics.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "img-src 'self' data: blob: https:",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.razorpay.com https://capi-automation.s3.us-east-2.amazonaws.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.razorpay.com",
+    "img-src 'self' data: blob: https: https://*.razorpay.com https://connect.facebook.net",
     "font-src 'self' https://fonts.gstatic.com",
-    "connect-src 'self' https://api.razorpay.com https://*.supabase.co https://www.google-analytics.com",
-    "frame-src 'self' https://checkout.razorpay.com https://*.supabase.co",
+    "connect-src 'self' https://*.razorpay.com https://*.supabase.co https://www.google-analytics.com",
+    "frame-src 'self' https://*.razorpay.com https://*.supabase.co",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

@@ -325,9 +325,7 @@ export async function validateEmail(
       error: "Temporary/disposable email addresses are not allowed. Please use a permanent email.",
       domain,
     };
-  }
-
-  // 7. DNS MX record lookup
+  }    // 7. DNS MX record lookup
   if (checkMX) {
     try {
       const mxRecords = await dns.resolveMx(domain);
@@ -339,8 +337,11 @@ export async function validateEmail(
         };
       }
     } catch (dnsError: any) {
-      // NXDOMAIN or other DNS errors
-      if (dnsError.code === "ENOTFOUND" || dnsError.code === "ENODATA") {
+      // All DNS resolution errors — domain doesn't exist or can't receive email
+      const knownErrorCodes = ["ENOTFOUND", "ENODATA", "EAI_AGAIN", "ESERVFAIL", "EREFUSED", "ENXIO", "EHOSTUNREACH"];
+      const isDnsError = knownErrorCodes.includes(dnsError?.code);
+
+      if (isDnsError) {
         return {
           valid: false,
           error: "This email domain does not exist. Please check your email address.",
@@ -348,15 +349,13 @@ export async function validateEmail(
         };
       }
 
-      // DNS lookup failed for another reason — log and proceed
-      // In development, we're lenient about DNS failures
-      if (process.env.NODE_ENV === "production") {
-        return {
-          valid: false,
-          error: "Unable to verify email domain. Please try again later.",
-          domain,
-        };
-      }
+      // Unexpected error (e.g., network issue) — block with clear message
+      console.warn("Email DNS validation error:", dnsError?.code || dnsError?.message || dnsError);
+      return {
+        valid: false,
+        error: "Unable to verify your email domain. Please use a different email address.",
+        domain,
+      };
     }
   }
 
