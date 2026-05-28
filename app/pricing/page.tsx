@@ -454,7 +454,7 @@ export default function PricingPage() {
                 <form onSubmit={handleVerifyOtp} className="space-y-4">
                   <input type="text" value={otpCode} onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     placeholder="Enter 6-digit OTP" maxLength={6}
-                    className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 text-center text-2xl tracking-[0.5em] focus:outline-none focus:border-blue-500 transition-colors" required autoFocus />
+                    className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-center text-base tracking-[0.4em] focus:outline-none focus:border-blue-500 transition-colors" required autoFocus />
                   {otpError && <p className="text-red-400 text-sm">{otpError}</p>}
                   <button type="submit" disabled={otpLoading || otpCode.length < 4}
                     className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all duration-200 disabled:opacity-50">
@@ -468,7 +468,7 @@ export default function PricingPage() {
               </>
             )}
 
-            <p className="text-gray-400 text-xs text-center mt-4">🔒 Secure payment via Razorpay</p>
+            <p className="text-gray-400 text-xs text-center mt-4">🔒 Secure Payment</p>
           </div>
         </div>
       )}
