@@ -15,16 +15,21 @@ import { limiters } from "@/lib/rate-limiter";
 import { sanitizeEmail } from "@/lib/input-validator";
 
 // ── Per-email OTP cooldown (prevents hitting Supabase's rate limit) ──
-const OTP_COOLDOWN_MS = 60_000; // 60 seconds
-const emailOtpStore = new Map<string, number>();
+const EMAIL_COOLDOWN_MS = 60_000; // 60 seconds per email
+const IP_COOLDOWN_MS = 30_000;     // 30 seconds per IP (any email)
+const emailOtpStore = new Map<string, number>();  // email → last sent timestamp
+const ipOtpStore = new Map<string, number>();      // IP → last sent timestamp
 let lastCleanup = 0;
 
 /** Lazy cleanup: delete stale entries older than 2× cooldown */
-function cleanupStaleEmailEntries() {
+function cleanupStaleOtpEntries() {
   const now = Date.now();
-  if (now - lastCleanup < OTP_COOLDOWN_MS * 2) return;
-  for (const [email, ts] of emailOtpStore) {
-    if (now - ts > OTP_COOLDOWN_MS * 2) emailOtpStore.delete(email);
+  if (now - lastCleanup < EMAIL_COOLDOWN_MS * 2) return;
+  for (const [key, ts] of emailOtpStore) {
+    if (now - ts > EMAIL_COOLDOWN_MS * 2) emailOtpStore.delete(key);
+  }
+  for (const [key, ts] of ipOtpStore) {
+    if (now - ts > IP_COOLDOWN_MS * 2) ipOtpStore.delete(key);
   }
   lastCleanup = now;
 }
@@ -55,15 +60,31 @@ export async function POST(request: NextRequest) {
 
     const email = sanitizeEmail(rawEmail);
 
-    // ── Per-email cooldown check (prevents "email rate limit exceeded") ──
-    cleanupStaleEmailEntries();
-    const lastSent = emailOtpStore.get(email);
-    if (lastSent) {
-      const elapsed = Date.now() - lastSent;
-      if (elapsed < OTP_COOLDOWN_MS) {
-        const waitSeconds = Math.ceil((OTP_COOLDOWN_MS - elapsed) / 1000);
+    // ── Per-email + per-IP cooldown check (prevents Supabase rate limit) ──
+    cleanupStaleOtpEntries();
+    const now = Date.now();
+
+    // Check per-email cooldown
+    const lastEmailSent = emailOtpStore.get(email);
+    if (lastEmailSent) {
+      const elapsed = now - lastEmailSent;
+      if (elapsed < EMAIL_COOLDOWN_MS) {
+        const waitSeconds = Math.ceil((EMAIL_COOLDOWN_MS - elapsed) / 1000);
         return NextResponse.json(
-          { success: false, error: `OTP already sent. Please wait ${waitSeconds} seconds before requesting again.` },
+          { success: false, error: `OTP already sent to this email. Please wait ${waitSeconds} seconds before requesting again.` },
+          { status: 429 }
+        );
+      }
+    }
+
+    // Check per-IP cooldown (different emails from same IP)
+    const lastIpSent = ipOtpStore.get(ip);
+    if (lastIpSent) {
+      const elapsed = now - lastIpSent;
+      if (elapsed < IP_COOLDOWN_MS) {
+        const waitSeconds = Math.ceil((IP_COOLDOWN_MS - elapsed) / 1000);
+        return NextResponse.json(
+          { success: false, error: `Please wait ${waitSeconds} seconds before requesting OTP again.` },
           { status: 429 }
         );
       }
@@ -93,8 +114,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // ── Record successful OTP send for cooldown ──
-    emailOtpStore.set(email, Date.now());
+    // ── Record successful OTP send for cooldowns ──
+    const sentAt = Date.now();
+    emailOtpStore.set(email, sentAt);
+    ipOtpStore.set(ip, sentAt);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
