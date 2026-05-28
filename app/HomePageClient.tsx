@@ -107,8 +107,9 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
   return (
     <div className="min-h-screen bg-gray-50/40 font-sans relative">
       {/* ── HEADER ── */}
-      <header className="bg-white pt-4 pb-2 border-b border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-        <div className="max-w-[1600px] mx-auto px-4 lg:px-8 flex items-center justify-between gap-4">
+      <header className="bg-white pt-3 pb-0 border-b border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+        {/* Top row: Logo + Total + Auth */}
+        <div className="max-w-[1600px] mx-auto px-4 lg:px-8 flex items-center justify-between gap-4 mb-1">
           <div className="flex items-center gap-6 shrink-0">
             <h1 className="text-xl md:text-2xl font-black text-[#1c4a8a] tracking-tight leading-tight">
               kajubadam<br />Vocabulary
@@ -117,38 +118,72 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
               Total: {totalVocabCount.toLocaleString()} Vocab
             </span>
           </div>
-          <div className="flex lg:hidden items-center gap-1.5 shrink-0">
-            <span className="text-[10px] font-bold text-[#1c4a8a] bg-[#1c4a8a]/5 px-2 py-0.5 rounded border border-[#1c4a8a]/10">P1: 5,062</span>
-            <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded border border-orange-200">P2: 6,700</span>
+          <div className="flex items-center gap-2 shrink-0">
+            {isLoggedIn ? (
+              <div className="flex items-center gap-2">
+                <span className="hidden sm:inline text-[11px] text-gray-500 font-medium">{userEmail}</span>
+                <button onClick={logoutUser} className="text-[11px] font-bold text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 px-3 py-1 rounded-full transition-all">Logout</button>
+              </div>
+            ) : (
+              <button onClick={() => setShowLoginModal(true)} className="text-[11px] font-bold text-[#1c4a8a] bg-[#1c4a8a]/5 hover:bg-[#1c4a8a]/10 border border-[#1c4a8a]/20 px-3 py-1 rounded-full transition-all whitespace-nowrap">🔑 Restore Access</button>
+            )}
           </div>
-          <div className="hidden lg:flex flex-1 mx-8 justify-center">
-            <div className="flex items-stretch gap-0">
-              <div className="flex flex-col items-center px-6 py-1">
-                <span className="text-[11px] font-black text-[#1c4a8a] tracking-wider uppercase bg-[#1c4a8a]/5 px-3 py-1 rounded-full border border-[#1c4a8a]/15 mb-2">PART 1</span>
-                <div className="flex flex-wrap gap-1.5 justify-center max-w-[300px]">
+        </div>
+
+        {/* ═══ STATS: Part 1 & Part 2 — premium single-frame ═══ */}
+        <div className="pb-2 pt-0.5">
+          <div className="max-w-[1600px] mx-auto px-4 lg:px-8">
+            <div className="relative bg-gradient-to-br from-white via-blue-50/20 to-orange-50/20 rounded-2xl p-[1px] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)] group">
+              {/* Gradient border glow */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-200/40 via-indigo-200/20 to-orange-200/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-2.5 md:p-3">
+
+                {/* ── PART 1 row ── */}
+                <div className="flex items-center gap-x-1.5 gap-y-0.5 flex-wrap">
+                  <span className="relative inline-flex items-center gap-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black px-2 py-0.5 rounded-lg text-[9px] md:text-[10px] shrink-0 shadow-[0_2px_8px_-2px_rgba(37,99,235,0.4)]">
+                    <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    PART 1
+                  </span>
                   {['627 Homonyms', '2,300 Idioms', '1,028 Phrasal', '588 Prep', '219 Proverbs', '300 Stories'].map((t, i) => (
-                    <span key={t} className={`text-[11px] font-semibold px-2.5 py-1 rounded-md border ${i === 0 ? 'bg-blue-50 text-blue-600 border-blue-200' : i === 1 ? 'bg-green-50 text-green-600 border-green-200' : i === 2 ? 'bg-purple-50 text-purple-600 border-purple-200' : i === 3 ? 'bg-rose-50 text-rose-600 border-rose-200' : i === 4 ? 'bg-amber-50 text-amber-600 border-amber-200' : 'bg-teal-50 text-teal-600 border-teal-200'}`}>{t}</span>
+                    <span key={t} className="inline-flex items-center gap-x-1 px-1 py-0.5 rounded-md transition-all duration-200 hover:bg-white/80 hover:shadow-sm">
+                      {i > 0 && <span className="text-gray-200 text-[9px]">•</span>}
+                      <span className={`font-bold text-[12px] md:text-[13px] ${
+                        i === 0 ? 'text-blue-600' : i === 1 ? 'text-emerald-600' : i === 2 ? 'text-violet-600' : i === 3 ? 'text-rose-600' : i === 4 ? 'text-amber-600' : 'text-cyan-600'
+                      }`}>{t}</span>
+                    </span>
                   ))}
+                  <span className="text-gray-400 text-[9px] font-medium ml-auto hidden sm:inline-flex items-center gap-1 bg-blue-50/50 px-1.5 py-0.5 rounded-full border border-blue-100/50">
+                    <span className="w-1 h-1 rounded-full bg-blue-400"></span>
+                    5,062 words
+                  </span>
                 </div>
+
+                {/* Gradient divider */}
+                <div className="my-1.5 flex items-center gap-2">
+                  <div className="flex-1 h-px bg-gradient-to-r from-blue-200/60 via-indigo-200/30 to-transparent"></div>
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-amber-200/30 to-orange-200/60"></div>
+                </div>
+
+                {/* ── PART 2 row ── */}
+                <div className="flex items-center gap-x-1.5 gap-y-0.5 flex-wrap">
+                  <span className="relative inline-flex items-center gap-1 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black px-2 py-0.5 rounded-lg text-[9px] md:text-[10px] shrink-0 shadow-[0_2px_8px_-2px_rgba(249,115,22,0.4)]">
+                    <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    PART 2
+                  </span>
+                  <span className="inline-flex items-center gap-x-1 px-1 py-0.5 rounded-md transition-all duration-200 hover:bg-white/80 hover:shadow-sm">
+                    <span className="font-bold text-orange-600 text-[12px] md:text-[13px]">67 Batches</span>
+                  </span>
+                  <span className="text-gray-200 text-[9px]">•</span>
+                  <span className="inline-flex items-center gap-x-1 px-1 py-0.5 rounded-md transition-all duration-200 hover:bg-white/80 hover:shadow-sm">
+                    <span className="font-bold text-orange-600 text-[12px] md:text-[13px]">6,700 Vocab</span>
+                  </span>
+                  <span className="text-gray-400 text-[9px] font-medium ml-auto hidden sm:inline-flex items-center gap-1 bg-orange-50/50 px-1.5 py-0.5 rounded-full border border-orange-100/50">
+                    <span className="w-1 h-1 rounded-full bg-orange-400"></span>
+                    6,700 words
+                  </span>
+                </div>
+
               </div>
-              <div className="w-px bg-gray-200 self-stretch mx-1"></div>
-              <div className="flex flex-col items-center px-6 py-1">
-                <span className="text-[11px] font-black text-orange-500 tracking-wider uppercase bg-orange-50 px-3 py-1 rounded-full border border-orange-200 mb-2">PART 2</span>
-                <div className="flex flex-wrap gap-1.5 justify-center">
-                  <span className="bg-orange-50 text-orange-600 text-[11px] font-semibold px-3 py-1 rounded-md border border-orange-200">67 Batches</span>
-                  <span className="bg-orange-50 text-orange-600 text-[11px] font-semibold px-3 py-1 rounded-md border border-orange-200">= 6,700 Vocab</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {isLoggedIn ? (
-                <div className="flex items-center gap-2">
-                  <span className="hidden sm:inline text-[11px] text-gray-500 font-medium">{userEmail}</span>
-                  <button onClick={logoutUser} className="text-[11px] font-bold text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 px-3 py-1 rounded-full transition-all">Logout</button>
-                </div>
-              ) : (
-                <button onClick={() => setShowLoginModal(true)} className="text-[11px] font-bold text-[#1c4a8a] bg-[#1c4a8a]/5 hover:bg-[#1c4a8a]/10 border border-[#1c4a8a]/20 px-3 py-1 rounded-full transition-all">🔑 Restore Access</button>
-              )}
             </div>
           </div>
         </div>
@@ -400,17 +435,18 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                     </div>
                   </div>
                 ) : (
-                  <div key={block.page} className="bg-white border border-gray-100 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] relative overflow-hidden blur-[2px] pointer-events-none select-none">
+                  <div key={block.page} className="bg-white border border-rose-200/40 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] bg-gradient-to-br from-white to-rose-50/50 relative overflow-hidden pointer-events-none select-none">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="bg-gray-300 text-white text-[9px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
+                      <span className="bg-[#8B0000]/20 text-[#8B0000] text-[9px] font-bold px-2 py-0.5 rounded border border-[#8B0000]/10">Page {block.page}</span>
+                      <span className="ml-auto inline-flex items-center gap-1 bg-gradient-to-r from-rose-100 to-rose-50 text-rose-700 text-[9px] font-bold px-2 py-1 rounded-lg border border-rose-200/60 shadow-sm">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Premium
+                      </span>
                     </div>
-                    <h3 className="text-[13px] font-bold text-gray-400">Q.{block.startQ} – Q.{block.endQ}</h3>
-                    <p className="text-[10px] text-gray-300 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                      </svg>
-                    </div>
+                    <h3 className="text-[13px] font-bold text-gray-700">Q.{block.startQ} – Q.{block.endQ}</h3>
+                    <p className="text-[10px] text-gray-500 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
                   </div>
                 );
               })}
@@ -478,7 +514,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                   return (
                     <div key={story.slug}
                       className={`bg-white border rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] flex flex-col justify-between transition-all duration-300 min-h-[110px] relative overflow-hidden ${
-                        isLocked ? "border-gray-100 select-none" : isMastered ? "border-green-200 bg-green-50/10 hover:shadow-lg" : "border-gray-100 hover:shadow-lg"
+                        isLocked ? "border-amber-200/40 bg-gradient-to-br from-white to-amber-50/50 select-none pointer-events-none" : isMastered ? "border-green-200 bg-green-50/10 hover:shadow-lg" : "border-gray-100 hover:shadow-lg"
                       }`}>
                       {!isLocked && !accessLoading && (
                         <button onClick={() => toggleMastery(story.slug)}
@@ -489,7 +525,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                           </svg>
                         </button>
                       )}
-                      <div className={isLocked ? "blur-[2px] pointer-events-none" : ""}>
+                      <div>
                         <div>
                           <h4 className="text-[9px] font-black text-[#1c4a8a] uppercase tracking-wider mb-0.5 pr-6">{story.saga_id}</h4>
                           <h3 className="text-[13px] font-bold text-gray-800 leading-snug">{story.title}</h3>
@@ -499,10 +535,13 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                         </div>
                       </div>
                       {isLocked && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                          </svg>
+                        <div className="mt-2 flex items-center gap-1.5">
+                          <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-100 to-amber-50 text-amber-700 text-[9px] font-bold px-2 py-1 rounded-lg border border-amber-200/60 shadow-sm">
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            Premium
+                          </span>
                         </div>
                       )}
                       {!isLocked && !accessLoading && (

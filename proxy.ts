@@ -1,9 +1,11 @@
 /**
- * Security & Caching Middleware
- * ──────────────────────────────
+ * Security & Caching Proxy
+ * ─────────────────────────
  * 1. Prevents browser caching of HTML pages (Safari cache fix)
  * 2. Adds security headers: CSP, HSTS, X-Frame-Options, etc.
  * 3. Blocks access to old /admin route (moved to /iswebkaram)
+ *
+ * Replaces the deprecated middleware.ts convention.
  */
 
 import { NextResponse } from "next/server";
@@ -46,7 +48,7 @@ const SECURITY_HEADERS: Record<string, string> = {
   ].join("; "),
 };
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ── Block old /admin route — moved to /iswebkaram ──
