@@ -218,6 +218,7 @@ interface FailedVerification {
   paymentId: string;
   signature: string;
   product: string;
+  email: string;
   timestamp: number;
 }
 
@@ -226,14 +227,15 @@ export function storeFailedVerification(
   orderId: string,
   paymentId: string,
   signature: string,
-  product: string
+  product: string,
+  email: string = ''
 ): void {
   if (typeof window === "undefined") return;
   try {
     const existing = getFailedVerifications();
     // Don't store duplicates
     if (existing.some((v) => v.paymentId === paymentId)) return;
-    existing.push({ orderId, paymentId, signature, product, timestamp: Date.now() });
+    existing.push({ orderId, paymentId, signature, product, email, timestamp: Date.now() });
     localStorage.setItem(FAILED_VERIFICATION_KEY, JSON.stringify(existing));
   } catch (e) {
     console.error("Failed to store verification data:", e);

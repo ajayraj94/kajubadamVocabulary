@@ -77,23 +77,23 @@ export function usePurchaseAccess(): PurchaseAccess {
 
     for (const item of getFailedVerifications()) {
       try {
-        const res = await fetch("/api/payment/verify", {
+        // Use the dedicated recovery endpoint which uses admin client to save to DB
+        const res = await fetch("/api/payment/recover", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            orderId: item.orderId,
             paymentId: item.paymentId,
-            signature: item.signature,
             product: item.product,
+            email: item.email,
           }),
         });
         const data = await res.json();
         if (data.success) {
-          console.log(`Recovered verification for ${item.product}: ${item.paymentId}`);
+          console.log(`Recovered DB save for ${item.product}: ${item.paymentId}`);
           removeFailedVerification(item.paymentId);
         }
       } catch (e) {
-        console.warn(`Failed to recover verification for ${item.paymentId}:`, e);
+        console.warn(`Failed to recover purchase for ${item.paymentId}:`, e);
       }
     }
   };

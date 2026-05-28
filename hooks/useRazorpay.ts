@@ -153,21 +153,19 @@ export function useRazorpay() {
               }
             }
 
-            if (verification?.success) {
-              // Verification successful — grant access
-              onSuccess(product, razorpay_payment_id);
-            } else {
-              // Payment was captured by Razorpay but verify API failed.
-              // Still grant access locally so user isn't blocked.
-              // Store payment info for recovery via webhook.
-              storeFailedVerification(
-                razorpay_order_id,
-                razorpay_payment_id,
-                razorpay_signature,
-                product
-              );
-              onSuccess(product, razorpay_payment_id);
-            }
+            // Always store payment info for DB recovery.
+            // Even if verify returned success, the DB save inside it might
+            // have failed silently. Recovery will check and fix this.
+            storeFailedVerification(
+              razorpay_order_id,
+              razorpay_payment_id,
+              razorpay_signature,
+              product,
+              email
+            );
+
+            // Grant access locally so user isn't blocked.
+            onSuccess(product, razorpay_payment_id);
           },
           prefill: {
             email: email,
