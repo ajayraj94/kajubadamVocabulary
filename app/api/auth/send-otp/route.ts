@@ -100,6 +100,14 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
+      // ── Log the full Supabase Auth error for debugging ──
+      console.error("[send-otp] Supabase Auth signInWithOtp error:", {
+        message: error.message,
+        status: error.status,
+        code: error.code || error.name,
+        email,
+      });
+
       // If Supabase rate limit error, give a friendlier message
       const msg = error.message.toLowerCase();
       if (msg.includes("rate limit") || msg.includes("too many") || msg.includes("try again")) {
