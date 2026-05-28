@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
 import { useRazorpay } from "@/hooks/useRazorpay";
 
@@ -59,49 +59,133 @@ export default function PricingPage() {
   const [email, setEmail] = useState('');
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<'part1' | 'part2' | 'bundle' | 'errorDetection' | null>(null);
+  // OTP verification state
+  const [otpStep, setOtpStep] = useState<'email' | 'otp'>('email');
+  const [otpCode, setOtpCode] = useState('');
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [otpError, setOtpError] = useState<string | null>(null);
+
+  // If payment fails after OTP was verified, reset to email step so user can retry
+  useEffect(() => {
+    if (paymentError && otpStep === 'otp') {
+      setOtpStep('email');
+      setOtpCode('');
+    }
+  }, [paymentError]);
 
   const handleUnlock = (product: 'part1' | 'part2' | 'bundle' | 'errorDetection') => {
     setSelectedProduct(product);
     setShowEmailModal(true);
+    setOtpStep('email');
+    setOtpCode('');
+    setOtpError(null);
+    setEmail('');
   };
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
+  // Step 1: Send OTP to email
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) return;
 
-    try {
-      const onSuccess = (product: string) => {
-        if (product === 'part1') {
-          setPart1Success(true);
-          setPart1Clicked(true);
-        } else if (product === 'part2') {
-          setPart2Success(true);
-          setPart2Clicked(true);
-        } else if (product === 'errorDetection') {
-          setErrorDetectionSuccess(true);
-          setErrorDetectionClicked(true);
-        }
-      };
+    setOtpLoading(true);
+    setOtpError(null);
 
-      if (selectedProduct === 'part1') {
-        await unlockPart1(email, onSuccess);
-      } else if (selectedProduct === 'part2') {
-        await unlockPart2(email, onSuccess);
-      } else if (selectedProduct === 'bundle') {
-        await unlockBundle(email, onSuccess);
-      } else if (selectedProduct === 'errorDetection') {
-        await unlockErrorDetection(email, onSuccess);
+    try {
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        setOtpError(data.error || 'Failed to send OTP');
+        return;
       }
 
-      // Only close modal if there's no payment error (success or not needed)
+      setOtpStep('otp');
+    } catch (err: any) {
+      setOtpError(err.message || 'Something went wrong');
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  // Step 2: Verify OTP, then proceed to payment
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!otpCode || otpCode.length < 4) return;
+
+    setOtpLoading(true);
+    setOtpError(null);
+
+    try {
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, token: otpCode }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        setOtpError(data.error || 'Invalid OTP');
+        return;
+      }
+
+      // OTP verified — proceed to payment
+      proceedToPayment(email);
+    } catch (err: any) {
+      setOtpError(err.message || 'Something went wrong');
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  // Proceed to Razorpay payment with verified email
+  const proceedToPayment = async (verifiedEmail: string) => {
+    const onSuccess = (product: string) => {
+      if (product === 'part1') {
+        setPart1Success(true);
+        setPart1Clicked(true);
+      } else if (product === 'part2') {
+        setPart2Success(true);
+        setPart2Clicked(true);
+      } else if (product === 'errorDetection') {
+        setErrorDetectionSuccess(true);
+        setErrorDetectionClicked(true);
+      }
+    };
+
+    try {
+      if (selectedProduct === 'part1') {
+        await unlockPart1(verifiedEmail, onSuccess);
+      } else if (selectedProduct === 'part2') {
+        await unlockPart2(verifiedEmail, onSuccess);
+      } else if (selectedProduct === 'bundle') {
+        await unlockBundle(verifiedEmail, onSuccess);
+      } else if (selectedProduct === 'errorDetection') {
+        await unlockErrorDetection(verifiedEmail, onSuccess);
+      }
+
+      // Only close modal if there's no payment error
       if (!paymentError) {
-        setShowEmailModal(false);
-        setEmail('');
-        setSelectedProduct(null);
+        closeModal();
       }
     } catch (err) {
       // Error is handled by the hook
     }
+  };
+
+  const closeModal = () => {
+    setShowEmailModal(false);
+    setEmail('');
+    setOtpCode('');
+    setOtpStep('email');
+    setOtpError(null);
+    setSelectedProduct(null);
+    clearPaymentError();
   };
 
   const getButton = (product: 'part1' | 'part2' | 'errorDetection', hasAccess: boolean, clicked: boolean, priceText: string, gradientClass: string, label: string, href?: string) => {
@@ -317,37 +401,74 @@ export default function PricingPage() {
         </div>
       </div>
 
-      {/* Email Modal for Payment */}
+      {/* Email Modal with OTP Verification */}
       {showEmailModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-gray-900/95 backdrop-blur-lg border border-gray-700/30 rounded-2xl p-6 max-w-md w-full shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-white font-black text-lg">Enter Your Email</h3>
-              <button onClick={() => { setShowEmailModal(false); setEmail(''); setSelectedProduct(null); clearPaymentError(); }}
+              <h3 className="text-white font-black text-lg">
+                {otpStep === 'email' ? 'Enter Your Gmail' : 'Verify OTP'}
+              </h3>
+              <button onClick={closeModal}
                 className="text-gray-400 hover:text-white transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            <p className="text-gray-400 text-sm mb-4">
-              {selectedProduct === 'bundle'
-                ? 'Enter your email to purchase the complete bundle (Part 1 + Part 2) at a discounted price.'
-                : selectedProduct === 'errorDetection'
-                ? 'Enter your email to purchase SSC Error Detection 716 PYQ access for ₹110.'
-                : `Enter your email to purchase ${selectedProduct === 'part1' ? 'Part 1' : 'Part 2'} access.`}
-            </p>
-            <form onSubmit={handleEmailSubmit} className="space-y-4">
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors" required />
-              {paymentError && <p className="text-red-400 text-sm">{paymentError}</p>}
-              <button type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold py-3 rounded-xl transition-all duration-200">
-                Proceed to Payment
-              </button>
-            </form>
-            <p className="text-gray-400 text-xs text-center mt-4">Secure payment via Razorpay</p>
+
+            {/* Step 1: Email Input */}
+            {otpStep === 'email' && (
+              <>
+                <p className="text-gray-400 text-sm mb-4">
+                  {selectedProduct === 'bundle'
+                    ? 'Enter your Gmail to purchase the complete bundle (Part 1 + Part 2) at a discounted price.'
+                    : selectedProduct === 'errorDetection'
+                    ? 'Enter your Gmail to purchase SSC Error Detection 716 PYQ access for ₹110.'
+                    : `Enter your Gmail to purchase ${selectedProduct === 'part1' ? 'Part 1' : 'Part 2'} access.`}
+                </p>
+                <form onSubmit={handleSendOtp} className="space-y-4">
+                  <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); setOtpError(null); }}
+                    placeholder="your.email@gmail.com"
+                    className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors" required autoFocus />
+                  {otpError && <p className="text-red-400 text-sm">{otpError}</p>}
+                  {paymentError && otpStep === 'email' && (
+                    <p className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+                      {paymentError}
+                    </p>
+                  )}
+                  <button type="submit" disabled={otpLoading || !email}
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold py-3 rounded-xl transition-all duration-200 disabled:opacity-50">
+                    {otpLoading ? 'Sending OTP...' : 'Send OTP to this Email'}
+                  </button>
+                </form>
+              </>
+            )}
+
+            {/* Step 2: OTP Verification */}
+            {otpStep === 'otp' && (
+              <>
+                <p className="text-gray-400 text-sm mb-4">
+                  Enter the 6-digit code sent to <span className="text-white font-medium">{email}</span>
+                </p>
+                <form onSubmit={handleVerifyOtp} className="space-y-4">
+                  <input type="text" value={otpCode} onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    placeholder="Enter 6-digit OTP" maxLength={6}
+                    className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 text-center text-2xl tracking-[0.5em] focus:outline-none focus:border-blue-500 transition-colors" required autoFocus />
+                  {otpError && <p className="text-red-400 text-sm">{otpError}</p>}
+                  <button type="submit" disabled={otpLoading || otpCode.length < 4}
+                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all duration-200 disabled:opacity-50">
+                    {otpLoading ? 'Verifying...' : '✓ Verify & Proceed to Payment'}
+                  </button>
+                  <button type="button" onClick={() => { setOtpStep('email'); setOtpCode(''); setOtpError(null); }}
+                    className="w-full text-gray-400 hover:text-white text-sm transition-colors">
+                    ← Change email
+                  </button>
+                </form>
+              </>
+            )}
+
+            <p className="text-gray-400 text-xs text-center mt-4">🔒 Secure payment via Razorpay</p>
           </div>
         </div>
       )}

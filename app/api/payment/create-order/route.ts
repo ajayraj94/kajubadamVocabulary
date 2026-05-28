@@ -47,6 +47,15 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // ── Only Gmail addresses allowed for purchase ──
+        const emailDomain = emailResult.domain;
+        if (!emailDomain || !["gmail.com", "googlemail.com"].includes(emailDomain)) {
+            return NextResponse.json(
+                { success: false, error: "Only @gmail.com addresses are accepted for purchase. Please use your Gmail account." },
+                { status: 400 }
+            );
+        }
+
         const sanitizedEmail = sanitizeEmail(email);
 
         // Create Razorpay order
