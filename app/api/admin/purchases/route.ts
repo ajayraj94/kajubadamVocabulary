@@ -4,13 +4,21 @@
  * POST /api/admin/purchases          — Add a purchase for a user
  * DELETE /api/admin/purchases        — Remove a product from a user
  *
+ * Security:
+ *   - Admin token verification
+ *   - Email validation (format + MX + disposable check) for POST
+ *   - Rate limited to 20 requests/minute per IP
+ *   - Input sanitization
+ *
  * Uses dynamic product validation from lib/products.ts.
- * New products work automatically — no code changes needed!
  */
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminSupabase } from "@/lib/supabase-admin";
 import { isAuthorized, unauthorized } from "@/lib/admin-auth";
 import { PRODUCT_IDS } from "@/lib/products";
+import { validateEmail } from "@/lib/email-validator";
+import { limiters } from "@/lib/rate-limiter";
+import { sanitizeEmail, sanitizeString } from "@/lib/input-validator";
 
 interface PurchaseRow {
   id: string;
@@ -23,6 +31,16 @@ interface PurchaseRow {
 /** GET — list all purchases */
 export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) return unauthorized();
+
+  // ── Rate limiting ──
+  const ip = limiters.admin.getIdentifier(request);
+  const rateCheck = limiters.admin.check(ip);
+  if (rateCheck.blocked) {
+    return NextResponse.json(
+      { success: false, error: rateCheck.error },
+      { status: 429 }
+    );
+  }
 
   const supabase = createAdminSupabase();
   if (!supabase) {
@@ -53,6 +71,16 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   if (!isAuthorized(request)) return unauthorized();
 
+  // ── Rate limiting ──
+  const ip = limiters.admin.getIdentifier(request);
+  const rateCheck = limiters.admin.check(ip);
+  if (rateCheck.blocked) {
+    return NextResponse.json(
+      { success: false, error: rateCheck.error },
+      { status: 429 }
+    );
+  }
+
   const supabase = createAdminSupabase();
   if (!supabase) {
     return NextResponse.json(
@@ -64,25 +92,37 @@ export async function POST(request: NextRequest) {
   try {
     const { email, product } = await request.json();
 
-    if (!email || !email.includes("@")) {
+    // ── Email validation ──
+    if (!email) {
       return NextResponse.json(
-        { success: false, error: "Valid email is required" },
+        { success: false, error: "Email is required" },
         { status: 400 }
       );
     }
 
-    // ⭐ Dynamic product validation — works with any product in lib/products.ts!
-    if (!PRODUCT_IDS.includes(product)) {
+    const emailResult = await validateEmail(email, { checkMX: false }); // Skip MX for admin operations
+    if (!emailResult.valid) {
+      return NextResponse.json(
+        { success: false, error: emailResult.error },
+        { status: 400 }
+      );
+    }
+
+    // ⭐ Dynamic product validation
+    if (!product || !PRODUCT_IDS.includes(product)) {
       return NextResponse.json(
         { success: false, error: `Invalid product. Valid products: ${PRODUCT_IDS.join(", ")}` },
         { status: 400 }
       );
     }
 
+    const sanitizedEmail = sanitizeEmail(email);
+    const sanitizedProduct = sanitizeString(product, 50);
+
     const { error } = await (supabase.rpc as any)("add_purchase", {
-      p_email: email.toLowerCase().trim(),
-      p_product: product,
-      p_transaction_id: `admin_${product}_${Date.now()}`,
+      p_email: sanitizedEmail,
+      p_product: sanitizedProduct,
+      p_transaction_id: `admin_${sanitizedProduct}_${Date.now()}`,
       p_payment_id: "admin_granted",
       p_amount: 0,
     });
@@ -91,7 +131,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: `${product} access granted to ${email.toLowerCase().trim()}`,
+      message: `${sanitizedProduct} access granted to ${sanitizedEmail}`,
     });
   } catch (error: any) {
     console.error("Error adding purchase:", error);
@@ -105,6 +145,16 @@ export async function POST(request: NextRequest) {
 /** DELETE — remove a product from a user */
 export async function DELETE(request: NextRequest) {
   if (!isAuthorized(request)) return unauthorized();
+
+  // ── Rate limiting ──
+  const ip = limiters.admin.getIdentifier(request);
+  const rateCheck = limiters.admin.check(ip);
+  if (rateCheck.blocked) {
+    return NextResponse.json(
+      { success: false, error: rateCheck.error },
+      { status: 429 }
+    );
+  }
 
   const supabase = createAdminSupabase();
   if (!supabase) {
@@ -124,9 +174,12 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    const sanitizedEmail = sanitizeEmail(email);
+    const sanitizedProduct = sanitizeString(product, 50);
+
     const { data: user, error: fetchError } = await (supabase.from("purchases") as any)
       .select("products")
-      .eq("email", email.toLowerCase().trim())
+      .eq("email", sanitizedEmail)
       .maybeSingle();
 
     if (fetchError) throw fetchError;
@@ -138,7 +191,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     const updatedProducts = ((user as PurchaseRow).products || []).filter(
-      (p: string) => p !== product
+      (p: string) => p !== sanitizedProduct
     );
 
     const { error: updateError } = await (supabase.from("purchases") as any)
@@ -146,13 +199,13 @@ export async function DELETE(request: NextRequest) {
         products: updatedProducts,
         updated_at: new Date().toISOString(),
       })
-      .eq("email", email.toLowerCase().trim());
+      .eq("email", sanitizedEmail);
 
     if (updateError) throw updateError;
 
     return NextResponse.json({
       success: true,
-      message: `${product} removed from ${email.toLowerCase().trim()}`,
+      message: `${sanitizedProduct} removed from ${sanitizedEmail}`,
       products: updatedProducts,
     });
   } catch (error: any) {

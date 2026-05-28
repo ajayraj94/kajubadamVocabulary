@@ -1,9 +1,14 @@
 /**
  * API Route: Verify OTP and return user purchases
  * POST /api/auth/verify-otp
+ *
+ * Security:
+ *   - Rate limited to 5 requests/minute per IP
  */
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase-server";
+import { limiters } from "@/lib/rate-limiter";
+import { sanitizeEmail } from "@/lib/input-validator";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,11 +21,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // ── Rate limiting ──
+    const ip = limiters.auth.getIdentifier(request);
+    const rateCheck = limiters.auth.check(ip);
+    if (rateCheck.blocked) {
+      return NextResponse.json(
+        { success: false, error: rateCheck.error },
+        { status: 429 }
+      );
+    }
+
+    const sanitizedEmail = sanitizeEmail(email);
+
     const supabase = await createServerSupabase();
 
     // Verify OTP
     const { data: authData, error: authError } = await supabase.auth.verifyOtp({
-      email,
+      email: sanitizedEmail,
       token,
       type: "email",
     });
@@ -36,7 +53,7 @@ export async function POST(request: NextRequest) {
     const { data: purchases } = await supabase
       .from("purchases")
       .select("*")
-      .eq("email", email.toLowerCase().trim())
+      .eq("email", sanitizedEmail)
       .maybeSingle();
 
     // Get user session

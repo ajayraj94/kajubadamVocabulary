@@ -4,15 +4,42 @@
  *
  * Simple password-based admin authentication.
  * The password is stored in the ADMIN_PASSWORD env var.
- * On success, returns a session token (stored in sessionStorage).
+ *
+ * Security:
+ *   - Rate limited to 20 requests/minute per IP
+ *   - IP blocked after 10 failed attempts within 15 minutes
+ *   - No hardcoded password fallback
  */
 import { NextRequest, NextResponse } from "next/server";
-import { ADMIN_TOKEN } from "@/lib/admin-auth";
+import { ADMIN_TOKEN, isIpRateLimited, tooManyRequests } from "@/lib/admin-auth";
+import { limiters } from "@/lib/rate-limiter";
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "1om@13494";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+if (!ADMIN_PASSWORD) {
+  console.warn(
+    "⚠️ ADMIN_PASSWORD not set! Admin verify route will reject all requests. " +
+    "Set ADMIN_PASSWORD in your .env.local file."
+  );
+}
 
 export async function POST(request: NextRequest) {
   try {
+    // ── Rate limiting per IP ──
+    const ip = limiters.strict.getIdentifier(request);
+    const rateCheck = limiters.strict.check(ip);
+    if (rateCheck.blocked) {
+      return NextResponse.json(
+        { success: false, error: rateCheck.error },
+        { status: 429 }
+      );
+    }
+
+    // ── IP rate limiting (failed attempts) ──
+    if (isIpRateLimited(request)) {
+      return tooManyRequests();
+    }
+
     const { password } = await request.json();
 
     if (!password) {
@@ -22,7 +49,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (password !== ADMIN_PASSWORD) {
+    if (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD) {
       return NextResponse.json(
         { success: false, error: "Invalid password" },
         { status: 401 }

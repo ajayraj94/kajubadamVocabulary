@@ -3,19 +3,34 @@
  * POST /api/payment/verify
  * Verifies payment signature and updates access status
  *
- * Uses dynamic product validation from lib/products.ts
+ * Security:
+ *   - Dynamic product validation from lib/products.ts
+ *   - Payment signature verification
+ *   - Rate limited to 10 requests/minute per IP
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyPaymentSignature, fetchPaymentDetails } from '@/lib/razorpay';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { PRODUCT_IDS } from '@/lib/products';
+import { limiters } from '@/lib/rate-limiter';
+import { sanitizeEmail, isValidPaymentId, isValidOrderId } from '@/lib/input-validator';
 
 export async function POST(request: NextRequest) {
     try {
         const { orderId, paymentId, signature, product } = await request.json();
 
-        // Validate required fields
+        // ── Rate limiting ──
+        const ip = limiters.payment.getIdentifier(request);
+        const rateCheck = limiters.payment.check(ip);
+        if (rateCheck.blocked) {
+            return NextResponse.json(
+                { success: false, error: rateCheck.error },
+                { status: 429 }
+            );
+        }
+
+        // ── Input validation ──
         if (!orderId || !paymentId || !signature || !product) {
             return NextResponse.json(
                 { success: false, error: 'Missing required fields: orderId, paymentId, signature, product' },
@@ -23,7 +38,22 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // ⭐ Dynamic product validation — works with any product in lib/products.ts!
+        // Validate ID formats
+        if (!isValidOrderId(orderId)) {
+            return NextResponse.json(
+                { success: false, error: 'Invalid order ID format' },
+                { status: 400 }
+            );
+        }
+
+        if (!isValidPaymentId(paymentId)) {
+            return NextResponse.json(
+                { success: false, error: 'Invalid payment ID format' },
+                { status: 400 }
+            );
+        }
+
+        // ⭐ Dynamic product validation
         if (!PRODUCT_IDS.includes(product)) {
             return NextResponse.json(
                 { success: false, error: `Invalid product type. Valid: ${PRODUCT_IDS.join(", ")}` },
@@ -67,9 +97,8 @@ export async function POST(request: NextRequest) {
             const userEmail = payment.notes?.email || payment.email || '';
 
             if (userEmail) {
-                // Call the add_purchase function via RPC
                 await supabase.rpc('add_purchase', {
-                    p_email: userEmail.toLowerCase().trim(),
+                    p_email: sanitizeEmail(userEmail),
                     p_product: product,
                     p_transaction_id: paymentId,
                     p_payment_id: paymentId,

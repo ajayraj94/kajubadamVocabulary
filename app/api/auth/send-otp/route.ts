@@ -1,20 +1,43 @@
 /**
  * API Route: Send OTP via Supabase Auth
  * POST /api/auth/send-otp
+ *
+ * Security:
+ *   - Email validation with MX record check
+ *   - Blocks disposable email addresses
+ *   - Rate limited to 5 requests/minute per IP
  */
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase-server";
+import { validateEmail } from "@/lib/email-validator";
+import { limiters } from "@/lib/rate-limiter";
+import { sanitizeEmail } from "@/lib/input-validator";
 
 export async function POST(request: NextRequest) {
   try {
-    const { email } = await request.json();
+    const body = await request.json();
+    const rawEmail = body?.email || "";
 
-    if (!email || !email.includes("@")) {
+    // ── Rate limiting ──
+    const ip = limiters.auth.getIdentifier(request);
+    const rateCheck = limiters.auth.check(ip);
+    if (rateCheck.blocked) {
       return NextResponse.json(
-        { success: false, error: "Valid email is required" },
+        { success: false, error: rateCheck.error },
+        { status: 429 }
+      );
+    }
+
+    // ── Email validation (full: format + MX + disposable check) ──
+    const emailResult = await validateEmail(rawEmail);
+    if (!emailResult.valid) {
+      return NextResponse.json(
+        { success: false, error: emailResult.error },
         { status: 400 }
       );
     }
+
+    const email = sanitizeEmail(rawEmail);
 
     const supabase = await createServerSupabase();
 

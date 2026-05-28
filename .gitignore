@@ -30,6 +30,15 @@
 /dist
 
 # ============================
+# 🔍 SENSITIVE DATA LOGS
+# ============================
+# SQL dumps, debug logs with PII, etc.
+*.sql.gz
+*.sql.bak
+secrets/
+debug-*.log
+
+# ============================
 # 🪟 WINDOWS
 # ============================
 Thumbs.db
@@ -106,6 +115,16 @@ next-env.d.ts
 # 📦 TURBOPACK (optional)
 # ============================
 .turbo/
+
+# ============================
+# 🔐 SECURITY FILES (never commit secrets!)
+# ============================
+*.key
+*.pem
+*.cert
+*.crt
+*.p12
+*.pfx
 
 # ============================
 # 📝 PROJECT DOCS (not committed)

@@ -5,16 +5,21 @@
  * Handles asynchronous payment events from Razorpay.
  * Configure this URL in Razorpay Dashboard → Settings → Webhooks.
  *
+ * Security:
+ *   - Webhook signature verification via HMAC-SHA256
+ *   - Input validation for all incoming data
+ *   - Email validation before saving purchases
+ *
  * Primary event handled:
  *   - payment.captured → saves purchase to Supabase
- *
- * Why webhook? Client-side verification can fail (network issues, tab closed, etc.)
- * Webhook ensures payment is ALWAYS recorded even if user closes browser immediately.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabase } from '@/lib/supabase-server';
 import { PRODUCT_IDS } from '@/lib/products';
+import { validateEmail } from '@/lib/email-validator';
+import { sanitizeEmail } from '@/lib/input-validator';
+import crypto from 'crypto';
 
 const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET || '';
 
@@ -32,7 +37,6 @@ function verifyWebhookSignature(rawBody: string, signature: string): boolean {
   }
 
   try {
-    const crypto = require('crypto');
     const expectedSignature = crypto
       .createHmac('sha256', WEBHOOK_SECRET)
       .update(rawBody)
@@ -62,9 +66,11 @@ async function handlePaymentCaptured(payload: any) {
     return { success: false, error: `Invalid product: ${product}` };
   }
 
-  if (!userEmail || !userEmail.includes('@')) {
+  // Validate email before saving purchase
+  const emailResult = await validateEmail(userEmail, { checkMX: false, checkDisposable: false });
+  if (!emailResult.valid) {
     console.warn(`Webhook: Invalid email: "${userEmail}"`);
-    return { success: false, error: 'Invalid email' };
+    return { success: false, error: `Invalid email: ${emailResult.error}` };
   }
 
   if (payment.status !== 'captured') {
@@ -75,7 +81,7 @@ async function handlePaymentCaptured(payload: any) {
   try {
     const supabase = await createServerSupabase();
     await supabase.rpc('add_purchase', {
-      p_email: userEmail.toLowerCase().trim(),
+      p_email: sanitizeEmail(userEmail),
       p_product: product,
       p_transaction_id: payment.id,
       p_payment_id: payment.id,
@@ -106,7 +112,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse the event payload
-    const event = JSON.parse(rawBody);
+    let event: any;
+    try {
+      event = JSON.parse(rawBody);
+    } catch {
+      return NextResponse.json(
+        { success: false, error: 'Invalid JSON payload' },
+        { status: 400 }
+      );
+    }
+
     const eventType = event.event || '';
 
     console.log(`Webhook: Received event — ${eventType}`);
@@ -125,7 +140,6 @@ export async function POST(request: NextRequest) {
         break;
 
       default:
-        // Acknowledge other events silently
         console.log(`Webhook: Unhandled event — ${eventType}`);
     }
 
