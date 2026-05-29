@@ -62,6 +62,7 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/_next/static") ||
     pathname.startsWith("/fonts") ||
     pathname === "/favicon.ico" ||
+    pathname === "/favicon.svg" ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml" ||
     pathname.startsWith("/images/")
@@ -100,6 +101,6 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Match all request paths except static files with _next/static, _next/image, etc.
-    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!_next/static|_next/image|favicon.ico|favicon.svg|sitemap.xml|robots.txt).*)",
   ],
 };

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- Premium Roasted Nut Background -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#140905" />
+      <stop offset="100%" stop-color="#2a150c" />
+    </linearGradient>
+    
+    <!-- Roasted Almond Brown -->
+    <linearGradient id="almond-skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#92400e" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+    
+    <!-- Creamy Cashew Cream -->
+    <linearGradient id="cashew-cream" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fffbeb" />
+      <stop offset="100%" stop-color="#e6d5b3" />
+    </linearGradient>
+    
+    <!-- Bright Accent Gold -->
+    <linearGradient id="gold-accent" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded Background -->
+  <rect width="512" height="512" rx="140" fill="url(#bg)" />
+
+  <!-- Subtle Geometric Circles representing natural symmetry -->
+  <g stroke="#e6d5b3" stroke-width="1.2" opacity="0.15" fill="none">
+    <circle cx="256" cy="256" r="230" />
+    <circle cx="256" cy="256" r="210" stroke-dasharray="6 6" />
+    <path d="M 120,256 C 180,180 332,180 392,256 C 332,332 180,332 120,256 Z" />
+  </g>
+
+  <!-- Stylized Monogram "Kv" -->
+  
+  <!-- Letter "K" -->
+  <!-- K Vertical Stem -->
+  <rect x="120" y="140" width="40" height="240" rx="10" fill="url(#gold-accent)" />
+  
+  <!-- K Upper Diagonal: STYLIZED ALMOND (Badam) Shape -->
+  <path d="M 160,240 C 180,180 230,140 295,135 C 255,190 210,240 165,270 Z" fill="url(#almond-skin)" />
+  <!-- Almond Inner Highlight Line -->
+  <path d="M 185,225 C 205,185 240,160 275,155" fill="none" stroke="#fef08a" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+
+  <!-- K Lower Diagonal: STYLIZED CASHEW (Kaju) Shape -->
+  <path d="M 160,265 C 200,285 260,320 280,380 C 240,380 190,340 170,300 C 160,285 155,275 160,265 Z" fill="url(#cashew-cream)" />
+  <!-- Cashew Shadow line -->
+  <path d="M 180,295 C 195,315 225,335 255,355" fill="none" stroke="#b45309" stroke-width="2.5" opacity="0.4" />
+
+  <!-- Letter "v" (Creamy Cashew Color with Gold Trim) -->
+  <path d="M 290,200 L 325,200 L 350,320 L 385,200 L 420,200 L 350,380 Z" fill="url(#cashew-cream)" />
+  <path d="M 290,200 L 325,200 L 350,320 L 385,200 L 420,200 L 350,380 Z" fill="none" stroke="url(#gold-accent)" stroke-width="2" opacity="0.7" />
+
+  <!-- Mini Cashew & Almond Icons on top right -->
+  <!-- Almond Nut -->
+  <path d="M 405,100 C 420,85 440,105 425,120 C 410,135 390,115 405,100 Z" fill="url(#almond-skin)" stroke="#140905" stroke-width="2" />
+  <!-- Cashew Nut -->
+  <path d="M 430,115 C 445,105 460,120 450,135 C 440,145 425,130 430,115 Z" fill="url(#cashew-cream)" stroke="#140905" stroke-width="2" />
+
+</svg>
