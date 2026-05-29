@@ -1,6 +1,7 @@
 import { getAllStories } from "@/lib/stories";
 import { getAllDailyNews } from "@/lib/daily-news";
 import { getErrorDetectionData } from "@/lib/error-detection";
+import { getSentenceImprovementData } from "@/lib/sentence-improvement";
 import HomePageClient from "./HomePageClient";
 
 export default function Home() {
@@ -19,6 +20,11 @@ export default function Home() {
   const totalErrorDetectionQuestions = errorDetectionData.totalQuestions;
   const errorDetectionTotalPages = Math.ceil(totalErrorDetectionQuestions / PAGE_SIZE);
 
+  // Load sentence improvement data
+  const sentenceImprovementData = getSentenceImprovementData();
+  const totalSentenceImprovementQuestions = sentenceImprovementData.totalQuestions;
+  const sentenceImprovementTotalPages = Math.ceil(totalSentenceImprovementQuestions / PAGE_SIZE);
+
   return (
     <HomePageClient
       part1Stories={part1Stories}
@@ -26,6 +32,8 @@ export default function Home() {
       dailyNews={dailyNews}
       totalErrorDetectionQuestions={totalErrorDetectionQuestions}
       errorDetectionTotalPages={errorDetectionTotalPages}
+      totalSentenceImprovementQuestions={totalSentenceImprovementQuestions}
+      sentenceImprovementTotalPages={sentenceImprovementTotalPages}
     />
   );
 }

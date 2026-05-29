@@ -99,14 +99,17 @@ export function getPurchasedProducts(): string[] {
 export function hasPart1Access(): boolean { return hasAccess("part1"); }
 export function hasPart2Access(): boolean { return hasAccess("part2"); }
 export function hasErrorDetectionAccess(): boolean { return hasAccess("errorDetection"); }
+export function hasSentenceImprovementAccess(): boolean { return hasAccess("sentenceImprovement"); }
 
 export function getPart1TransactionId(): string | null { return getTransactionId("part1"); }
 export function getPart2TransactionId(): string | null { return getTransactionId("part2"); }
 export function getErrorDetectionTransactionId(): string | null { return getTransactionId("errorDetection"); }
+export function getSentenceImprovementTransactionId(): string | null { return getTransactionId("sentenceImprovement"); }
 
 export function setPart1Purchased(value: boolean, transactionId?: string): void { setAccess("part1", value, transactionId); }
 export function setPart2Purchased(value: boolean, transactionId?: string): void { setAccess("part2", value, transactionId); }
 export function setErrorDetectionPurchased(value: boolean, transactionId?: string): void { setAccess("errorDetection", value, transactionId); }
+export function setSentenceImprovementPurchased(value: boolean, transactionId?: string): void { setAccess("sentenceImprovement", value, transactionId); }
 
 /** Check if a user can access a story. */
 export function canAccessStory(slug: string, vocabPart: string): boolean {

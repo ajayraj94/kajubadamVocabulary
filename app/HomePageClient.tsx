@@ -21,13 +21,15 @@ interface Props {
   dailyNews: DailyNewsMeta[];
   totalErrorDetectionQuestions: number;
   errorDetectionTotalPages: number;
+  totalSentenceImprovementQuestions: number;
+  sentenceImprovementTotalPages: number;
 }
 
-export default function HomePageClient({ part1Stories, part2Stories, dailyNews, totalErrorDetectionQuestions, errorDetectionTotalPages }: Props) {
-  const [activeTab, setActiveTab] = useState<"part1" | "part2" | "daily" | "error-detection">("part1");
+export default function HomePageClient({ part1Stories, part2Stories, dailyNews, totalErrorDetectionQuestions, errorDetectionTotalPages, totalSentenceImprovementQuestions, sentenceImprovementTotalPages }: Props) {
+  const [activeTab, setActiveTab] = useState<"part1" | "part2" | "daily" | "error-detection" | "sentence-improvement">("part1");
   const [currentPage, setCurrentPage] = useState(1);
   const [masteredSlugs, setMasteredSlugs] = useState<string[]>([]);
-  const { hasPart1, hasPart2, hasErrorDetection, isLoading: accessLoading, isLoggedIn, userEmail, userName, loginWithGoogle, logoutUser } = usePurchaseAccess();
+  const { hasPart1, hasPart2, hasErrorDetection, hasSentenceImprovement, isLoading: accessLoading, isLoggedIn, userEmail, userName, loginWithGoogle, logoutUser } = usePurchaseAccess();
 
   // Init tab from URL param / sessionStorage and load progress on mount
   useEffect(() => {
@@ -35,10 +37,10 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
     const tabParam = params.get("tab");
     const savedTab = sessionStorage.getItem("activeTab");
 
-    if (tabParam === "part1" || tabParam === "part2" || tabParam === "daily" || tabParam === "error-detection") {
+    if (tabParam === "part1" || tabParam === "part2" || tabParam === "daily" || tabParam === "error-detection" || tabParam === "sentence-improvement") {
       setActiveTab(tabParam);
       sessionStorage.setItem("activeTab", tabParam);
-    } else if (savedTab === "part1" || savedTab === "part2" || savedTab === "daily" || savedTab === "error-detection") {
+    } else if (savedTab === "part1" || savedTab === "part2" || savedTab === "daily" || savedTab === "error-detection" || savedTab === "sentence-improvement") {
       setActiveTab(savedTab);
     }
 
@@ -84,6 +86,12 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
     page: i + 1,
     startQ: i * 50 + 1,
     endQ: Math.min((i + 1) * 50, totalErrorDetectionQuestions),
+  }));
+
+  const sentenceImprovementBlocks = Array.from({ length: sentenceImprovementTotalPages }, (_, i) => ({
+    page: i + 1,
+    startQ: i * 50 + 1,
+    endQ: Math.min((i + 1) * 50, totalSentenceImprovementQuestions),
   }));
 
   useEffect(() => {
@@ -387,6 +395,10 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
             className={`font-bold text-[13px] md:text-[15px] tracking-wide py-1.5 md:py-2 px-3 md:px-6 transition-all ${activeTab === "error-detection" ? "text-[#8B0000] border-b-4 border-[#8B0000]" : "text-gray-400 hover:text-gray-700"}`}>
             SSC ERROR DETECTION
           </button>
+          <button onClick={() => setActiveTab("sentence-improvement")}
+            className={`font-bold text-[13px] md:text-[15px] tracking-wide py-1.5 md:py-2 px-3 md:px-6 transition-all ${activeTab === "sentence-improvement" ? "text-[#0d7a3e] border-b-4 border-[#0d7a3e]" : "text-gray-400 hover:text-gray-700"}`}>
+            SENTENCE IMPROVEMENT
+          </button>
         </div>
       </div>
 
@@ -444,6 +456,70 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                     <div className="flex items-center gap-2 mb-1">
                       <span className="bg-[#8B0000]/20 text-[#8B0000] text-[9px] font-bold px-2 py-0.5 rounded border border-[#8B0000]/10">Page {block.page}</span>
                       <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-rose-100 to-rose-50 text-rose-700 text-[11px] font-bold px-3 py-1.5 rounded-lg border border-rose-200/60 shadow-sm ml-auto">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Premium Content
+                      </span>
+                    </div>
+                    <h3 className="text-[13px] font-bold text-gray-700">Q.{block.startQ} – Q.{block.endQ}</h3>
+                    <p className="text-[10px] text-gray-500 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : activeTab === "sentence-improvement" ? (
+          <div className="py-1">
+            <div className="mb-2">
+              <div className="flex items-center gap-3 mb-1">
+                <div className="bg-[#0d7a3e] text-white w-8 h-8 rounded-xl flex items-center justify-center text-base font-black shadow-md">SI</div>
+                <div>
+                  <h2 className="text-[18px] font-extrabold text-gray-800 tracking-tight leading-none">SSC Sentence Improvement 790 PYQ</h2>
+                  <p className="text-[12px] text-gray-500 mt-0.5">{totalSentenceImprovementQuestions} previous year questions with detailed bilingual explanations</p>
+                </div>
+              </div>
+            </div>
+
+            {!accessLoading && !hasSentenceImprovement && (
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-2 mb-1 flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">🔒</span>
+                  <div>
+                    <p className="text-[12px] font-bold text-amber-800">Premium Content — ₹{getProductPrice('sentenceImprovement')}</p>
+                    <p className="text-[11px] text-amber-600">Ek baar purchase karo, lifetime access pao.</p>
+                  </div>
+                </div>
+                <Link href="/pricing" className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-[12px] px-4 py-1.5 rounded-lg transition-all active:scale-95 shadow-md">🔓 Unlock for ₹{getProductPrice('sentenceImprovement')}</Link>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-1.5">
+              {sentenceImprovementBlocks.map((block) => {
+                const isUnlocked = hasSentenceImprovement || block.page === 1;
+                return isUnlocked ? (
+                  <div key={block.page} className="bg-white border border-gray-100 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300 hover:border-emerald-300 group">
+                    <Link href={`/sentence-improvement/${block.page}`} className="block">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="bg-[#0d7a3e] text-white text-[9px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
+                        <span className="text-[9px] font-semibold text-gray-400">{sentenceImprovementTotalPages} pages</span>
+                      </div>
+                      <h3 className="text-[13px] font-bold text-gray-800 group-hover:text-[#0d7a3e] transition-colors">
+                        Q.{block.startQ} – Q.{block.endQ}
+                        {block.page === 1 && <span className="ml-1 text-[8px] text-emerald-600 bg-emerald-50 border border-emerald-200 px-1 py-0.5 rounded-full font-bold align-middle">FREE</span>}
+                      </h3>
+                      <p className="text-[10px] text-gray-400 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
+                    </Link>
+                    <div className="mt-2 flex gap-1.5">
+                      <Link href={`/sentence-improvement/${block.page}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[11px] font-bold py-1 rounded-full transition">📖 Read</Link>
+                      <Link href={`/sentence-improvement/${block.page}#quiz`} className="flex-1 text-center bg-[#0d7a3e] hover:bg-[#0a5e2e] text-white text-[11px] font-bold py-1 rounded-full transition shadow-sm">📝 Quiz</Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div key={block.page} className="bg-white border border-emerald-200/40 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] bg-gradient-to-br from-white to-emerald-50/50 relative overflow-hidden pointer-events-none select-none">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="bg-[#0d7a3e]/20 text-[#0d7a3e] text-[9px] font-bold px-2 py-0.5 rounded border border-[#0d7a3e]/10">Page {block.page}</span>
+                      <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-100 to-emerald-50 text-emerald-700 text-[11px] font-bold px-3 py-1.5 rounded-lg border border-emerald-200/60 shadow-sm ml-auto">
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>

@@ -27,6 +27,7 @@ interface PurchaseAccess {
   hasPart1: boolean;
   hasPart2: boolean;
   hasErrorDetection: boolean;
+  hasSentenceImprovement: boolean;
   isLoading: boolean;
   isLoggedIn: boolean;
   userEmail: string | null;
@@ -36,6 +37,7 @@ interface PurchaseAccess {
   unlockPart2: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
   unlockBundle: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
   unlockErrorDetection: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
+  unlockSentenceImprovement: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
   paymentError: string | null;
   clearPaymentError: () => void;
   loginWithGoogle: () => Promise<void>;
@@ -47,6 +49,7 @@ export function usePurchaseAccess(): PurchaseAccess {
   const [hasPart1, setHasPart1] = useState(false);
   const [hasPart2, setHasPart2] = useState(false);
   const [hasErrorDetection, setHasErrorDetection] = useState(false);
+  const [hasSentenceImprovement, setHasSentenceImprovement] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -100,6 +103,7 @@ export function usePurchaseAccess(): PurchaseAccess {
       setHasPart1(hasAccess("part1"));
       setHasPart2(hasAccess("part2"));
       setHasErrorDetection(hasAccess("errorDetection"));
+      setHasSentenceImprovement(hasAccess("sentenceImprovement"));
       setLoggedIn(isLoggedIn());
       setUserEmailState(getUserEmail());
 
@@ -110,6 +114,7 @@ export function usePurchaseAccess(): PurchaseAccess {
       setHasPart1(hasAccess("part1"));
       setHasPart2(hasAccess("part2"));
       setHasErrorDetection(hasAccess("errorDetection"));
+      setHasSentenceImprovement(hasAccess("sentenceImprovement"));
 
       // Recover any failed payment verifications
       recoverFailedVerifications();
@@ -259,12 +264,34 @@ export function usePurchaseAccess(): PurchaseAccess {
     }
   };
 
+  const unlockSentenceImprovement = async (email?: string, onSuccess?: (product: string) => void) => {
+    if (!email) {
+      setAccess("sentenceImprovement", true);
+      setHasSentenceImprovement(true);
+      onSuccess?.("sentenceImprovement");
+      return;
+    }
+    try {
+      await openRazorpayCheckout("sentenceImprovement", email, (product, transactionId) => {
+        if (product === "sentenceImprovement") {
+          setAccess("sentenceImprovement", true, transactionId);
+          setHasSentenceImprovement(true);
+          onSuccess?.("sentenceImprovement");
+          syncPurchasesFromServer();
+        }
+      });
+    } catch (err: any) {
+      setPaymentError(err.message || "Failed to process payment");
+    }
+  };
+
   const clearPaymentError = () => setPaymentError(null);
 
   return {
     hasPart1,
     hasPart2,
     hasErrorDetection,
+    hasSentenceImprovement,
     isLoading,
     isLoggedIn: loggedIn,
     userEmail,
@@ -274,6 +301,7 @@ export function usePurchaseAccess(): PurchaseAccess {
     unlockPart2,
     unlockBundle,
     unlockErrorDetection,
+    unlockSentenceImprovement,
     paymentError,
     clearPaymentError,
     loginWithGoogle,

@@ -80,6 +80,15 @@ export const PRODUCTS: Record<string, ProductConfig> = {
     storageKey: "kv_error_detection_purchased",
     txStorageKey: "kv_error_detection_transaction_id",
   },
+  sentenceImprovement: {
+    id: "sentenceImprovement",
+    label: "Sentence Improvement — ₹110",
+    defaultPrice: 110,
+    color: "teal",
+    description: "SSC Sentence Improvement 790 PYQ",
+    storageKey: "kv_sentence_improvement_purchased",
+    txStorageKey: "kv_sentence_improvement_transaction_id",
+  },
   bundle: {
     id: "bundle",
     label: "Bundle (Part 1 + Part 2) — ₹549",
@@ -135,6 +144,7 @@ export function getProductReceiptName(id: string): string {
     part1: "Kajubadam Vocabulary - Part 1 Lifetime Access",
     part2: "Kajubadam Vocabulary - Part 2 Lifetime Access",
     errorDetection: "SSC Error Detection 716 PYQ - Lifetime Access",
+    sentenceImprovement: "SSC Sentence Improvement 790 PYQ - Lifetime Access",
     bundle: "Kajubadam Vocabulary - Complete Bundle (Part 1 + Part 2)",
   };
   return names[id] || `Kajubadam - ${id} Access`;
