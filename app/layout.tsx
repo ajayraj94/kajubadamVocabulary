@@ -68,15 +68,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico?v=2", type: "image/x-icon", sizes: "any" },
-      { url: "/favicon.svg?v=2", type: "image/svg+xml", sizes: "any" },
-      { url: "/favicon-16x16.png?v=2", type: "image/png", sizes: "16x16" },
-      { url: "/favicon-32x32.png?v=2", type: "image/png", sizes: "32x32" },
-      { url: "/icon-192x192.png?v=2", type: "image/png", sizes: "192x192" },
+      { url: "/favicon-32x32.png?v=3", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16x16.png?v=3", type: "image/png", sizes: "16x16" },
+      { url: "/favicon.svg?v=3", type: "image/svg+xml", sizes: "any" },
+      { url: "/icon-192x192.png?v=3", type: "image/png", sizes: "192x192" },
     ],
-    apple: "/apple-touch-icon.png?v=2",
+    apple: "/apple-touch-icon.png?v=3",
     other: [
-      { rel: "shortcut icon", url: "/favicon.ico?v=2" },
+      { rel: "shortcut icon", url: "/favicon-32x32.png?v=3" },
     ],
   },
 };

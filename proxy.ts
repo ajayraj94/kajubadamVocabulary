@@ -61,9 +61,7 @@ export function proxy(request: NextRequest) {
   if (
     pathname.startsWith("/_next/static") ||
     pathname.startsWith("/fonts") ||
-    pathname === "/favicon.ico" ||
     pathname === "/favicon.svg" ||
-    pathname === "/favicon.png" ||
     pathname === "/favicon-16x16.png" ||
     pathname === "/favicon-32x32.png" ||
     pathname === "/apple-touch-icon.png" ||
@@ -107,6 +105,6 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Match all request paths except static files with _next/static, _next/image, etc.
-    "/((?!_next/static|_next/image|favicon.ico|favicon.svg|favicon.png|favicon-16x16.png|favicon-32x32.png|apple-touch-icon.png|icon-192x192.png|icon-512x512.png|sitemap.xml|robots.txt).*)",
+    "/((?!_next/static|_next/image|favicon\.|apple-touch-icon\.png|icon-192x192\.png|icon-512x512\.png|sitemap\.xml|robots\.txt).*)",
   ],
 };
