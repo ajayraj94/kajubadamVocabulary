@@ -32,18 +32,21 @@ function getRazorpay() {
  * @param product - product ID (from lib/products.ts)
  * @param userEmail - User's email for the order
  */
-export async function createRazorpayOrder(product: string, userEmail: string) {
+export async function createRazorpayOrder(product: string, userEmail: string, supabaseUserId?: string | null) {
   const amount = PRODUCT_PRICES[product];
   if (!amount) {
     return { success: false, error: `Invalid product: ${product}` };
   }
 
   const receipt = `order_${product}_${Date.now()}`;
-  const notes = {
+  const notes: Record<string, string> = {
     product,
     email: userEmail,
     app: 'kajubadam-vocabulary',
   };
+  if (supabaseUserId) {
+    notes.supabase_user_id = supabaseUserId;
+  }
 
   try {
     const order = await getRazorpay().orders.create({

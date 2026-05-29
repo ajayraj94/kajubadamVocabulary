@@ -127,7 +127,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
           <div className="flex items-center gap-2 shrink-0">
             {isLoggedIn ? (
               <div className="flex items-center gap-2">
-                <span className="hidden sm:inline text-[11px] text-gray-500 font-medium">{userEmail}</span>
+                <span className="hidden sm:inline text-[11px] text-gray-500 font-medium">{userName || userEmail}</span>
                 <button onClick={handleLoginClick} className="text-[11px] font-bold text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 px-3 py-1 rounded-full transition-all">Logout</button>
               </div>
             ) : (

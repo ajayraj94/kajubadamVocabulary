@@ -46,7 +46,7 @@ export function useRazorpay() {
   /**
    * Create an order via API
    */
-  const createOrder = useCallback(async (product: ProductType, email: string) => {
+  const createOrder = useCallback(async (product: ProductType, email: string, supabaseUserId?: string | null) => {
     setIsLoading(true);
     setError(null);
 
@@ -56,7 +56,7 @@ export function useRazorpay() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ product, email }),
+        body: JSON.stringify({ product, email, supabaseUserId }),
       });
 
       const data = await response.json();
@@ -137,10 +137,9 @@ export function useRazorpay() {
       setError(null);
 
       try {
-        const orderData = await createOrder(product, email);
-
-        // Get the Supabase user ID to pass as metadata
+        // Get the Supabase user ID to pass in both order notes (server-side) and checkout notes (client-side)
         const supabaseUserId = await getSupabaseUserId();
+        const orderData = await createOrder(product, email, supabaseUserId);
 
         const options = {
           key: orderData.key_id,

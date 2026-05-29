@@ -18,7 +18,7 @@ import { sanitizeEmail } from '@/lib/input-validator';
 
 export async function POST(request: NextRequest) {
     try {
-        const { product, email } = await request.json();
+        const { product, email, supabaseUserId } = await request.json();
 
         // ── Rate limiting ──
         const ip = limiters.payment.getIdentifier(request);
@@ -58,8 +58,8 @@ export async function POST(request: NextRequest) {
 
         const sanitizedEmail = sanitizeEmail(email);
 
-        // Create Razorpay order
-        const result = await createRazorpayOrder(product, sanitizedEmail);
+        // Create Razorpay order (include supabase_user_id in notes for reliable storage)
+        const result = await createRazorpayOrder(product, sanitizedEmail, supabaseUserId);
 
         if (!result.success) {
             return NextResponse.json(
