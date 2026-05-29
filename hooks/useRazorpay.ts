@@ -1,12 +1,13 @@
 /**
  * Hook for Razorpay payment integration
- * Handles loading Razorpay script, creating orders, and processing payments
+ * Now passes supabase_user_id from Google auth session in Razorpay notes
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { PRODUCT_PRICES, PRODUCT_NAMES, getRazorpayConfig } from '@/lib/razorpay-client';
+import { PRODUCT_NAMES } from '@/lib/razorpay-client';
 import { PRODUCT_IDS } from '@/lib/products';
 import { storeFailedVerification } from '@/lib/access';
+import { createClient } from '@/lib/supabase';
 
 declare global {
   interface Window {
@@ -110,6 +111,19 @@ export function useRazorpay() {
   }, []);
 
   /**
+   * Get the current Supabase user ID (if logged in via Google)
+   */
+  const getSupabaseUserId = useCallback(async (): Promise<string | null> => {
+    try {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      return session?.user?.id || null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  /**
    * Open Razorpay checkout popup
    */
   const openRazorpayCheckout = useCallback(
@@ -124,6 +138,9 @@ export function useRazorpay() {
 
       try {
         const orderData = await createOrder(product, email);
+
+        // Get the Supabase user ID to pass as metadata
+        const supabaseUserId = await getSupabaseUserId();
 
         const options = {
           key: orderData.key_id,
@@ -153,9 +170,7 @@ export function useRazorpay() {
               }
             }
 
-            // Always store payment info for DB recovery.
-            // Even if verify returned success, the DB save inside it might
-            // have failed silently. Recovery will check and fix this.
+            // Store payment info for DB recovery
             storeFailedVerification(
               razorpay_order_id,
               razorpay_payment_id,
@@ -164,7 +179,7 @@ export function useRazorpay() {
               email
             );
 
-            // Grant access locally so user isn't blocked.
+            // Grant access locally
             onSuccess(product, razorpay_payment_id);
           },
           prefill: {
@@ -173,6 +188,7 @@ export function useRazorpay() {
           notes: {
             product: product,
             app: 'kajubadam-vocabulary',
+            supabase_user_id: supabaseUserId || '', // Pass Google user ID to Razorpay metadata
           },
           theme: {
             color: '#3b82f6',
@@ -192,7 +208,7 @@ export function useRazorpay() {
         setError(err.message || 'Failed to open payment popup');
       }
     },
-    [razorpayLoaded, createOrder, verifyPayment]
+    [razorpayLoaded, createOrder, verifyPayment, getSupabaseUserId]
   );
 
   return {

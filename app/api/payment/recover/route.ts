@@ -67,8 +67,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // ── Get email from payment or from request ──
+    // ── Get email + user_id from payment or from request ──
     const userEmail = email || payment.notes?.email || payment.email || '';
+    const supabaseUserId = payment.notes?.supabase_user_id || null;
     if (!userEmail) {
       return NextResponse.json(
         { success: false, error: 'No email found for payment' },
@@ -108,9 +109,10 @@ export async function POST(request: NextRequest) {
       p_transaction_id: paymentId,
       p_payment_id: paymentId,
       p_amount: payment.amount || 0,
+      p_user_id: supabaseUserId,
     });
 
-    console.log(`[RECOVER] Purchase saved — ${userEmail} — ${product} — ${paymentId}`);
+    console.log(`[RECOVER] Purchase saved — ${userEmail} — ${product} — ${paymentId} (user_id: ${supabaseUserId})`);
 
     return NextResponse.json({
       success: true,

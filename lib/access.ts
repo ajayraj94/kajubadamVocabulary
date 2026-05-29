@@ -1,39 +1,38 @@
 /**
- * Access control utilities for the Kajubadam Vocabulary paywall.
+ * Access control utilities for Kajubadam Vocabulary paywall.
+ * 
+ * Now uses Google OAuth via Supabase Auth for user identity.
+ * Session is managed via Supabase SSR cookies (not localStorage).
+ * Purchase access is stored in localStorage for fast offline checks,
+ * and verified against Supabase transactions table on app load.
  * 
  * Free stories (always accessible):
  * - Part 1: Saga 1-01 "shadows-of-the-forsaken"
  * - Part 2: Saga 2-01 "the-fall-of-a-kingdom"
  * 
- * Products are now DYNAMIC — defined in lib/products.ts.
- * New products work automatically without code changes.
+ * Products are DYNAMIC — defined in lib/products.ts.
  */
 
 import { PRODUCTS, PRODUCT_IDS, getProductStorageKey, getProductTxStorageKey } from "./products";
 
 // ── Version check (bumps on deploy to purge stale localStorage) ──
-export const KV_VERSION = "2"; // Increment this when paywall/lock logic changes
+export const KV_VERSION = "3"; // Bumped for Google auth migration
 const KV_VERSION_KEY = "kv_version";
 
-// Storage keys
 const STORAGE_KEYS = {
-  userId: "kv_user_id",
   userEmail: "kv_user_email",
-  supabaseSession: "kv_supabase_session",
+  userName: "kv_user_name",
+  userAvatar: "kv_user_avatar",
 } as const;
 
 /**
  * Purge all stored access data when version mismatch is detected.
- * This ensures anyone who visited BEFORE the paywall was locked
- * doesn't retain stale unlocked state in localStorage.
  */
 function purgeIfVersionMismatch(): void {
   if (typeof window === "undefined") return;
-
   const storedVersion = localStorage.getItem(KV_VERSION_KEY);
-  if (storedVersion === KV_VERSION) return; // Same version, nothing to do
+  if (storedVersion === KV_VERSION) return;
 
-  // Version mismatch — clear ALL kv_* keys
   const keysToRemove: string[] = [];
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
@@ -44,8 +43,6 @@ function purgeIfVersionMismatch(): void {
   for (const key of keysToRemove) {
     localStorage.removeItem(key);
   }
-
-  // Set new version
   localStorage.setItem(KV_VERSION_KEY, KV_VERSION);
 }
 
@@ -58,39 +55,6 @@ export const FREE_SLUGS = {
 /** Returns true if the given slug is always free to access. */
 export function isStoryFree(slug: string): boolean {
   return slug === FREE_SLUGS.part1 || slug === FREE_SLUGS.part2;
-}
-
-/**
- * Generate a simple user identifier based on browser fingerprint
- * This helps recover access if localStorage is cleared but cookies remain
- */
-function getUserId(): string {
-  if (typeof window === "undefined") return "";
-
-  // Try to get existing user ID
-  const existingId = localStorage.getItem(STORAGE_KEYS.userId);
-  if (existingId) return existingId;
-
-  // Generate new user ID based on browser fingerprint
-  const fingerprint = [
-    navigator.userAgent,
-    navigator.language,
-    screen.colorDepth,
-    screen.width + "x" + screen.height,
-    new Date().getTimezoneOffset(),
-  ].join("|");
-
-  // Create hash of fingerprint
-  let hash = 0;
-  for (let i = 0; i < fingerprint.length; i++) {
-    const char = fingerprint.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-
-  const userId = `user_${Math.abs(hash).toString(36)}`;
-  localStorage.setItem(STORAGE_KEYS.userId, userId);
-  return userId;
 }
 
 // ═══════════════════════════════════════════════
@@ -130,53 +94,19 @@ export function getPurchasedProducts(): string[] {
 
 // ═══════════════════════════════════════════════
 // LEGACY ACCESS FUNCTIONS (backward compatible)
-// These still work — but new code should use hasAccess()/setAccess()
 // ═══════════════════════════════════════════════
 
-/** Check if user has purchased Part 1 access. */
-export function hasPart1Access(): boolean {
-  return hasAccess("part1");
-}
+export function hasPart1Access(): boolean { return hasAccess("part1"); }
+export function hasPart2Access(): boolean { return hasAccess("part2"); }
+export function hasErrorDetectionAccess(): boolean { return hasAccess("errorDetection"); }
 
-/** Check if user has purchased Part 2 access. */
-export function hasPart2Access(): boolean {
-  return hasAccess("part2");
-}
+export function getPart1TransactionId(): string | null { return getTransactionId("part1"); }
+export function getPart2TransactionId(): string | null { return getTransactionId("part2"); }
+export function getErrorDetectionTransactionId(): string | null { return getTransactionId("errorDetection"); }
 
-/** Check if user has purchased Error Detection access. */
-export function hasErrorDetectionAccess(): boolean {
-  return hasAccess("errorDetection");
-}
-
-/** Get transaction ID for Part 1. */
-export function getPart1TransactionId(): string | null {
-  return getTransactionId("part1");
-}
-
-/** Get transaction ID for Part 2. */
-export function getPart2TransactionId(): string | null {
-  return getTransactionId("part2");
-}
-
-/** Get transaction ID for Error Detection. */
-export function getErrorDetectionTransactionId(): string | null {
-  return getTransactionId("errorDetection");
-}
-
-/** Set Part 1 purchase status. */
-export function setPart1Purchased(value: boolean, transactionId?: string): void {
-  setAccess("part1", value, transactionId);
-}
-
-/** Set Part 2 purchase status. */
-export function setPart2Purchased(value: boolean, transactionId?: string): void {
-  setAccess("part2", value, transactionId);
-}
-
-/** Set Error Detection purchase status. */
-export function setErrorDetectionPurchased(value: boolean, transactionId?: string): void {
-  setAccess("errorDetection", value, transactionId);
-}
+export function setPart1Purchased(value: boolean, transactionId?: string): void { setAccess("part1", value, transactionId); }
+export function setPart2Purchased(value: boolean, transactionId?: string): void { setAccess("part2", value, transactionId); }
+export function setErrorDetectionPurchased(value: boolean, transactionId?: string): void { setAccess("errorDetection", value, transactionId); }
 
 /** Check if a user can access a story. */
 export function canAccessStory(slug: string, vocabPart: string): boolean {
@@ -192,11 +122,7 @@ export function canAccessStory(slug: string, vocabPart: string): boolean {
  */
 export function restoreAccessFromTransactions(): void {
   if (typeof window === "undefined") return;
-
-  // On every app load, check version and purge stale data if needed
   purgeIfVersionMismatch();
-
-  // Restore access from stored transaction IDs
   for (const id of PRODUCT_IDS) {
     if (!hasAccess(id)) {
       const txId = getTransactionId(id);
@@ -222,7 +148,6 @@ interface FailedVerification {
   timestamp: number;
 }
 
-/** Store a failed payment verification for later recovery. */
 export function storeFailedVerification(
   orderId: string,
   paymentId: string,
@@ -233,7 +158,6 @@ export function storeFailedVerification(
   if (typeof window === "undefined") return;
   try {
     const existing = getFailedVerifications();
-    // Don't store duplicates
     if (existing.some((v) => v.paymentId === paymentId)) return;
     existing.push({ orderId, paymentId, signature, product, email, timestamp: Date.now() });
     localStorage.setItem(FAILED_VERIFICATION_KEY, JSON.stringify(existing));
@@ -242,18 +166,14 @@ export function storeFailedVerification(
   }
 }
 
-/** Get all stored failed verifications. */
 export function getFailedVerifications(): FailedVerification[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(FAILED_VERIFICATION_KEY);
     return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
-/** Remove a recovered verification. */
 export function removeFailedVerification(paymentId: string): void {
   if (typeof window === "undefined") return;
   try {
@@ -264,7 +184,6 @@ export function removeFailedVerification(paymentId: string): void {
   }
 }
 
-/** Clear all failed verifications older than the given age in ms. */
 export function clearOldFailedVerifications(maxAgeMs: number = 7 * 24 * 60 * 60 * 1000): void {
   if (typeof window === "undefined") return;
   try {
@@ -277,35 +196,46 @@ export function clearOldFailedVerifications(maxAgeMs: number = 7 * 24 * 60 * 60 
 }
 
 // ═══════════════════════════════════════════════
-// SUPABASE SESSION FUNCTIONS
+// GOOGLE AUTH STATE (stored in localStorage for fast UI checks)
 // ═══════════════════════════════════════════════
 
-/** Check if user has a valid Supabase session stored. */
-export function hasSupabaseSession(): boolean {
-  if (typeof window === "undefined") return false;
-  return !!localStorage.getItem(STORAGE_KEYS.supabaseSession);
+/** Store user info after successful Google login. */
+export function storeUserInfo(email: string, name?: string, avatar?: string): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(STORAGE_KEYS.userEmail, email);
+  if (name) localStorage.setItem(STORAGE_KEYS.userName, name);
+  if (avatar) localStorage.setItem(STORAGE_KEYS.userAvatar, avatar);
 }
 
-/** Get the stored user email (set after login). */
+/** Get the stored user email. */
 export function getUserEmail(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem(STORAGE_KEYS.userEmail);
 }
 
-/** Store user email after successful login. */
-export function setUserEmail(email: string): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEYS.userEmail, email);
+/** Get the stored user display name. */
+export function getUserName(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(STORAGE_KEYS.userName);
 }
 
-/** Is the user logged in via Supabase? */
+/** Get the stored user avatar URL. */
+export function getUserAvatar(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(STORAGE_KEYS.userAvatar);
+}
+
+/** Is the user logged in via Google? (checks localStorage) */
 export function isLoggedIn(): boolean {
-  return hasSupabaseSession() && !!getUserEmail();
+  if (typeof window === "undefined") return false;
+  return !!localStorage.getItem(STORAGE_KEYS.userEmail);
 }
 
-/** Logout: clear session and user data. */
+/** Clear all user data on logout. */
 export function logout(): void {
   if (typeof window === "undefined") return;
-  localStorage.removeItem(STORAGE_KEYS.supabaseSession);
   localStorage.removeItem(STORAGE_KEYS.userEmail);
+  localStorage.removeItem(STORAGE_KEYS.userName);
+  localStorage.removeItem(STORAGE_KEYS.userAvatar);
+  // Do NOT clear purchases — they persist even when logged out
 }

@@ -134,9 +134,6 @@ export function rateLimiter(options: RateLimiterOptions = {}) {
  * Pre-configured limiters for different API routes.
  */
 export const limiters = {
-  /** Auth routes: 10 requests per minute (OTP sending, verification) */
-  auth: rateLimiter({ windowMs: 60000, maxRequests: 10 }),
-
   /** Payment routes: 10 requests per minute (order creation, verification) */
   payment: rateLimiter({ windowMs: 60000, maxRequests: 10 }),
 

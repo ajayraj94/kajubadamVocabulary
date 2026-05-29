@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getProductStorageKey } from "@/lib/products";
+import { signInWithGoogle } from "@/lib/supabase";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -14,173 +14,67 @@ export default function LoginModal({
   onClose,
   onLoginSuccess,
 }: LoginModalProps) {
-  const [step, setStep] = useState<"email" | "otp">("email");
-  const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
-  const handleSendOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes("@")) return;
-
+  const handleGoogleLogin = async () => {
     setLoading(true);
     setError(null);
-
     try {
-      const res = await fetch("/api/auth/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await res.json();
-
-      if (!data.success) {
-        setError(data.error || "Failed to send OTP");
-        return;
-      }
-
-      setStep("otp");
+      await signInWithGoogle();
+      // OAuth redirect happens — user will come back logged in
     } catch (err: any) {
-      setError(err.message || "Something went wrong");
-    } finally {
+      setError(err.message || "Failed to sign in with Google");
       setLoading(false);
     }
-  };
-
-  const handleVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!otp || otp.length < 4) return;
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, token: otp }),
-      });
-
-      const data = await res.json();
-
-      if (!data.success) {
-        setError(data.error || "Invalid OTP");
-        return;
-      }
-
-      if (data.session?.access_token) {
-        localStorage.setItem("kv_supabase_session", data.session.access_token);
-      }
-
-      localStorage.setItem("kv_user_email", email);
-
-      const products = data.purchases?.products || [];
-      // Store all products dynamically
-      for (const id of products) {
-        localStorage.setItem(getProductStorageKey(id), "true");
-      }
-
-      onLoginSuccess(email, products);
-
-      resetForm();
-      onClose();
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const resetForm = () => {
-    setStep("email");
-    setEmail("");
-    setOtp("");
-    setError(null);
-  };
-
-  const handleClose = () => {
-    resetForm();
-    onClose();
   };
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-900/95 backdrop-blur-lg border border-gray-700/30 rounded-2xl p-6 max-w-md w-full shadow-2xl">
+      <div className="bg-gray-900/95 backdrop-blur-lg border border-gray-700/30 rounded-2xl p-8 max-w-md w-full shadow-2xl text-center">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-white font-black text-lg">
-            {step === "email" ? "Restore Your Access" : "Enter OTP"}
-          </h3>
-          <button onClick={handleClose} className="text-gray-400 hover:text-white transition-colors">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-white font-black text-lg">Restore Your Access</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        <p className="text-gray-400 text-sm mb-4">
-          {step === "email"
-            ? "Enter the email you used during purchase. We'll send a one-time code."
-            : `Enter the 6-digit code sent to ${email}`}
+        <p className="text-gray-400 text-sm mb-6">
+          Sign in with the Google account you used during purchase to restore your access.
         </p>
 
-        {/* Step 1: Email */}
-        {step === "email" && (
-          <form onSubmit={handleSendOtp} className="space-y-4">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-              required
-            />
-            {error && <p className="text-red-400 text-sm">{error}</p>}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold py-3 rounded-xl transition-all duration-200 disabled:opacity-50"
-            >
-              {loading ? "Sending..." : "Send OTP"}
-            </button>
-          </form>
+        {/* Google Sign-In Button */}
+        <button
+          onClick={handleGoogleLogin}
+          disabled={loading}
+          className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-800 font-bold py-3.5 px-6 rounded-xl transition-all duration-200 disabled:opacity-50 shadow-lg border border-gray-200"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          {loading ? "Signing in..." : "Sign in with Google"}
+        </button>
+
+        {error && (
+          <p className="text-red-400 text-sm mt-4 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+            {error}
+          </p>
         )}
 
-        {/* Step 2: OTP */}
-        {step === "otp" && (
-          <form onSubmit={handleVerifyOtp} className="space-y-4">
-            <input
-              type="text"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              placeholder="Enter 6-digit OTP"
-              maxLength={6}
-              className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 text-center text-2xl tracking-[0.5em] focus:outline-none focus:border-blue-500 transition-colors"
-              required
-            />
-            {error && <p className="text-red-400 text-sm">{error}</p>}
-            <button
-              type="submit"
-              disabled={loading || otp.length < 4}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold py-3 rounded-xl transition-all duration-200 disabled:opacity-50"
-            >
-              {loading ? "Verifying..." : "Verify & Restore Access"}
-            </button>
-            <button
-              type="button"
-              onClick={() => setStep("email")}
-              className="w-full text-gray-400 hover:text-white text-sm transition-colors"
-            >
-              ← Change email
-            </button>
-          </form>
-        )}
-
-
+        <p className="text-gray-500 text-xs mt-6">
+          By signing in, you agree to our{" "}
+          <a href="/terms" className="text-blue-400 hover:text-blue-300 underline">Terms</a>{" "}
+          and{" "}
+          <a href="/privacy" className="text-blue-400 hover:text-blue-300 underline">Privacy Policy</a>
+        </p>
       </div>
     </div>
   );

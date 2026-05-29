@@ -6,7 +6,6 @@ import type { DailyNewsMeta } from "@/lib/daily-news";
 import DailyNewsPageClient from "./DailyNewsPageClient";
 import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
 import { FREE_SLUGS } from "@/lib/access";
-import LoginModal from "@/components/LoginModal";
 import { getProductPrice } from "@/lib/products";
 
 interface Story {
@@ -28,8 +27,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
   const [activeTab, setActiveTab] = useState<"part1" | "part2" | "daily" | "error-detection">("part1");
   const [currentPage, setCurrentPage] = useState(1);
   const [masteredSlugs, setMasteredSlugs] = useState<string[]>([]);
-  const { hasPart1, hasPart2, hasErrorDetection, isLoading: accessLoading, isLoggedIn, userEmail, loginAfterPurchase, logoutUser } = usePurchaseAccess();
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  const { hasPart1, hasPart2, hasErrorDetection, isLoading: accessLoading, isLoggedIn, userEmail, userName, loginWithGoogle, logoutUser } = usePurchaseAccess();
 
   // Init tab from URL param / sessionStorage and load progress on mount
   useEffect(() => {
@@ -104,6 +102,14 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
 
   const activeMasteredCount = activeStories.filter((s) => masteredSlugs.includes(s.slug)).length;
 
+  const handleLoginClick = () => {
+    if (isLoggedIn) {
+      logoutUser();
+    } else {
+      loginWithGoogle();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/40 font-sans relative">
       {/* ── HEADER ── */}
@@ -122,10 +128,10 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
             {isLoggedIn ? (
               <div className="flex items-center gap-2">
                 <span className="hidden sm:inline text-[11px] text-gray-500 font-medium">{userEmail}</span>
-                <button onClick={logoutUser} className="text-[11px] font-bold text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 px-3 py-1 rounded-full transition-all">Logout</button>
+                <button onClick={handleLoginClick} className="text-[11px] font-bold text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 px-3 py-1 rounded-full transition-all">Logout</button>
               </div>
             ) : (
-              <button onClick={() => setShowLoginModal(true)} className="text-[11px] font-bold text-[#1c4a8a] bg-[#1c4a8a]/5 hover:bg-[#1c4a8a]/10 border border-[#1c4a8a]/20 px-3 py-1 rounded-full transition-all whitespace-nowrap">🔑 Restore Access</button>
+              <button onClick={handleLoginClick} className="text-[11px] font-bold text-[#1c4a8a] bg-[#1c4a8a]/5 hover:bg-[#1c4a8a]/10 border border-[#1c4a8a]/20 px-3 py-1 rounded-full transition-all whitespace-nowrap">🔑 Sign in with Google</button>
             )}
           </div>
         </div>
@@ -134,7 +140,6 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
         <div className="pb-2 pt-0.5">
           <div className="max-w-[1600px] mx-auto px-4 lg:px-8">
             <div className="relative bg-gradient-to-br from-white via-blue-50/20 to-orange-50/20 rounded-2xl p-[1px] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)] group">
-              {/* Gradient border glow */}
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-200/40 via-indigo-200/20 to-orange-200/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-2.5 md:p-3">
 
@@ -451,22 +456,12 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 );
               })}
             </div>
-
-            {errorDetectionBlocks.length === 0 && (
-              <div className="bg-white rounded-xl p-8 text-center border border-gray-100 shadow-sm max-w-md mx-auto">
-                <svg className="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <h3 className="text-[16px] font-bold text-gray-700 mb-1">No Questions Found</h3>
-                <p className="text-gray-400 text-[13px]">Error detection questions are being prepared.</p>
-              </div>
-            )}
           </div>
         ) : activeTab === "daily" ? (
           <DailyNewsPageClient dailyNews={dailyNews} />
         ) : (
           <>
-            {/* Stories title - reduced spacing */}
+            {/* Stories title */}
             <div className="mb-0.5 pl-1 flex flex-col md:flex-row md:items-end justify-between gap-0.5">
               <div>
                 <h2 className="text-[18px] font-extrabold text-gray-800 tracking-tight leading-none mb-0.5">{activeTab === "part1" ? "Vocab Part 1" : "Vocab Part 2"}</h2>
@@ -477,7 +472,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
               </div>
             </div>
 
-            {/* Premium banner - reduced */}
+            {/* Premium banner */}
             {!accessLoading && !(activeTab === "part1" ? hasPart1 : hasPart2) && (
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-2 mb-1 flex items-center justify-between flex-wrap gap-2">
                 <div className="flex items-center gap-2">
@@ -556,7 +551,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
               </div>
             )}
 
-            {/* Bottom Pagination — greatly reduced spacing */}
+            {/* Bottom Pagination */}
             {totalPages > 1 && (
               <div className="mt-1 md:mt-2 flex items-center justify-center gap-3 select-none">
                 <button onClick={handlePrevPage} disabled={currentPage === 1}
@@ -576,11 +571,6 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
         )}
       </main>
 
-      <LoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onLoginSuccess={(email, products) => { loginAfterPurchase(email, products); }}
-      />
     </div>
   );
 }

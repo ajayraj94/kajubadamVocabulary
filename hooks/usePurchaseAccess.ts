@@ -1,22 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   hasAccess,
   setAccess,
   restoreAccessFromTransactions,
   isLoggedIn,
   getUserEmail,
-  setUserEmail,
   logout,
 } from "@/lib/access";
+import {
+  createClient,
+  signInWithGoogle,
+  signOut,
+  getSession,
+  syncUserInfo,
+} from "@/lib/supabase";
 import { useRazorpay } from "./useRazorpay";
 import {
   getFailedVerifications,
   removeFailedVerification,
   clearOldFailedVerifications,
 } from "@/lib/access";
-
 
 interface PurchaseAccess {
   hasPart1: boolean;
@@ -25,59 +30,101 @@ interface PurchaseAccess {
   isLoading: boolean;
   isLoggedIn: boolean;
   userEmail: string | null;
+  userName: string | null;
+  userAvatar: string | null;
   unlockPart1: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
   unlockPart2: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
   unlockBundle: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
   unlockErrorDetection: (email?: string, onSuccess?: (product: string) => void) => Promise<void>;
   paymentError: string | null;
   clearPaymentError: () => void;
-  loginAfterPurchase: (email: string, products: string[]) => void;
-  logoutUser: () => void;
+  loginWithGoogle: () => Promise<void>;
+  logoutUser: () => Promise<void>;
+  syncPurchasesFromServer: () => Promise<void>;
 }
 
-/**
- * Hook that reads purchase access state from localStorage.
- * Products are now DYNAMIC — defined in lib/products.ts.
- * New products work automatically.
- */
 export function usePurchaseAccess(): PurchaseAccess {
   const [hasPart1, setHasPart1] = useState(false);
   const [hasPart2, setHasPart2] = useState(false);
   const [hasErrorDetection, setHasErrorDetection] = useState(false);
-
   const [isLoading, setIsLoading] = useState(true);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmailState] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
 
   const { openRazorpayCheckout, error: razorpayError } = useRazorpay();
 
-  useEffect(() => {
-    restoreAccessFromTransactions();
+  /** Fetch purchases from Supabase by user_id and sync to localStorage */
+  const syncPurchasesFromServer = useCallback(async () => {
+    try {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
 
-    setHasPart1(hasAccess("part1"));
-    setHasPart2(hasAccess("part2"));
-    setHasErrorDetection(hasAccess("errorDetection"));
+      const user = session.user;
+      syncUserInfo(session);
+      setLoggedIn(true);
+      setUserEmailState(user.email || null);
+      setUserName(user.user_metadata?.full_name || user.user_metadata?.name || null);
+      setUserAvatar(user.user_metadata?.avatar_url || user.user_metadata?.picture || null);
 
-    setLoggedIn(isLoggedIn());
-    setUserEmailState(getUserEmail());
-    setIsLoading(false);
+      // Fetch transactions for this user
+      const { data: transactions } = await supabase
+        .from("transactions")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("status", "captured");
 
-    // ── Recover any failed payment verifications ──
-    recoverFailedVerifications();
+      if (transactions && transactions.length > 0) {
+        for (const tx of transactions) {
+          if (tx.product === "bundle") {
+            setAccess("part1", true, tx.transaction_id);
+            setAccess("part2", true, tx.transaction_id);
+          } else {
+            setAccess(tx.product, true, tx.transaction_id);
+          }
+        }
+      }
+    } catch (e) {
+      console.error("Failed to sync purchases from server:", e);
+    }
   }, []);
+
+  useEffect(() => {
+    const init = async () => {
+      restoreAccessFromTransactions();
+
+      // Check local state first
+      setHasPart1(hasAccess("part1"));
+      setHasPart2(hasAccess("part2"));
+      setHasErrorDetection(hasAccess("errorDetection"));
+      setLoggedIn(isLoggedIn());
+      setUserEmailState(getUserEmail());
+
+      // Try to sync from server (Google auth)
+      await syncPurchasesFromServer();
+
+      // Re-read after server sync
+      setHasPart1(hasAccess("part1"));
+      setHasPart2(hasAccess("part2"));
+      setHasErrorDetection(hasAccess("errorDetection"));
+
+      // Recover any failed payment verifications
+      recoverFailedVerifications();
+      setIsLoading(false);
+    };
+    init();
+  }, [syncPurchasesFromServer]);
 
   /** Try to re-verify any payments that failed during initial verification. */
   const recoverFailedVerifications = async () => {
     const failed = getFailedVerifications();
     if (failed.length === 0) return;
-
-    // Clear old entries (older than 7 days)
     clearOldFailedVerifications();
-
     for (const item of getFailedVerifications()) {
       try {
-        // Use the dedicated recovery endpoint which uses admin client to save to DB
         const res = await fetch("/api/payment/recover", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -89,7 +136,6 @@ export function usePurchaseAccess(): PurchaseAccess {
         });
         const data = await res.json();
         if (data.success) {
-          console.log(`Recovered DB save for ${item.product}: ${item.paymentId}`);
           removeFailedVerification(item.paymentId);
         }
       } catch (e) {
@@ -105,24 +151,42 @@ export function usePurchaseAccess(): PurchaseAccess {
     }
   }, [razorpayError]);
 
+  const loginWithGoogle = async () => {
+    try {
+      await signInWithGoogle();
+      // OAuth redirects user away, then back to the page
+    } catch (err: any) {
+      setPaymentError(err.message || "Failed to sign in");
+    }
+  };
+
+  const logoutUser = async () => {
+    await signOut();
+    setLoggedIn(false);
+    setUserEmailState(null);
+    setUserName(null);
+    setUserAvatar(null);
+  };
+
   const unlockPart1 = async (email?: string, onSuccess?: (product: string) => void) => {
     if (!email) {
       setAccess("part1", true);
       setHasPart1(true);
-      onSuccess?.('part1');
+      onSuccess?.("part1");
       return;
     }
-
     try {
-      await openRazorpayCheckout('part1', email, (product, transactionId) => {
-        if (product === 'part1') {
+      await openRazorpayCheckout("part1", email, (product, transactionId) => {
+        if (product === "part1") {
           setAccess("part1", true, transactionId);
           setHasPart1(true);
-          onSuccess?.('part1');
+          onSuccess?.("part1");
+          // Sync to server
+          syncPurchasesFromServer();
         }
       });
     } catch (err: any) {
-      setPaymentError(err.message || 'Failed to process payment');
+      setPaymentError(err.message || "Failed to process payment");
     }
   };
 
@@ -130,20 +194,20 @@ export function usePurchaseAccess(): PurchaseAccess {
     if (!email) {
       setAccess("part2", true);
       setHasPart2(true);
-      onSuccess?.('part2');
+      onSuccess?.("part2");
       return;
     }
-
     try {
-      await openRazorpayCheckout('part2', email, (product, transactionId) => {
-        if (product === 'part2') {
+      await openRazorpayCheckout("part2", email, (product, transactionId) => {
+        if (product === "part2") {
           setAccess("part2", true, transactionId);
           setHasPart2(true);
-          onSuccess?.('part2');
+          onSuccess?.("part2");
+          syncPurchasesFromServer();
         }
       });
     } catch (err: any) {
-      setPaymentError(err.message || 'Failed to process payment');
+      setPaymentError(err.message || "Failed to process payment");
     }
   };
 
@@ -153,25 +217,24 @@ export function usePurchaseAccess(): PurchaseAccess {
       setAccess("part2", true);
       setHasPart1(true);
       setHasPart2(true);
-      onSuccess?.('part1');
-      onSuccess?.('part2');
+      onSuccess?.("part1");
+      onSuccess?.("part2");
       return;
     }
-
     try {
-      await openRazorpayCheckout('bundle', email, (product, transactionId) => {
-        if (product === 'bundle') {
-          // Bundle payment successful — grant access to BOTH Part 1 and Part 2
+      await openRazorpayCheckout("bundle", email, (product, transactionId) => {
+        if (product === "bundle") {
           setAccess("part1", true, transactionId);
           setAccess("part2", true, transactionId);
           setHasPart1(true);
           setHasPart2(true);
-          onSuccess?.('part1');
-          onSuccess?.('part2');
+          onSuccess?.("part1");
+          onSuccess?.("part2");
+          syncPurchasesFromServer();
         }
       });
     } catch (err: any) {
-      setPaymentError(err.message || 'Failed to process bundle payment');
+      setPaymentError(err.message || "Failed to process bundle payment");
     }
   };
 
@@ -179,47 +242,24 @@ export function usePurchaseAccess(): PurchaseAccess {
     if (!email) {
       setAccess("errorDetection", true);
       setHasErrorDetection(true);
-      onSuccess?.('errorDetection');
+      onSuccess?.("errorDetection");
       return;
     }
-
     try {
-      await openRazorpayCheckout('errorDetection', email, (product, transactionId) => {
-        if (product === 'errorDetection') {
+      await openRazorpayCheckout("errorDetection", email, (product, transactionId) => {
+        if (product === "errorDetection") {
           setAccess("errorDetection", true, transactionId);
           setHasErrorDetection(true);
-          onSuccess?.('errorDetection');
+          onSuccess?.("errorDetection");
+          syncPurchasesFromServer();
         }
       });
     } catch (err: any) {
-      setPaymentError(err.message || 'Failed to process payment');
+      setPaymentError(err.message || "Failed to process payment");
     }
   };
 
-  const clearPaymentError = () => {
-    setPaymentError(null);
-  };
-
-  /** Called after successful Supabase OTP login to restore purchases */
-  const loginAfterPurchase = (email: string, products: string[]) => {
-    setUserEmail(email);
-    setLoggedIn(true);
-    setUserEmailState(email);
-
-    for (const id of products) {
-      setAccess(id, true);
-    }
-
-    if (products.includes('part1')) setHasPart1(true);
-    if (products.includes('part2')) setHasPart2(true);
-    if (products.includes('errorDetection')) setHasErrorDetection(true);
-  };
-
-  const logoutUser = () => {
-    logout();
-    setLoggedIn(false);
-    setUserEmailState(null);
-  };
+  const clearPaymentError = () => setPaymentError(null);
 
   return {
     hasPart1,
@@ -228,13 +268,16 @@ export function usePurchaseAccess(): PurchaseAccess {
     isLoading,
     isLoggedIn: loggedIn,
     userEmail,
+    userName,
+    userAvatar,
     unlockPart1,
     unlockPart2,
     unlockBundle,
     unlockErrorDetection,
     paymentError,
     clearPaymentError,
-    loginAfterPurchase,
+    loginWithGoogle,
     logoutUser,
+    syncPurchasesFromServer,
   };
 }

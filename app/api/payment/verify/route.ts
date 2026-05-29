@@ -95,6 +95,7 @@ export async function POST(request: NextRequest) {
         try {
             const supabase = await createServerSupabase();
             const userEmail = payment.notes?.email || payment.email || '';
+            const supabaseUserId = payment.notes?.supabase_user_id || null;
 
             if (userEmail) {
                 await supabase.rpc('add_purchase', {
@@ -103,9 +104,10 @@ export async function POST(request: NextRequest) {
                     p_transaction_id: paymentId,
                     p_payment_id: paymentId,
                     p_amount: payment.amount || 0,
+                    p_user_id: supabaseUserId,
                 });
 
-                console.log(`Purchase saved to Supabase: ${userEmail} - ${product}`);
+                console.log(`Purchase saved to Supabase: ${userEmail} - ${product} (user_id: ${supabaseUserId})`);
             }
         } catch (dbError) {
             // Log but don't fail — localStorage fallback still works

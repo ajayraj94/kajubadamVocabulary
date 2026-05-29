@@ -78,6 +78,9 @@ async function handlePaymentCaptured(payload: any) {
     return { success: false, error: `Status: ${payment.status}` };
   }
 
+  // Extract user_id from payment notes (set by client during Razorpay checkout)
+  const supabaseUserId = payment.notes?.supabase_user_id || null;
+
   try {
     const supabase = await createServerSupabase();
     await supabase.rpc('add_purchase', {
@@ -86,9 +89,10 @@ async function handlePaymentCaptured(payload: any) {
       p_transaction_id: payment.id,
       p_payment_id: payment.id,
       p_amount: payment.amount || 0,
+      p_user_id: supabaseUserId,
     });
 
-    console.log(`Webhook: Purchase saved — ${userEmail} — ${product} — ${payment.id}`);
+    console.log(`Webhook: Purchase saved — ${userEmail} — ${product} — ${payment.id} (user_id: ${supabaseUserId})`);
     return { success: true };
   } catch (dbError) {
     console.error('Webhook: Failed to save purchase:', dbError);
