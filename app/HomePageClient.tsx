@@ -387,36 +387,73 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
       </div>
 
       {/* ── TABS: Horizontal scroll on mobile, centered on desktop ── */}
-      <div id="content" className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+      <div id="content" className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.06)]">
         <div className="max-w-[1600px] mx-auto relative">
           {/* Gradient fade edges (mobile only) to hint at scrollability */}
-          <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none md:hidden"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none md:hidden"></div>
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none md:hidden"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none md:hidden"></div>
 
           {/* Scrollable tab strip */}
-          <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-1 md:gap-1.5 px-4 md:px-8 md:justify-center py-2 md:py-2.5">
+          <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-1.5 md:gap-2 px-4 md:px-8 md:justify-center py-2.5 md:py-2">
             {TABS.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-none whitespace-nowrap font-bold transition-all duration-200 rounded-lg text-[11px] md:text-[13px] py-1.5 md:py-2 px-2 md:px-3.5 border ${
+                  className={`flex-none transition-all duration-200 select-none ${
                     isActive
-                      ? 'shadow-sm border-transparent'
-                      : 'text-gray-400 border-transparent hover:text-gray-600 hover:border-gray-200 hover:bg-gray-50/80'
+                      ? 'shadow-md shadow-black/5'
+                      : 'hover:-translate-y-0.5 active:scale-95'
                   }`}
-                  style={{
-                    backgroundColor: isActive ? `${tab.activeColor}12` : 'transparent',
-                    color: isActive ? tab.activeColor : undefined,
-                    boxShadow: isActive ? `0 0 0 1px ${tab.activeColor}30` : undefined,
-                  }}
                 >
-                  <span className="inline-flex items-center gap-1.5 md:gap-2">
-                    <span className="text-[13px] md:text-[15px] leading-none">{tab.icon}</span>
-                    <span className="md:hidden tracking-tight">{tab.shortLabel}</span>
-                    <span className="hidden md:inline tracking-wide">{tab.label}</span>
-                  </span>
+                  {/* Mobile: stacked icon + label pill */}
+                  <div
+                    className={`md:hidden flex flex-col items-center justify-center rounded-2xl px-3.5 py-2 min-w-[60px] transition-all duration-200 border ${
+                      isActive
+                        ? 'border-gray-200/80'
+                        : 'border-transparent hover:border-gray-100'
+                    }`}
+                    style={{
+                      backgroundColor: isActive ? `${tab.activeColor}0d` : 'transparent',
+                      boxShadow: isActive ? `inset 0 0 0 1.5px ${tab.activeColor}25, 0 4px 12px ${tab.activeColor}15` : undefined,
+                    }}
+                  >
+                    <span className="text-xl leading-none mb-1" style={{
+                      filter: isActive ? 'none' : 'grayscale(1) opacity(0.5)',
+                      transition: 'filter 0.2s',
+                    }}>{tab.icon}</span>
+                    <span
+                      className="text-[10px] font-black tracking-tight leading-tight"
+                      style={{ color: isActive ? tab.activeColor : '#9ca3af' }}
+                    >
+                      {tab.shortLabel}
+                    </span>
+                    {/* Active dot indicator */}
+                    {isActive && (
+                      <span
+                        className="mt-1 w-1.5 h-1.5 rounded-full"
+                        style={{ backgroundColor: tab.activeColor }}
+                      />
+                    )}
+                  </div>
+
+                  {/* Desktop: inline icon + label */}
+                  <div
+                    className={`hidden md:inline-flex items-center gap-2 font-bold tracking-wide transition-all duration-200 rounded-xl px-4 py-2 border ${
+                      isActive
+                        ? 'shadow-sm'
+                        : 'text-gray-400 border-transparent hover:text-gray-700 hover:border-gray-200 hover:bg-gray-50/80'
+                    }`}
+                    style={{
+                      color: isActive ? tab.activeColor : undefined,
+                      backgroundColor: isActive ? `${tab.activeColor}0d` : 'transparent',
+                      boxShadow: isActive ? `0 0 0 1.5px ${tab.activeColor}25` : undefined,
+                    }}
+                  >
+                    <span className="text-[15px] leading-none">{tab.icon}</span>
+                    <span className="text-[13px]">{tab.label}</span>
+                  </div>
                 </button>
               );
             })}
