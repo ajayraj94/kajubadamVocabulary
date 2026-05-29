@@ -269,7 +269,7 @@ export default function PricingPage() {
             <div className="flex items-center justify-center gap-3">
               <span className="text-gray-400 text-[14px] line-through">₹{getProductPrice('part1') + getProductPrice('part2')}</span>
               <span className="text-white text-[28px] font-black">₹{getProductPrice('bundle')}</span>
-              <span className="bg-green-500/20 border border-green-500/30 text-green-400 text-[11px] font-bold px-2.5 py-1 rounded-full">Save ₹149</span>
+              <span className="bg-green-500/20 border border-green-500/30 text-green-400 text-[11px] font-bold px-2.5 py-1 rounded-full">Save ₹{getProductPrice('part1') + getProductPrice('part2') - getProductPrice('bundle')}</span>
             </div>
             {isLoading || processingPayment ? (
               <div className="mt-4 h-12 max-w-xs mx-auto bg-white/5 rounded-xl animate-pulse" />
