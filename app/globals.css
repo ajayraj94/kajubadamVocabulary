@@ -211,6 +211,15 @@
     }
 }
 
+/* ═══ SCROLLBAR HIDE — for horizontal scrollable tab bars ═══ */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* ═══ MARQUEE ANIMATION ═══ */
 @keyframes marquee {
   0% {

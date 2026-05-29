@@ -26,7 +26,16 @@ interface Props {
 }
 
 export default function HomePageClient({ part1Stories, part2Stories, dailyNews, totalErrorDetectionQuestions, errorDetectionTotalPages, totalSentenceImprovementQuestions, sentenceImprovementTotalPages }: Props) {
-  const [activeTab, setActiveTab] = useState<"part1" | "part2" | "daily" | "error-detection" | "sentence-improvement">("part1");
+  const TABS = [
+    { id: 'part1', label: 'VOCAB PART 1', shortLabel: 'P1', icon: '📚', activeColor: '#1c4a8a' },
+    { id: 'part2', label: 'VOCAB PART 2', shortLabel: 'P2', icon: '📚', activeColor: '#1c4a8a' },
+    { id: 'daily', label: 'DAILY NEWS VOCAB', shortLabel: 'News', icon: '📰', activeColor: '#FF7722' },
+    { id: 'error-detection', label: 'ERROR DETECTION', shortLabel: 'Error', icon: '🔍', activeColor: '#8B0000' },
+    { id: 'sentence-improvement', label: 'SENTENCE IMPROVEMENT', shortLabel: 'Improve', icon: '✏️', activeColor: '#0d7a3e' },
+  ] as const;
+  type TabId = typeof TABS[number]['id'];
+
+  const [activeTab, setActiveTab] = useState<TabId>("part1");
   const [currentPage, setCurrentPage] = useState(1);
   const [masteredSlugs, setMasteredSlugs] = useState<string[]>([]);
   const { hasPart1, hasPart2, hasErrorDetection, hasSentenceImprovement, isLoading: accessLoading, isLoggedIn, userEmail, userName, loginWithGoogle, logoutUser } = usePurchaseAccess();
@@ -37,11 +46,12 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
     const tabParam = params.get("tab");
     const savedTab = sessionStorage.getItem("activeTab");
 
-    if (tabParam === "part1" || tabParam === "part2" || tabParam === "daily" || tabParam === "error-detection" || tabParam === "sentence-improvement") {
-      setActiveTab(tabParam);
+    const TABS_IDS = TABS.map(t => t.id) as TabId[];
+    if (TABS_IDS.includes(tabParam as TabId)) {
+      setActiveTab(tabParam as TabId);
       sessionStorage.setItem("activeTab", tabParam);
-    } else if (savedTab === "part1" || savedTab === "part2" || savedTab === "daily" || savedTab === "error-detection" || savedTab === "sentence-improvement") {
-      setActiveTab(savedTab);
+    } else if (TABS_IDS.includes(savedTab as TabId)) {
+      setActiveTab(savedTab as TabId);
     }
 
     const saved = localStorage.getItem("mastered_stories");
@@ -376,29 +386,41 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
         </div>
       </div>
 
-      {/* ── TABS (reduced padding) ── */}
-      <div id="content" className="bg-white border-b border-gray-200">
-        <div className="max-w-[1600px] mx-auto flex justify-center gap-8 md:gap-[80px]">
-          <button onClick={() => setActiveTab("part1")}
-            className={`font-bold text-[13px] md:text-[15px] tracking-wide py-1.5 md:py-2 px-3 md:px-6 transition-all ${activeTab === "part1" ? "text-[#1c4a8a] border-b-4 border-[#1c4a8a]" : "text-gray-400 hover:text-gray-700"}`}>
-            VOCAB PART 1
-          </button>
-          <button onClick={() => setActiveTab("part2")}
-            className={`font-bold text-[13px] md:text-[15px] tracking-wide py-1.5 md:py-2 px-3 md:px-6 transition-all ${activeTab === "part2" ? "text-[#1c4a8a] border-b-4 border-[#1c4a8a]" : "text-gray-400 hover:text-gray-700"}`}>
-            VOCAB PART 2
-          </button>
-          <button onClick={() => setActiveTab("daily")}
-            className={`font-bold text-[13px] md:text-[15px] tracking-wide py-1.5 md:py-2 px-3 md:px-6 transition-all ${activeTab === "daily" ? "text-[#FF7722] border-b-4 border-[#FF7722]" : "text-gray-400 hover:text-gray-700"}`}>
-            DAILY NEWS VOCAB
-          </button>
-          <button onClick={() => setActiveTab("error-detection")}
-            className={`font-bold text-[13px] md:text-[15px] tracking-wide py-1.5 md:py-2 px-3 md:px-6 transition-all ${activeTab === "error-detection" ? "text-[#8B0000] border-b-4 border-[#8B0000]" : "text-gray-400 hover:text-gray-700"}`}>
-            SSC ERROR DETECTION
-          </button>
-          <button onClick={() => setActiveTab("sentence-improvement")}
-            className={`font-bold text-[13px] md:text-[15px] tracking-wide py-1.5 md:py-2 px-3 md:px-6 transition-all ${activeTab === "sentence-improvement" ? "text-[#0d7a3e] border-b-4 border-[#0d7a3e]" : "text-gray-400 hover:text-gray-700"}`}>
-            SENTENCE IMPROVEMENT
-          </button>
+      {/* ── TABS: Horizontal scroll on mobile, centered on desktop ── */}
+      <div id="content" className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+        <div className="max-w-[1600px] mx-auto relative">
+          {/* Gradient fade edges (mobile only) to hint at scrollability */}
+          <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none md:hidden"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none md:hidden"></div>
+
+          {/* Scrollable tab strip */}
+          <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-1 md:gap-1.5 px-4 md:px-8 md:justify-center py-2 md:py-2.5">
+            {TABS.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex-none whitespace-nowrap font-bold transition-all duration-200 rounded-lg text-[11px] md:text-[13px] py-1.5 md:py-2 px-2 md:px-3.5 border ${
+                    isActive
+                      ? 'shadow-sm border-transparent'
+                      : 'text-gray-400 border-transparent hover:text-gray-600 hover:border-gray-200 hover:bg-gray-50/80'
+                  }`}
+                  style={{
+                    backgroundColor: isActive ? `${tab.activeColor}12` : 'transparent',
+                    color: isActive ? tab.activeColor : undefined,
+                    boxShadow: isActive ? `0 0 0 1px ${tab.activeColor}30` : undefined,
+                  }}
+                >
+                  <span className="inline-flex items-center gap-1.5 md:gap-2">
+                    <span className="text-[13px] md:text-[15px] leading-none">{tab.icon}</span>
+                    <span className="md:hidden tracking-tight">{tab.shortLabel}</span>
+                    <span className="hidden md:inline tracking-wide">{tab.label}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
