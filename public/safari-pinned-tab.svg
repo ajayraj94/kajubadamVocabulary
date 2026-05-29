@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Safari pinned tab icon MUST be a single solid color (black) with no gradients -->
+  <!-- The browser will apply its own color based on theme-color or mask-icon color attribute -->
+
+  <!-- Letter "K" -->
+  <!-- K Vertical Stem -->
+  <rect x="120" y="140" width="40" height="240" rx="10" fill="black" />
+  
+  <!-- K Upper Diagonal: STYLIZED ALMOND (Badam) Shape -->
+  <path d="M 160,240 C 180,180 230,140 295,135 C 255,190 210,240 165,270 Z" fill="black" />
+
+  <!-- K Lower Diagonal: STYLIZED CASHEW (Kaju) Shape -->
+  <path d="M 160,265 C 200,285 260,320 280,380 C 240,380 190,340 170,300 C 160,285 155,275 160,265 Z" fill="black" />
+
+  <!-- Letter "v" -->
+  <path d="M 290,200 L 325,200 L 350,320 L 385,200 L 420,200 L 350,380 Z" fill="black" />
+
+  <!-- Mini Almond Nut -->
+  <path d="M 405,100 C 420,85 440,105 425,120 C 410,135 390,115 405,100 Z" fill="black" />
+  <!-- Mini Cashew Nut -->
+  <path d="M 430,115 C 445,105 460,120 450,135 C 440,145 425,130 430,115 Z" fill="black" />
+</svg>

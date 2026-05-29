@@ -72,10 +72,14 @@ export const metadata: Metadata = {
       { url: "/favicon-16x16.png?v=3", type: "image/png", sizes: "16x16" },
       { url: "/favicon.svg?v=3", type: "image/svg+xml", sizes: "any" },
       { url: "/icon-192x192.png?v=3", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512x512.png?v=3", type: "image/png", sizes: "512x512" },
     ],
-    apple: "/apple-touch-icon.png?v=3",
+    apple: [
+      { url: "/apple-touch-icon.png?v=3", sizes: "180x180", type: "image/png" },
+    ],
     other: [
       { rel: "shortcut icon", url: "/favicon-32x32.png?v=3" },
+      { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#fbbf24" },
     ],
   },
 };
