@@ -6,21 +6,29 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
 
-const svgPath = join(root, "public", "favicon.svg");
-const svgBuffer = readFileSync(svgPath);
+// Complex SVG (gradients, details) — used for larger sizes (180px+)
+const svgFullPath = join(root, "public", "favicon.svg");
+const svgFullBuffer = readFileSync(svgFullPath);
+
+// Simplified SVG (solid colors, bold shapes) — used for small sizes (≤32px, favicon.ico)
+// At small sizes, gradients and fine details become an unreadable blur.
+const svgSimplePath = join(root, "public", "favicon-simple.svg");
+const svgSimpleBuffer = readFileSync(svgSimplePath);
 
 const sizes = [
-  { name: "favicon-16x16.png", size: 16 },
-  { name: "favicon-32x32.png", size: 32 },
-  { name: "apple-touch-icon.png", size: 180 },
-  { name: "icon-192x192.png", size: 192 },
-  { name: "icon-512x512.png", size: 512 },
+  // Small sizes use the simplified SVG for crisp rendering at tiny resolutions
+  { name: "favicon-16x16.png", size: 16, source: svgSimpleBuffer },
+  { name: "favicon-32x32.png", size: 32, source: svgSimpleBuffer },
+  // Large sizes use the full complex SVG for maximum detail
+  { name: "apple-touch-icon.png", size: 180, source: svgFullBuffer },
+  { name: "icon-192x192.png", size: 192, source: svgFullBuffer },
+  { name: "icon-512x512.png", size: 512, source: svgFullBuffer },
 ];
 
 async function main() {
-  for (const { name, size } of sizes) {
+  for (const { name, size, source } of sizes) {
     const outPath = join(root, "public", name);
-    await sharp(svgBuffer)
+    await sharp(source)
       .resize(size, size)
       .png()
       .toFile(outPath);
@@ -28,10 +36,10 @@ async function main() {
   }
 
   // Generate favicon.ico (multi-size ICO with 16x16 + 32x32 + 48x48)
-  // Sharp can't output .ico directly, so we generate PNGs and write them as ICO header
-  const ico16 = await sharp(svgBuffer).resize(16, 16).png().toBuffer();
-  const ico32 = await sharp(svgBuffer).resize(32, 32).png().toBuffer();
-  const ico48 = await sharp(svgBuffer).resize(48, 48).png().toBuffer();
+  // All ICO sizes use the simplified SVG for crisp tab rendering
+  const ico16 = await sharp(svgSimpleBuffer).resize(16, 16).png().toBuffer();
+  const ico32 = await sharp(svgSimpleBuffer).resize(32, 32).png().toBuffer();
+  const ico48 = await sharp(svgSimpleBuffer).resize(48, 48).png().toBuffer();
 
   // Build ICO file manually
   // ICO header: reserved(2) + type(2) + count(2)
@@ -68,7 +76,7 @@ async function main() {
 
   const icoBuffer = Buffer.concat([header, ...dirEntries, ...imageData]);
   writeFileSync(join(root, "public", "favicon.ico"), icoBuffer);
-  console.log(`✅ Generated favicon.ico (16x16 + 32x32 + 48x48)`);
+  console.log(`✅ Generated favicon.ico (16x16 + 32x32 + 48x48 — simplified)`);
 }
 
 main().catch(console.error);
