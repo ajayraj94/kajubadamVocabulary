@@ -7,6 +7,21 @@ import remarkGfm from "remark-gfm";
 import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
 import type { ErrorDetectionQuestion } from "@/lib/error-detection";
 
+function renderBold(text: string): React.ReactNode {
+    const parts = text.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((part, i) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+            const word = part.slice(2, -2);
+            return (
+                <strong key={i} style={{ fontWeight: 'bold', color: '#CC5500' }}>
+                    {word}
+                </strong>
+            );
+        }
+        return part;
+    });
+}
+
 const OPTION_LETTERS = ["A", "B", "C", "D"];
 
 type FilterMode = "all" | "correct" | "incorrect" | "skip";
@@ -399,6 +414,23 @@ export default function ErrorDetectionQuizClient({
                 </div>
               </div>
             </div>
+
+                        {/* Start Quiz Action Row */}
+                        <div className="px-6 md:px-8 py-3 md:py-4 flex items-center justify-between flex-wrap gap-3 border-t border-amber-100/40">
+                            <div>
+                                <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Reading Passage</div>
+                                <div className="text-[13px] text-gray-600 mt-0.5">Page {page} &middot; {totalQ} questions</div>
+                            </div>
+                            <button
+                                onClick={handleStartQuiz}
+                                className="bg-[#8B0000] hover:bg-[#6B0000] active:bg-[#4A0000] text-white font-bold text-sm md:text-base px-5 md:px-7 py-2.5 md:py-3 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2"
+                            >
+                                <span className="text-lg">&#128221;</span>
+                                <span>Start Quiz</span>
+                                <span className="text-[10px] bg-white/20 rounded px-1.5 py-0.5">{totalQ}</span>
+                            </button>
+                        </div>
+
             <div className="bg-gradient-to-r from-amber-50 to-orange-50/60 border-t border-amber-100 px-6 md:px-8 py-3 flex items-center gap-5 text-xs md:text-sm text-amber-700 font-medium flex-wrap">
               <span className="flex items-center gap-1.5">&#9989; +1 for correct</span>
               <span className="w-1 h-1 rounded-full bg-amber-300 shrink-0" />
@@ -444,7 +476,7 @@ export default function ErrorDetectionQuizClient({
                   {q.questionText && (
                     <div className="reading-body text-[14px] md:text-[16px] text-slate-800 font-medium mb-3 leading-[1.7] bg-gradient-to-br from-amber-50/60 to-white border border-amber-200/50 rounded-xl p-4 md:p-5 shadow-sm">
                       <span className="text-amber-400 text-[16px] mr-1">&ldquo;</span>
-                      {q.questionText}
+                      {renderBold(q.questionText)}
                       <span className="text-amber-400 text-[16px] ml-1">&rdquo;</span>
                     </div>
                   )}
@@ -631,7 +663,7 @@ export default function ErrorDetectionQuizClient({
                       <div key={q.id} className="border-l-2 border-gray-200 pl-4">
                         <p className="text-[13px] font-bold text-gray-700">Q.{q.id}. {q.title}</p>
                         {q.questionText && (
-                          <p className="text-[13px] text-gray-600 italic mt-1 leading-relaxed">&ldquo;{q.questionText}&rdquo;</p>
+                          <p className="text-[13px] text-gray-600 italic mt-1 leading-relaxed">&ldquo;{renderBold(q.questionText)}&rdquo;</p>
                         )}
                       </div>
                     ))}
@@ -717,7 +749,7 @@ export default function ErrorDetectionQuizClient({
                       )}
                       {currentQuestion.questionText && (
                         <div className="text-[14px] md:text-[15px] text-slate-800 font-medium mb-3 leading-[1.6] bg-slate-50 border border-slate-100 rounded-lg p-3">
-                          &ldquo;{currentQuestion.questionText}&rdquo;
+                          &ldquo;{renderBold(currentQuestion.questionText)}&rdquo;
                         </div>
                       )}
 
