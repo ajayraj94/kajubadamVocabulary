@@ -779,38 +779,7 @@ export default function SentenceImprovementQuizClient({
                         })}
                       </div>
 
-                      {/* Explanation */}
-                      {showExplanation && (
-                        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5 mt-5">
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="text-[12px] font-black text-emerald-700 uppercase tracking-wider">&#128161; Explanation</span>
-                            <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
-                              selectedAns === currentQuestion.correctAnswer ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-                            }`}>
-                              {selectedAns === currentQuestion.correctAnswer
-                                ? "&#10003; Correct!"
-                                : `&#10007; Incorrect &mdash; Correct: ${currentQuestion.correctAnswer}`}
-                            </span>
-                            <button
-                              onClick={() => setShowExplanation(false)}
-                              className="ml-auto text-emerald-400 hover:text-emerald-600 transition"
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
-                          </div>
-                          {currentQuestion.fullExplanation && (
-                            <div className="reading-body text-[13px] md:text-[14px]">
-                              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                                {currentQuestion.fullExplanation}
-                              </ReactMarkdown>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Mobile — sticky Prev/Next after explanation */}
+                      {/* Mobile — Prev/Next between options and explanation */}
                       <div className="flex items-center gap-2 mt-4 lg:hidden">
                         <button
                           onClick={handlePrev}
@@ -841,6 +810,37 @@ export default function SentenceImprovementQuizClient({
                           </svg>
                         </button>
                       </div>
+
+                      {/* Explanation */}
+                      {showExplanation && (
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5 mt-5">
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="text-[12px] font-black text-emerald-700 uppercase tracking-wider">&#128161; Explanation</span>
+                            <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                              selectedAns === currentQuestion.correctAnswer ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                            }`}>
+                              {selectedAns === currentQuestion.correctAnswer
+                                ? "&#10003; Correct!"
+                                : `&#10007; Incorrect &mdash; Correct: ${currentQuestion.correctAnswer}`}
+                            </span>
+                            <button
+                              onClick={() => setShowExplanation(false)}
+                              className="ml-auto text-emerald-400 hover:text-emerald-600 transition"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                          {currentQuestion.fullExplanation && (
+                            <div className="reading-body text-[13px] md:text-[14px]">
+                              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                                {currentQuestion.fullExplanation}
+                              </ReactMarkdown>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -786,6 +786,39 @@ export default function SagaVocabQuizClient({
                                             })}
                                         </div>
 
+                                        {/* Mobile — Prev/Next between options and explanation */}
+                                        <div className="flex items-center gap-2 mt-4 lg:hidden">
+                                            <button
+                                                onClick={handlePrev}
+                                                disabled={currentQIndex === 0}
+                                                className={`flex-1 flex items-center justify-center gap-1 font-bold text-xs px-3 py-2.5 rounded-lg shadow-sm transition-all duration-150 active:scale-95 ${currentQIndex === 0
+                                                    ? "bg-slate-100 text-slate-300 cursor-not-allowed shadow-none"
+                                                    : "bg-slate-700 hover:bg-slate-800 text-white hover:shadow-md"
+                                                    }`}
+                                            >
+                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+                                                </svg>
+                                                <span>Prev</span>
+                                            </button>
+                                            <button
+                                                onClick={handleNext}
+                                                disabled={currentQIndex >= totalQuestions - 1}
+                                                style={currentQIndex >= totalQuestions - 1 ? undefined : { backgroundColor: theme.accent }}
+                                                onMouseEnter={(e) => { if (currentQIndex < totalQuestions - 1) e.currentTarget.style.backgroundColor = theme.accentDark; }}
+                                                onMouseLeave={(e) => { if (currentQIndex < totalQuestions - 1) e.currentTarget.style.backgroundColor = theme.accent; }}
+                                                className={`flex-1 flex items-center justify-center gap-1 font-bold text-xs px-3 py-2.5 rounded-lg shadow-sm transition-all duration-150 active:scale-95 ${currentQIndex >= totalQuestions - 1
+                                                    ? "bg-slate-100 text-slate-300 cursor-not-allowed shadow-none"
+                                                    : "text-white hover:shadow-md"
+                                                    }`}
+                                            >
+                                                <span>Next</span>
+                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </button>
+                                        </div>
+
                                         {/* ── Explanation ── */}
                                         {showExplanation && (
                                             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-4">
@@ -831,39 +864,6 @@ export default function SagaVocabQuizClient({
                                                 </p>
                                             </div>
                                         )}
-
-                                        {/* Mobile — sticky Prev/Next after explanation */}
-                                        <div className="flex items-center gap-2 mt-4 lg:hidden">
-                                            <button
-                                                onClick={handlePrev}
-                                                disabled={currentQIndex === 0}
-                                                className={`flex-1 flex items-center justify-center gap-1 font-bold text-xs px-3 py-2.5 rounded-lg shadow-sm transition-all duration-150 active:scale-95 ${currentQIndex === 0
-                                                    ? "bg-slate-100 text-slate-300 cursor-not-allowed shadow-none"
-                                                    : "bg-slate-700 hover:bg-slate-800 text-white hover:shadow-md"
-                                                    }`}
-                                            >
-                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-                                                </svg>
-                                                <span>Prev</span>
-                                            </button>
-                                            <button
-                                                onClick={handleNext}
-                                                disabled={currentQIndex >= totalQuestions - 1}
-                                                style={currentQIndex >= totalQuestions - 1 ? undefined : { backgroundColor: theme.accent }}
-                                                onMouseEnter={(e) => { if (currentQIndex < totalQuestions - 1) e.currentTarget.style.backgroundColor = theme.accentDark; }}
-                                                onMouseLeave={(e) => { if (currentQIndex < totalQuestions - 1) e.currentTarget.style.backgroundColor = theme.accent; }}
-                                                className={`flex-1 flex items-center justify-center gap-1 font-bold text-xs px-3 py-2.5 rounded-lg shadow-sm transition-all duration-150 active:scale-95 ${currentQIndex >= totalQuestions - 1
-                                                    ? "bg-slate-100 text-slate-300 cursor-not-allowed shadow-none"
-                                                    : "text-white hover:shadow-md"
-                                                    }`}
-                                            >
-                                                <span>Next</span>
-                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

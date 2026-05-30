@@ -555,32 +555,7 @@ export default function DailyNewsVocabQuizClient({
                                                 })}
                                             </div>
 
-                                            {/* Solution Panel (auto-shown after answer) */}
-                                            {selectedAns && showSolution && (
-                                                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 md:p-4 max-w-xl mb-2">
-                                                    <div className="flex items-center justify-between mb-1.5">
-                                                        <h4 className="text-amber-800 font-bold text-xs md:text-sm flex items-center gap-1.5">
-                                                            <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                                                            </svg>
-                                                            Explanation
-                                                        </h4>
-                                                        <span className={`text-[10px] md:text-xs font-bold px-1.5 py-0.5 rounded-full ${selectedAns === currentQuestion.correctAnswer
-                                                            ? "bg-green-100 text-green-700"
-                                                            : "bg-red-100 text-red-700"
-                                                            }`}>
-                                                            {selectedAns === currentQuestion.correctAnswer
-                                                                ? "✓ Correct"
-                                                                : `✗ Correct answer: ${currentQuestion.correctAnswer}`}
-                                                        </span>
-                                                    </div>
-                                                    <p className="text-amber-900 text-[12px] md:text-[13px] leading-relaxed">
-                                                        {currentQuestion.explanation}
-                                                    </p>
-                                                </div>
-                                            )}
-
-                                            {/* Mobile — sticky Prev/Next after explanation */}
+                                            {/* Mobile — Prev/Next between options and explanation */}
                                             <div className="flex items-center gap-2 mt-3 lg:hidden">
                                                 <button
                                                     onClick={handlePrev}
@@ -609,6 +584,31 @@ export default function DailyNewsVocabQuizClient({
                                                     </svg>
                                                 </button>
                                             </div>
+
+                                            {/* Solution Panel (auto-shown after answer) */}
+                                            {selectedAns && showSolution && (
+                                                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 md:p-4 max-w-xl mb-2">
+                                                    <div className="flex items-center justify-between mb-1.5">
+                                                        <h4 className="text-amber-800 font-bold text-xs md:text-sm flex items-center gap-1.5">
+                                                            <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                                            </svg>
+                                                            Explanation
+                                                        </h4>
+                                                        <span className={`text-[10px] md:text-xs font-bold px-1.5 py-0.5 rounded-full ${selectedAns === currentQuestion.correctAnswer
+                                                            ? "bg-green-100 text-green-700"
+                                                            : "bg-red-100 text-red-700"
+                                                            }`}>
+                                                            {selectedAns === currentQuestion.correctAnswer
+                                                                ? "✓ Correct"
+                                                                : `✗ Correct answer: ${currentQuestion.correctAnswer}`}
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-amber-900 text-[12px] md:text-[13px] leading-relaxed">
+                                                        {currentQuestion.explanation}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 )}
