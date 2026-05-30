@@ -66,15 +66,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon1.png", type: "image/png", sizes: "512x512" },
-    ],
-    apple: [
-      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-  },
+  // favicon.ico and apple-icon.png are auto-discovered from app/ directory
+  // See: https://nextjs.org/docs/app/api-reference/file-conventions/metadata-files
 };
 
 export default function RootLayout({
@@ -96,11 +89,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-KFLQ24ZX');`,
           }}
         />
-        {/* Direct favicon/apple-touch-icon links — bypasses metadata API for iPad Safari reliability */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon1.png" type="image/png" sizes="512x512" />
-        <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
-        <link rel="shortcut icon" href="/favicon.ico" />
+        {/* PNG favicon — iPad Safari renders PNG favicons more reliably than ICO */}
+        <link rel="icon" type="image/png" href="/favicon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="kajubadam" />
