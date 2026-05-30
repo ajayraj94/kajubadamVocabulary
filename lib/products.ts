@@ -82,8 +82,8 @@ export const PRODUCTS: Record<string, ProductConfig> = {
   },
   sentenceImprovement: {
     id: "sentenceImprovement",
-    label: "Sentence Improvement — ₹110",
-    defaultPrice: 110,
+    label: "Sentence Improvement — ₹1",
+    defaultPrice: 1,
     color: "teal",
     description: "SSC Sentence Improvement 790 PYQ",
     storageKey: "kv_sentence_improvement_purchased",
