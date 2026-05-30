@@ -504,20 +504,18 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
               {errorDetectionBlocks.map((block) => {
                 const isUnlocked = hasErrorDetection || block.page === 1;
                 return isUnlocked ? (
-                  <div key={block.page} className="bg-white border border-gray-100 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300 hover:border-red-200 group">
-                    <Link href={`/error-detection/${block.page}`} className="block">
+                  <div key={block.page} className="bg-white border border-gray-100 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)]">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="bg-[#8B0000] text-white text-[9px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
                         <span className="text-[9px] font-semibold text-gray-400">{errorDetectionPages} pages</span>
                       </div>
-                      <h3 className="text-[13px] font-bold text-gray-800 group-hover:text-[#8B0000] transition-colors">
+                      <h3 className="text-[13px] font-bold text-gray-800">
                         Q.{block.startQ} – Q.{block.endQ}
                         {block.page === 1 && <span className="ml-1 text-[8px] text-emerald-600 bg-emerald-50 border border-emerald-200 px-1 py-0.5 rounded-full font-bold align-middle">FREE</span>}
                       </h3>
                       <p className="text-[10px] text-gray-400 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
-                    </Link>
                     <div className="mt-3 flex gap-2">
-                      <Link href={`/error-detection/${block.page}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[13px] font-bold py-1.5 rounded-full transition">📖 Read</Link>
+                      <Link href={`/error-detection/${block.page}`} className="flex-1 text-center bg-[#8B0000] hover:bg-[#6B0000] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📖 Read</Link>
                       <Link href={`/error-detection/${block.page}#quiz`} className="flex-1 text-center bg-[#8B0000] hover:bg-[#6B0000] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📝 Quiz</Link>
                     </div>
                   </div>
@@ -568,20 +566,18 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
               {sentenceImprovementBlocks.map((block) => {
                 const isUnlocked = hasSentenceImprovement || block.page === 1;
                 return isUnlocked ? (
-                  <div key={block.page} className="bg-white border border-gray-100 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300 hover:border-emerald-300 group">
-                    <Link href={`/sentence-improvement/${block.page}`} className="block">
+                  <div key={block.page} className="bg-white border border-gray-100 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)]">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="bg-[#0d7a3e] text-white text-[9px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
                         <span className="text-[9px] font-semibold text-gray-400">{sentenceImprovementTotalPages} pages</span>
                       </div>
-                      <h3 className="text-[13px] font-bold text-gray-800 group-hover:text-[#0d7a3e] transition-colors">
+                      <h3 className="text-[13px] font-bold text-gray-800">
                         Q.{block.startQ} – Q.{block.endQ}
                         {block.page === 1 && <span className="ml-1 text-[8px] text-emerald-600 bg-emerald-50 border border-emerald-200 px-1 py-0.5 rounded-full font-bold align-middle">FREE</span>}
                       </h3>
                       <p className="text-[10px] text-gray-400 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
-                    </Link>
                     <div className="mt-3 flex gap-2">
-                      <Link href={`/sentence-improvement/${block.page}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[13px] font-bold py-1.5 rounded-full transition">📖 Read</Link>
+                      <Link href={`/sentence-improvement/${block.page}`} className="flex-1 text-center bg-[#0d7a3e] hover:bg-[#0a5e2e] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📖 Read</Link>
                       <Link href={`/sentence-improvement/${block.page}#quiz`} className="flex-1 text-center bg-[#0d7a3e] hover:bg-[#0a5e2e] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📝 Quiz</Link>
                     </div>
                   </div>
@@ -654,8 +650,8 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
 
                   return (
                     <div key={story.slug}
-                      className={`bg-white border rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] flex flex-col justify-between transition-all duration-300 min-h-[110px] relative overflow-hidden ${
-                        isLocked ? "border-amber-200/40 bg-gradient-to-br from-white to-amber-50/50 select-none pointer-events-none" : isMastered ? "border-green-200 bg-green-50/10 hover:shadow-lg" : "border-gray-100 hover:shadow-lg"
+                      className={`bg-white border rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px] relative overflow-hidden ${
+                        isLocked ? "border-amber-200/40 bg-gradient-to-br from-white to-amber-50/50 select-none pointer-events-none" : isMastered ? "border-green-200 bg-green-50/10" : "border-gray-100"
                       }`}>
                       {!isLocked && !accessLoading && (
                         <button onClick={() => toggleMastery(story.slug)}
@@ -687,7 +683,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                       )}
                       {!isLocked && !accessLoading && (
                         <div className="flex gap-2 mt-3">
-                          <Link href={`/stories/${story.slug}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[13px] font-bold py-1.5 rounded-full transition">Read</Link>
+                          <Link href={`/stories/${story.slug}`} className="flex-1 text-center bg-[#1c4a8a] hover:bg-blue-900 text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">Read</Link>
                           <Link href={`/stories/${story.slug}/quiz`} className="flex-1 text-center bg-[#1c4a8a] hover:bg-blue-900 text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">Quiz</Link>
                         </div>
                       )}
