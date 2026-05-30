@@ -430,7 +430,7 @@ export default function SagaVocabQuizClient({
 
     // ── Render ──
     return (
-        <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
+        <div className="min-h-screen bg-slate-50 font-sans flex flex-col overflow-x-hidden">
 
             {/* ═══ TOP HEADER ═══ */}
             <header className="text-white px-4 py-3 flex justify-between items-center shadow-sm sticky top-0 z-30" style={{ backgroundColor: theme.accent }}>
@@ -597,7 +597,7 @@ export default function SagaVocabQuizClient({
                         <main className="flex-1 flex flex-col lg:flex-row p-2 md:p-4 gap-3 md:gap-4 min-h-0">
                             {/* ═══ Left Side: Question Area (75%) — sticky question, scrollable body ═══ */}
                             <div className="flex-1 flex flex-col bg-white border border-slate-200 rounded-lg shadow-sm min-h-0">
-                                <div className="flex flex-col h-full min-h-0">
+                                <div className="flex flex-col h-full min-h-0 max-w-full">
                                     {/* Question Header Info — sticky */}
                                     <div className="shrink-0 px-5 pt-5 pb-4 border-b border-slate-100 bg-white rounded-t-lg">
                                         <div className="flex items-center text-sm flex-wrap gap-y-2">
@@ -663,7 +663,7 @@ export default function SagaVocabQuizClient({
                                     {/* Question Body — scrollable if content overflows */}
                                     <div className="flex-1 overflow-y-auto min-h-0 px-5 pb-5">
                                         {/* Question Text */}
-                                        <div className="text-slate-800 font-medium mb-[6px] leading-relaxed text-sm md:text-base pt-3">
+                                        <div className="text-slate-800 font-medium mb-[6px] leading-relaxed text-[13px] md:text-[14px] pt-3">
                                             &ldquo;{currentQuestion?.stem}&rdquo;
                                         </div>
 
@@ -729,7 +729,7 @@ export default function SagaVocabQuizClient({
                                                             className={`w-3 h-3 ${radioColor}`}
                                                         />
                                                         <span
-                                                            className={`text-sm md:text-base ${textClass}`}
+                                                            className={`text-[13px] md:text-[14px] ${textClass}`}
                                                         >
                                                             {letter}) {opt}
                                                         </span>
@@ -810,7 +810,7 @@ export default function SagaVocabQuizClient({
                                                         </svg>
                                                     </button>
                                                 </div>
-                                                <p className="text-[13px] md:text-[14px] text-gray-700 leading-relaxed">
+                                                <p className="text-[12px] md:text-[13px] text-gray-700 leading-relaxed">
                                                     {currentQuestion?.explanation}
                                                 </p>
                                             </div>

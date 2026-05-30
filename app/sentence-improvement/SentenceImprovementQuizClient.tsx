@@ -22,14 +22,14 @@ interface Props {
 const markdownComponents = {
   table: ({ children, ...props }: React.ComponentPropsWithoutRef<"table">) => (
     <div className="overflow-x-auto my-4">
-      <table className="w-full text-[15px] md:text-[16px] border-collapse" {...props}>
+      <table className="w-full text-[13px] md:text-[14px] border-collapse" {...props}>
         {children}
       </table>
     </div>
   ),
   th: ({ children, ...props }: React.ComponentPropsWithoutRef<"th">) => (
     <th
-      className="border border-emerald-300 bg-emerald-100 px-4 py-2 font-bold text-emerald-900 text-left text-[15px] md:text-[16px]"
+      className="border border-emerald-300 bg-emerald-100 px-4 py-2 font-bold text-emerald-900 text-left text-[13px] md:text-[14px]"
       {...props}
     >
       {children}
@@ -37,7 +37,7 @@ const markdownComponents = {
   ),
   td: ({ children, ...props }: React.ComponentPropsWithoutRef<"td">) => (
     <td
-      className="border border-emerald-200 px-4 py-2 text-gray-700 text-[15px] md:text-[16px]"
+      className="border border-emerald-200 px-4 py-2 text-gray-700 text-[13px] md:text-[14px]"
       {...props}
     >
       {children}
@@ -49,13 +49,13 @@ const markdownComponents = {
     </strong>
   ),
   p: ({ children, ...props }: React.ComponentPropsWithoutRef<"p">) => (
-    <p className="text-[17px] md:text-[18px] text-gray-700 leading-[1.8] mb-2" {...props}>
+    <p className="text-[14px] md:text-[15px] text-gray-700 leading-[1.7] mb-2" {...props}>
       {children}
     </p>
   ),
   ul: ({ children, ...props }: React.ComponentPropsWithoutRef<"ul">) => (
     <ul
-      className="space-y-1.5 my-3 list-disc list-inside text-[16px] md:text-[17px] text-gray-700 leading-[1.75]"
+      className="space-y-1.5 my-3 list-disc list-inside text-[14px] md:text-[15px] text-gray-700 leading-[1.75]"
       {...props}
     >
       {children}
@@ -63,14 +63,14 @@ const markdownComponents = {
   ),
   ol: ({ children, ...props }: React.ComponentPropsWithoutRef<"ol">) => (
     <ol
-      className="space-y-1.5 my-3 list-decimal list-inside text-[16px] md:text-[17px] text-gray-700 leading-[1.75]"
+      className="space-y-1.5 my-3 list-decimal list-inside text-[14px] md:text-[15px] text-gray-700 leading-[1.75]"
       {...props}
     >
       {children}
     </ol>
   ),
   li: ({ children, ...props }: React.ComponentPropsWithoutRef<"li">) => (
-    <li className="text-[16px] md:text-[17px] text-gray-700 leading-[1.75]" {...props}>
+    <li className="text-[14px] md:text-[15px] text-gray-700 leading-[1.75]" {...props}>
       {children}
     </li>
   ),
@@ -79,7 +79,7 @@ const markdownComponents = {
   ),
   h3: ({ children, ...props }: React.ComponentPropsWithoutRef<"h3">) => (
     <h3
-      className="text-[19px] md:text-[21px] font-bold text-gray-900 mt-5 mb-2 leading-tight"
+      className="text-[16px] md:text-[18px] font-bold text-gray-900 mt-5 mb-2 leading-tight"
       {...props}
     >
       {children}
@@ -324,7 +324,7 @@ export default function SentenceImprovementQuizClient({
   }
 
   return (
-    <div className="min-h-screen bg-[#f0faf4] font-sans flex flex-col">
+    <div className="min-h-screen bg-[#f0faf4] font-sans flex flex-col overflow-x-hidden">
       {/* TOP HEADER */}
       <header className="bg-[#0d7a3e] text-white px-4 py-3 flex justify-between items-center shadow-sm sticky top-0 z-30">
         <div className="flex items-center space-x-3">
@@ -421,7 +421,7 @@ export default function SentenceImprovementQuizClient({
                         <span className="w-[3px] h-[3px] rounded-full bg-gray-300 shrink-0" />
                         <span className="text-[10px] text-gray-400 leading-none">{q.examInfo || 'SSC Sentence Improvement'}</span>
                       </div>
-                      <h3 className="text-[16px] md:text-[18px] font-bold text-gray-900 leading-snug mt-0.5">{q.title}</h3>
+                      <h3 className="text-[14px] md:text-[16px] font-bold text-gray-900 leading-snug mt-0.5">{q.title}</h3>
                     </div>
                     <div className="hidden md:flex items-center gap-1 shrink-0 bg-emerald-50 border border-emerald-200 rounded-md px-2 py-1 mt-1">
                       <svg className="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -434,7 +434,7 @@ export default function SentenceImprovementQuizClient({
                 <div className="px-4 md:px-5 pb-3 md:pb-4 pt-0">
                   {/* Question Text */}
                   {q.questionText && (
-                    <div className="reading-body text-[17px] md:text-[19px] text-slate-800 font-medium mb-3 leading-[1.8] bg-gradient-to-br from-emerald-50/60 to-white border border-emerald-200/50 rounded-xl p-4 md:p-5 shadow-sm">
+                    <div className="reading-body text-[14px] md:text-[16px] text-slate-800 font-medium mb-3 leading-[1.7] bg-gradient-to-br from-emerald-50/60 to-white border border-emerald-200/50 rounded-xl p-4 md:p-5 shadow-sm">
                       <span className="text-emerald-400 text-[16px] mr-1">&ldquo;</span>
                       {q.questionText}
                       <span className="text-emerald-400 text-[16px] ml-1">&rdquo;</span>
@@ -448,13 +448,13 @@ export default function SentenceImprovementQuizClient({
                       return (
                         <div
                           key={idx}
-                          className={`flex items-center gap-3 text-[16px] md:text-[17px] leading-relaxed px-4 py-3 rounded-xl ${
+                          className={`flex items-center gap-2 text-[14px] md:text-[15px] leading-relaxed px-3 py-2 rounded-xl ${
                             isCorrectOpt
                               ? "bg-gradient-to-r from-emerald-50/90 to-white border border-emerald-200/60"
                               : "bg-white border border-emerald-100/30"
                           }`}
                         >
-                          <span className={`w-8 h-8 rounded-xl flex items-center justify-center text-[13px] font-bold shrink-0 shadow-sm ${
+                          <span className={`w-7 h-7 rounded-xl flex items-center justify-center text-[11px] font-bold shrink-0 shadow-sm ${
                             isCorrectOpt
                               ? "bg-emerald-500 text-white shadow-emerald-200"
                               : "bg-gray-100 text-gray-500 border border-gray-200"
@@ -621,9 +621,9 @@ export default function SentenceImprovementQuizClient({
                   <div className="space-y-4 mt-4">
                     {questions.map((q) => (
                       <div key={q.id} className="border-l-2 border-gray-200 pl-4">
-                        <p className="text-[14px] font-bold text-gray-700">Q.{q.id}. {q.title}</p>
+                        <p className="text-[13px] font-bold text-gray-700">Q.{q.id}. {q.title}</p>
                         {q.questionText && (
-                          <p className="text-[14px] text-gray-600 italic mt-1 leading-relaxed">&ldquo;{q.questionText}&rdquo;</p>
+                          <p className="text-[13px] text-gray-600 italic mt-1 leading-relaxed">&ldquo;{q.questionText}&rdquo;</p>
                         )}
                       </div>
                     ))}
@@ -643,7 +643,7 @@ export default function SentenceImprovementQuizClient({
               <main className="flex-1 flex flex-col lg:flex-row p-2 md:p-4 gap-3 md:gap-4 min-h-0">
                 {/* Left: Question Area */}
                 <div className="flex-1 flex flex-col bg-white border border-slate-200 rounded-lg shadow-sm min-h-0">
-                  <div className="flex flex-col h-full min-h-0">
+                  <div className="flex flex-col h-full min-h-0 max-w-full">
                     {/* Question Header */}
                     <div className="shrink-0 px-5 pt-5 pb-4 border-b border-slate-100 bg-white rounded-t-lg">
                       <div className="flex items-center text-sm flex-wrap gap-y-2">
@@ -701,14 +701,14 @@ export default function SentenceImprovementQuizClient({
                       {currentQuestion.title && (
                         <div className="flex items-center gap-2 mt-4 mb-2">
                           <span className="bg-[#0d7a3e]/10 text-[#0d7a3e] text-[11px] font-bold px-2 py-0.5 rounded">Q.{currentQuestion.id}</span>
-                          <h3 className="text-[16px] font-bold text-gray-800 leading-snug">{currentQuestion.title}</h3>
+                          <h3 className="text-[14px] font-bold text-gray-800 leading-snug">{currentQuestion.title}</h3>
                         </div>
                       )}
                       {currentQuestion.examInfo && (
                         <p className="text-[12px] text-gray-500 mb-3 ml-1">{currentQuestion.examInfo}</p>
                       )}
                       {currentQuestion.questionText && (
-                        <div className="text-[16px] md:text-[17px] text-slate-800 font-medium mb-4 leading-[1.7] bg-slate-50 border border-slate-100 rounded-lg p-4">
+                        <div className="text-[14px] md:text-[15px] text-slate-800 font-medium mb-3 leading-[1.6] bg-slate-50 border border-slate-100 rounded-lg p-3">
                           &ldquo;{currentQuestion.questionText}&rdquo;
                         </div>
                       )}
@@ -761,7 +761,7 @@ export default function SentenceImprovementQuizClient({
                                 disabled={!!selectedAns}
                                 className={`w-3.5 h-3.5 ${radioColor}`}
                               />
-                              <span className={`text-base md:text-[17px] leading-relaxed ${textClass}`}>
+                              <span className={`text-sm md:text-[15px] leading-relaxed ${textClass}`}>
                                 {letter}) {opt}
                               </span>
                               {selectedAns && isCorrect && (
@@ -801,7 +801,7 @@ export default function SentenceImprovementQuizClient({
                             </button>
                           </div>
                           {currentQuestion.fullExplanation && (
-                            <div className="reading-body">
+                            <div className="reading-body text-[13px] md:text-[14px]">
                               <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                                 {currentQuestion.fullExplanation}
                               </ReactMarkdown>

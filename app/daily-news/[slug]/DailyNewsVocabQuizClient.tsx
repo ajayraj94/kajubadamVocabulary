@@ -241,7 +241,7 @@ export default function DailyNewsVocabQuizClient({
     }, [currentQIndex]);
 
     return (
-        <div className="min-h-screen bg-gray-50 font-sans">
+        <div className="min-h-screen bg-gray-50 font-sans overflow-x-hidden">
 
             {/* ═══ TOP HEADER (Amber) ═══ */}
             <header className="bg-[#d97706] text-white px-4 py-3 flex justify-between items-center shadow-sm sticky top-0 z-30">
@@ -425,7 +425,7 @@ export default function DailyNewsVocabQuizClient({
                             {/* ─── LEFT COLUMN: Question Area (75%) ─── */}
                             <main className="w-full md:w-3/4 bg-white flex flex-col overflow-hidden">
                                 {currentQuestion && (
-                                    <div className="flex flex-col h-full min-h-0">
+                                    <div                        className="flex flex-col h-full min-h-0 max-w-full">
                                         {/* Question Header Info — sticky, includes stats + prev/next */}
                                         <div className="shrink-0 px-5 pt-5 pb-4 border-b border-slate-100 bg-white">
                                             <div className="flex items-center text-sm flex-wrap gap-y-2">
@@ -491,7 +491,7 @@ export default function DailyNewsVocabQuizClient({
                                         {/* Question Body — scrollable if content overflows */}
                                         <div className="flex-1 overflow-y-auto min-h-0 px-5 pb-5">
                                             {/* Question Stem */}
-                                            <div className="text-gray-800 font-medium mb-4 leading-relaxed text-[14px] md:text-[15px] pt-3">
+                                            <div className="text-gray-800 font-medium mb-3 leading-relaxed text-[13px] md:text-[14px] pt-3">
                                                 {renderBold(currentQuestion.stem)}
                                             </div>
 
@@ -531,7 +531,7 @@ export default function DailyNewsVocabQuizClient({
                                                                 readOnly
                                                                 className={`w-3.5 h-3.5 md:w-4 md:h-4 ${radioClass}`}
                                                             />
-                                                            <span className={`text-[13px] md:text-[14px] font-medium ${selectedAns && isCorrect
+                                                            <span className={`text-[12px] md:text-[13px] font-medium ${selectedAns && isCorrect
                                                                 ? "text-emerald-700 font-bold"
                                                                 : selectedAns && isSelected && !isCorrect
                                                                     ? "text-red-700 font-bold"
@@ -574,7 +574,7 @@ export default function DailyNewsVocabQuizClient({
                                                                 : `✗ Correct answer: ${currentQuestion.correctAnswer}`}
                                                         </span>
                                                     </div>
-                                                    <p className="text-amber-900 text-xs md:text-sm leading-relaxed">
+                                                    <p className="text-amber-900 text-[12px] md:text-[13px] leading-relaxed">
                                                         {currentQuestion.explanation}
                                                     </p>
                                                 </div>
