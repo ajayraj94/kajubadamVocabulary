@@ -68,19 +68,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico?v=3", sizes: "any" },
-      { url: "/favicon-32x32.png?v=3", type: "image/png", sizes: "32x32" },
-      { url: "/favicon-16x16.png?v=3", type: "image/png", sizes: "16x16" },
-      { url: "/favicon.svg?v=3", type: "image/svg+xml", sizes: "any" },
-      { url: "/icon-192x192.png?v=3", type: "image/png", sizes: "192x192" },
-      { url: "/icon-512x512.png?v=3", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon1.png", type: "image/png", sizes: "512x512" },
     ],
     apple: [
-      { url: "/apple-touch-icon.png?v=3", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      { rel: "shortcut icon", url: "/favicon.ico?v=3" },
-      { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#fbbf24" },
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
 };
@@ -105,11 +97,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {/* Direct favicon/apple-touch-icon links — bypasses metadata API for iPad Safari reliability */}
-        <link rel="icon" href="/favicon.ico?v=3" sizes="any" />
-        <link rel="icon" href="/favicon-32x32.png?v=3" sizes="32x32" type="image/png" />
-        <link rel="icon" href="/favicon-16x16.png?v=3" sizes="16x16" type="image/png" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" sizes="180x180" />
-        <link rel="shortcut icon" href="/favicon.ico?v=3" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon1.png" type="image/png" sizes="512x512" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="kajubadam" />
