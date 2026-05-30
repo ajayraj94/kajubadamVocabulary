@@ -389,15 +389,14 @@ export default function DailyNewsVocabQuizClient({
                         </div>
                     </ContentProtection>
 
-                    {/* ═══ QUIZ SECTION ═══ */}
-                    <section
+                    {/* ═══ QUIZ SECTION ═══ */}                      <section
                         ref={quizSectionRef}
                         id="quiz-section"
                         className="flex flex-col bg-gray-50 border-t border-gray-200"
-                        style={{ height: "calc(100vh - 96px)" }}
-                    >
+                        style={{ minHeight: "calc(100vh - 96px)" }}
+                      >
                         {/* ─── SUB HEADER (Sections) ─── */}
-                        <div className="bg-white border-b border-gray-200 px-4 py-2 flex items-center text-xs text-gray-600 font-semibold shrink-0 overflow-x-auto sticky top-12 z-20">
+                        <div className="bg-white border-b border-gray-200 px-2 md:px-4 py-2 flex items-center text-[11px] md:text-xs text-gray-600 font-semibold shrink-0 overflow-x-auto sticky top-12 z-20">
                             <div className="flex items-center space-x-2">
                                 <span className="uppercase text-gray-400 mr-1 shrink-0">Sections</span>
                                 {sections.map((sec) => {
@@ -422,7 +421,7 @@ export default function DailyNewsVocabQuizClient({
                         </div>
 
                         {/* ─── SPLIT LAYOUT ─── */}
-                        <div className="flex flex-1 overflow-hidden">
+                        <div className="flex flex-1 overflow-y-auto md:overflow-hidden">
                             {/* ─── LEFT COLUMN: Question Area (75%) ─── */}
                             <main className="w-full md:w-3/4 bg-white flex flex-col overflow-hidden">
                                 {currentQuestion && (

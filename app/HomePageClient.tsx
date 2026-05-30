@@ -133,12 +133,12 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
       {/* ── HEADER ── */}
       <header className="bg-white pt-3 pb-0 border-b border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         {/* Top row: Logo + Total + Auth */}
-        <div className="max-w-[1600px] mx-auto px-4 lg:px-8 flex items-center justify-between gap-4 mb-1">
-          <div className="flex items-center gap-6 shrink-0">
-            <h1 className="text-xl md:text-2xl font-black text-[#1c4a8a] tracking-tight leading-tight">
+        <div className="max-w-[1600px] mx-auto px-4 lg:px-8 flex items-center justify-between gap-2 md:gap-4 mb-1 flex-wrap">
+          <div className="flex items-center gap-3 md:gap-6 shrink-0">
+            <h1 className="text-lg md:text-xl lg:text-2xl font-black text-[#1c4a8a] tracking-tight leading-tight">
               kajubadam<br />Vocabulary
             </h1>
-            <span className="bg-[#1c4a8a] text-white text-xs font-extrabold px-5 py-1.5 rounded-full shadow-sm">
+            <span className="bg-[#1c4a8a] text-white text-[9px] md:text-xs font-extrabold px-2.5 md:px-5 py-1.5 rounded-full shadow-sm whitespace-nowrap">
               Total: {totalVocabCount.toLocaleString()} Vocab
             </span>
           </div>

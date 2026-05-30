@@ -574,13 +574,12 @@ export default function SagaVocabQuizClient({
                         </details>
                     </div>
 
-                    {/* ═══ QUIZ SECTION ═══ */}
-                    <section
+                    {/* ═══ QUIZ SECTION ═══ */}                      <section
                         ref={quizSectionRef}
                         id="quiz-section"
                         className="flex flex-col bg-slate-50 border-t border-slate-200"
-                        style={{ height: "calc(100vh - 96px)" }}
-                    >
+                        style={{ minHeight: "calc(100vh - 96px)" }}
+                      >
                         {/* ── Top Section Bar ── */}
                         <div className="bg-slate-100 border-b border-slate-200 px-4 py-2 flex items-center overflow-x-auto whitespace-nowrap text-xs gap-1 shrink-0">
                             <span className="font-black uppercase mr-2 border-r border-slate-300 pr-2 tracking-wider text-[11px]" style={{ color: theme.accent }}>
@@ -595,7 +594,7 @@ export default function SagaVocabQuizClient({
                         </div>
 
                         {/* ── Main Workspace: 75% Left | 25% Right ── */}
-                        <main className="flex-1 flex flex-col lg:flex-row p-4 gap-4 min-h-0">
+                        <main className="flex-1 flex flex-col lg:flex-row p-2 md:p-4 gap-3 md:gap-4 min-h-0">
                             {/* ═══ Left Side: Question Area (75%) — sticky question, scrollable body ═══ */}
                             <div className="flex-1 flex flex-col bg-white border border-slate-200 rounded-lg shadow-sm min-h-0">
                                 <div className="flex flex-col h-full min-h-0">

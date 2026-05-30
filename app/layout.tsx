@@ -103,6 +103,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-KFLQ24ZX');`,
           }}
         />
+        {/* Direct favicon/apple-touch-icon links — bypasses metadata API for iPad Safari reliability */}
+        <link rel="icon" href="/favicon-32x32.png?v=3" sizes="32x32" />
+        <link rel="icon" href="/favicon-16x16.png?v=3" sizes="16x16" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" sizes="180x180" />
+        <link rel="shortcut icon" href="/favicon-32x32.png?v=3" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="kajubadam" />
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <noscript>
