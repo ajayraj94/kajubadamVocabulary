@@ -66,8 +66,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
-  // favicon.ico and apple-icon.png are auto-discovered from app/ directory
-  // See: https://nextjs.org/docs/app/api-reference/file-conventions/metadata-files
+  // icon.svg, favicon.ico and apple-icon.png auto-discovered from app/
+  // https://nextjs.org/docs/app/api-reference/file-conventions/metadata-files
 };
 
 export default function RootLayout({
@@ -89,8 +89,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-KFLQ24ZX');`,
           }}
         />
-        {/* PNG favicon — iPad Safari renders PNG favicons more reliably than ICO */}
-        <link rel="icon" type="image/png" href="/favicon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="kajubadam" />
