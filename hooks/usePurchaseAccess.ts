@@ -22,6 +22,7 @@ import {
   removeFailedVerification,
   clearOldFailedVerifications,
 } from "@/lib/access";
+import { PRODUCT_IDS } from "@/lib/products";
 
 interface PurchaseAccess {
   hasPart1: boolean;
@@ -73,6 +74,9 @@ export function usePurchaseAccess(): PurchaseAccess {
       setUserName(user.user_metadata?.full_name || user.user_metadata?.name || null);
       setUserAvatar(user.user_metadata?.avatar_url || user.user_metadata?.picture || null);
 
+      // ── Collect all server-side products ──
+      const serverProducts = new Set<string>();
+
       // Fetch transactions for this user
       const { data: transactions } = await supabase
         .from("transactions")
@@ -83,9 +87,12 @@ export function usePurchaseAccess(): PurchaseAccess {
       if (transactions && transactions.length > 0) {
         for (const tx of transactions) {
           if (tx.product === "bundle") {
+            serverProducts.add("part1");
+            serverProducts.add("part2");
             setAccess("part1", true, tx.transaction_id);
             setAccess("part2", true, tx.transaction_id);
           } else {
+            serverProducts.add(tx.product);
             setAccess(tx.product, true, tx.transaction_id);
           }
         }
@@ -104,12 +111,29 @@ export function usePurchaseAccess(): PurchaseAccess {
         if (purchaseData?.products && purchaseData.products.length > 0) {
           for (const product of purchaseData.products) {
             if (product === "bundle") {
+              serverProducts.add("part1");
+              serverProducts.add("part2");
               setAccess("part1", true);
               setAccess("part2", true);
             } else {
+              serverProducts.add(product);
               setAccess(product, true);
             }
           }
+        }
+      }
+
+      // ── AUTHORITATIVE CLEANUP: Remove products from localStorage that are NOT in DB ──
+      // Server is the source of truth. If a product exists in localStorage but NOT in
+      // the server (transactions or purchases table), clear it. This prevents the
+      // loophole where a client-side localStorage flag persists even when the DB
+      // record failed to save (e.g., webhook/verify failure).
+      for (const productId of PRODUCT_IDS) {
+        // Skip "bundle" — it's a meta-product, not a direct access check
+        if (productId === "bundle") continue;
+        
+        if (!serverProducts.has(productId) && hasAccess(productId)) {
+          setAccess(productId, false);
         }
       }
     } catch (e) {
@@ -129,7 +153,8 @@ export function usePurchaseAccess(): PurchaseAccess {
       setLoggedIn(isLoggedIn());
       setUserEmailState(getUserEmail());
 
-      // Try to sync from server (Google auth)
+      // ── Step 1: Authoritative sync from server ──
+      // This is the source of truth — clears any products not in the DB
       await syncPurchasesFromServer();
 
       // Re-read after server sync
@@ -138,8 +163,21 @@ export function usePurchaseAccess(): PurchaseAccess {
       setHasErrorDetection(hasAccess("errorDetection"));
       setHasSentenceImprovement(hasAccess("sentenceImprovement"));
 
-      // Recover any failed payment verifications
-      recoverFailedVerifications();
+      // ── Step 2: Recover any failed payment verifications ──
+      // These are payments that went through Razorpay but DB save failed.
+      // Recovery tries to re-save to DB, then we re-sync to restore access.
+      await recoverFailedVerifications();
+
+      // ── Step 3: Re-sync after recovery ──
+      // If recovery saved to DB, re-sync will restore localStorage access.
+      await syncPurchasesFromServer();
+
+      // Final re-read
+      setHasPart1(hasAccess("part1"));
+      setHasPart2(hasAccess("part2"));
+      setHasErrorDetection(hasAccess("errorDetection"));
+      setHasSentenceImprovement(hasAccess("sentenceImprovement"));
+
       setIsLoading(false);
     };
     init();
