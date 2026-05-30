@@ -65,15 +65,15 @@ export const PRODUCTS: Record<string, ProductConfig> = {
   },
   part2: {
     id: "part2",
-    label: "Part 2 — ₹1",
-    defaultPrice: 1,
+    label: "Part 2 — ₹399",
+    defaultPrice: 399,
     color: "orange",
     description: "Story-Based Vocabulary",
   },
   errorDetection: {
     id: "errorDetection",
-    label: "Error Detection — ₹1",
-    defaultPrice: 1,
+    label: "Error Detection — ₹110",
+    defaultPrice: 110,
     color: "red",
     description: "SSC Error Detection 716 PYQ",
     // Legacy storage key — uses underscore format (backward compatible)
@@ -82,8 +82,8 @@ export const PRODUCTS: Record<string, ProductConfig> = {
   },
   sentenceImprovement: {
     id: "sentenceImprovement",
-    label: "Sentence Improvement — ₹1",
-    defaultPrice: 1,
+    label: "Sentence Improvement — ₹110",
+    defaultPrice: 110,
     color: "teal",
     description: "SSC Sentence Improvement 790 PYQ",
     storageKey: "kv_sentence_improvement_purchased",
