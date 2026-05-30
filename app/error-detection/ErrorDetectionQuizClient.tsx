@@ -856,7 +856,7 @@ export default function ErrorDetectionQuizClient({
                 </div>
 
                 {/* Right: Stats + Palette */}
-                <div className="w-full lg:w-[340px] flex flex-col gap-4 min-h-0">
+                <div className="hidden lg:flex lg:w-[340px] flex-col gap-4 min-h-0">
                   <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm shrink-0">
                     <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-100">
                       <div className="flex items-center gap-2">

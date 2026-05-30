@@ -869,7 +869,7 @@ export default function SagaVocabQuizClient({
                             </div>
 
                             {/* ═══ Right Side: Stats + Palette (25%) ═══ */}
-                            <div className="w-full lg:w-[320px] flex flex-col gap-4 min-h-0">
+                            <div className="hidden lg:flex lg:w-[320px] flex-col gap-4 min-h-0">
                                 {/* Stats Container */}
                                 <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm shrink-0">
                                     {/* User Profile Header */}
