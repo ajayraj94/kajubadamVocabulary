@@ -516,9 +516,9 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                       </h3>
                       <p className="text-[10px] text-gray-400 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
                     </Link>
-                    <div className="mt-2 flex gap-1.5">
-                      <Link href={`/error-detection/${block.page}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[11px] font-bold py-1 rounded-full transition">📖 Read</Link>
-                      <Link href={`/error-detection/${block.page}#quiz`} className="flex-1 text-center bg-[#8B0000] hover:bg-[#6B0000] text-white text-[11px] font-bold py-1 rounded-full transition shadow-sm">📝 Quiz</Link>
+                    <div className="mt-3 flex gap-2">
+                      <Link href={`/error-detection/${block.page}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[13px] font-bold py-1.5 rounded-full transition">📖 Read</Link>
+                      <Link href={`/error-detection/${block.page}#quiz`} className="flex-1 text-center bg-[#8B0000] hover:bg-[#6B0000] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📝 Quiz</Link>
                     </div>
                   </div>
                 ) : (
@@ -580,9 +580,9 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                       </h3>
                       <p className="text-[10px] text-gray-400 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
                     </Link>
-                    <div className="mt-2 flex gap-1.5">
-                      <Link href={`/sentence-improvement/${block.page}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[11px] font-bold py-1 rounded-full transition">📖 Read</Link>
-                      <Link href={`/sentence-improvement/${block.page}#quiz`} className="flex-1 text-center bg-[#0d7a3e] hover:bg-[#0a5e2e] text-white text-[11px] font-bold py-1 rounded-full transition shadow-sm">📝 Quiz</Link>
+                    <div className="mt-3 flex gap-2">
+                      <Link href={`/sentence-improvement/${block.page}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[13px] font-bold py-1.5 rounded-full transition">📖 Read</Link>
+                      <Link href={`/sentence-improvement/${block.page}#quiz`} className="flex-1 text-center bg-[#0d7a3e] hover:bg-[#0a5e2e] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📝 Quiz</Link>
                     </div>
                   </div>
                 ) : (
@@ -686,9 +686,9 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                         </div>
                       )}
                       {!isLocked && !accessLoading && (
-                        <div className="flex gap-1.5 mt-2">
-                          <Link href={`/stories/${story.slug}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[11px] font-bold py-1 rounded-full transition">Read</Link>
-                          <Link href={`/stories/${story.slug}/quiz`} className="flex-1 text-center bg-[#1c4a8a] hover:bg-blue-900 text-white text-[11px] font-bold py-1 rounded-full transition shadow-sm">Quiz</Link>
+                        <div className="flex gap-2 mt-3">
+                          <Link href={`/stories/${story.slug}`} className="flex-1 text-center bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 text-[13px] font-bold py-1.5 rounded-full transition">Read</Link>
+                          <Link href={`/stories/${story.slug}/quiz`} className="flex-1 text-center bg-[#1c4a8a] hover:bg-blue-900 text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">Quiz</Link>
                         </div>
                       )}
                     </div>
