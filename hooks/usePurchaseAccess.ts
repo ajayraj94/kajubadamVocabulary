@@ -90,6 +90,28 @@ export function usePurchaseAccess(): PurchaseAccess {
           }
         }
       }
+
+      // Also fetch purchases by email (covers admin-granted access,
+      // which writes to purchases table but transactions.user_id is NULL)
+      const userEmail = user.email;
+      if (userEmail) {
+        const { data: purchaseData } = await supabase
+          .from("purchases")
+          .select("products")
+          .eq("email", userEmail)
+          .maybeSingle();
+
+        if (purchaseData?.products && purchaseData.products.length > 0) {
+          for (const product of purchaseData.products) {
+            if (product === "bundle") {
+              setAccess("part1", true);
+              setAccess("part2", true);
+            } else {
+              setAccess(product, true);
+            }
+          }
+        }
+      }
     } catch (e) {
       console.error("Failed to sync purchases from server:", e);
     }
