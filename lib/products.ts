@@ -58,22 +58,22 @@ const COLOR_MAP: Record<string, { bg: string; text: string; border: string }> = 
 export const PRODUCTS: Record<string, ProductConfig> = {
   part1: {
     id: "part1",
-    label: "Part 1 — ₹750",
-    defaultPrice: 750,
+    label: "Part 1 — ₹299",
+    defaultPrice: 299,
     color: "blue",
     description: "Core Vocabulary Essentials",
   },
   part2: {
     id: "part2",
-    label: "Part 2 — ₹750",
-    defaultPrice: 750,
+    label: "Part 2 — ₹1",
+    defaultPrice: 1,
     color: "orange",
     description: "Story-Based Vocabulary",
   },
   errorDetection: {
     id: "errorDetection",
-    label: "Error Detection — ₹239",
-    defaultPrice: 239,
+    label: "Error Detection — ₹110",
+    defaultPrice: 110,
     color: "red",
     description: "SSC Error Detection 716 PYQ",
     // Legacy storage key — uses underscore format (backward compatible)
@@ -82,8 +82,8 @@ export const PRODUCTS: Record<string, ProductConfig> = {
   },
   sentenceImprovement: {
     id: "sentenceImprovement",
-    label: "Sentence Improvement — ₹239",
-    defaultPrice: 239,
+    label: "Sentence Improvement — ₹110",
+    defaultPrice: 110,
     color: "teal",
     description: "SSC Sentence Improvement 790 PYQ",
     storageKey: "kv_sentence_improvement_purchased",
@@ -91,8 +91,8 @@ export const PRODUCTS: Record<string, ProductConfig> = {
   },
   bundle: {
     id: "bundle",
-    label: "Bundle (Part 1 + Part 2) — ₹1350",
-    defaultPrice: 1350,
+    label: "Bundle (Part 1 + Part 2) — ₹549",
+    defaultPrice: 549,
     color: "purple",
     description: "Complete Bundle: Part 1 + Part 2",
   },
