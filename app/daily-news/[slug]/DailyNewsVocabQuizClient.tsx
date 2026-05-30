@@ -44,7 +44,7 @@ function renderBold(text: string): React.ReactNode {
         if (part.startsWith("**") && part.endsWith("**")) {
             const word = part.slice(2, -2);
             return (
-                <strong key={i} className="font-bold text-[#CC5500]">
+                <strong key={i} style={{ fontWeight: 'bold', color: '#CC5500' }}>
                     {word}
                 </strong>
             );

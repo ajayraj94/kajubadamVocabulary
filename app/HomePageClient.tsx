@@ -38,7 +38,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
   const [activeTab, setActiveTab] = useState<TabId>("part1");
   const [currentPage, setCurrentPage] = useState(1);
   const [masteredSlugs, setMasteredSlugs] = useState<string[]>([]);
-  const { hasPart1, hasPart2, hasErrorDetection, hasSentenceImprovement, isLoading: accessLoading, isLoggedIn, userEmail, userName, loginWithGoogle, logoutUser } = usePurchaseAccess();
+  const { hasPart1, hasPart2, hasErrorDetection, hasSentenceImprovement, isLoading: accessLoading, isLoggedIn, userEmail, userName, userAvatar, loginWithGoogle, logoutUser } = usePurchaseAccess();
 
   // Init tab from URL param / sessionStorage and load progress on mount
   useEffect(() => {
@@ -144,9 +144,20 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {isLoggedIn ? (
-              <div className="flex items-center gap-2">
-                <span className="hidden sm:inline text-[11px] text-gray-500 font-medium">{userName || userEmail}</span>
-                <button onClick={handleLoginClick} className="text-[11px] font-bold text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 px-3 py-1 rounded-full transition-all">Logout</button>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                {userAvatar ? (
+                  <img
+                    src={userAvatar}
+                    alt=""
+                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border border-gray-200 shrink-0"
+                  />
+                ) : (
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#1c4a8a] text-white flex items-center justify-center text-[10px] sm:text-[11px] font-bold shrink-0">
+                    {(userName || userEmail || "U").charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="text-[11px] text-gray-500 font-medium max-w-[80px] sm:max-w-[150px] truncate">{userName || userEmail}</span>
+                <button onClick={handleLoginClick} className="text-[11px] font-bold text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 px-2 sm:px-3 py-1 rounded-full transition-all whitespace-nowrap">Logout</button>
               </div>
             ) : (
               <button onClick={handleLoginClick} className="text-[11px] font-bold text-[#1c4a8a] bg-[#1c4a8a]/5 hover:bg-[#1c4a8a]/10 border border-[#1c4a8a]/20 px-3 py-1 rounded-full transition-all whitespace-nowrap">🔑 Sign in with Google</button>

@@ -36,6 +36,22 @@ interface Props {
     contentHtml: string;
 }
 
+// ── Bold text helper ──
+function renderBold(text: string): React.ReactNode {
+    const parts = text.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((part, i) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+            const word = part.slice(2, -2);
+            return (
+                <strong key={i} style={{ fontWeight: 'bold', color: '#CC5500' }}>
+                    {word}
+                </strong>
+            );
+        }
+        return part;
+    });
+}
+
 // ── Option letter helper ──
 const OPTION_LETTERS = ["A", "B", "C", "D", "E"];
 
@@ -664,12 +680,12 @@ export default function SagaVocabQuizClient({
                                     <div className="flex-1 overflow-y-auto min-h-0 px-5 pb-5">
                                         {/* Question Text */}
                                         <div className="text-slate-800 font-medium mb-[6px] leading-relaxed text-[13px] md:text-[14px] pt-3">
-                                            &ldquo;{currentQuestion?.stem}&rdquo;
+                                            &ldquo;{currentQuestion?.stem ? renderBold(currentQuestion.stem) : ""}&rdquo;
                                         </div>
 
                                         {currentQuestion?.hindiSentence && (
                                             <div className="text-[12px] mb-[6px] font-medium leading-relaxed" style={{ color: theme.accent }}>
-                                                &ldquo;{currentQuestion.hindiSentence}&rdquo;
+                                                &ldquo;{renderBold(currentQuestion.hindiSentence)}&rdquo;
                                             </div>
                                         )}
 
