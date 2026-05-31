@@ -1,11 +1,13 @@
 import { MetadataRoute } from "next";
 import { getAllStories } from "@/lib/stories";
+import { getAllDailyNews } from "@/lib/daily-news";
 import { isStoryFree } from "@/lib/access";
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const stories = getAllStories();
+    const dailyNews = getAllDailyNews();
 
     // ── Static Core Pages ──
     const staticPages: MetadataRoute.Sitemap = [
@@ -54,7 +56,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ];
 
     // ── Free Stories Only (Saga 1-01 & Saga 2-01) ──
-    // Paid course stories should NOT be indexed to avoid content duplication
     const freeStoryPages: MetadataRoute.Sitemap = stories
         .filter((story) => isStoryFree(story.slug))
         .map((story) => ({
@@ -64,5 +65,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.9,
         }));
 
-    return [...staticPages, ...freeStoryPages];
+    // ── Daily News (completely free, all pages indexed) ──
+    const dailyNewsListing: MetadataRoute.Sitemap = [
+        {
+            url: `${SITE_URL}/daily-news`,
+            lastModified: new Date(),
+            changeFrequency: "daily",
+            priority: 0.9,
+        },
+    ];
+
+    const dailyNewsPages: MetadataRoute.Sitemap = dailyNews.map((news) => ({
+        url: `${SITE_URL}/daily-news/${news.slug}`,
+        lastModified: new Date(news.date),
+        changeFrequency: "daily" as const,
+        priority: 0.9,
+    }));
+
+    return [...staticPages, ...freeStoryPages, ...dailyNewsListing, ...dailyNewsPages];
 }
