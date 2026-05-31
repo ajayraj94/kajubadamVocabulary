@@ -119,7 +119,7 @@ function loadAllRawArticles(): CachedArticle[] {
 
             // If frontmatter has aeoDefinition or metaDescription but no date/source,
             // treat as new Super Mock format — use slug as date
-                        const date = data.date || slug;
+                        const date = data.date ? normalizeDate(data.date) : normalizeDate(slug);
             const source = data.source || "Daily Editorial Analysis";
             const title = data.title || slug;
 
@@ -436,6 +436,17 @@ function parseSections(body: string): DailyNewsSection[] {
     }
 
     return sections;
+}
+
+// ── Date normalization ──
+
+function normalizeDate(dateStr: string): string {
+    // Handle DD-MM-YYYY format → YYYY-MM-DD
+    const dmyMatch = dateStr.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+    if (dmyMatch) {
+        return `${dmyMatch[3]}-${dmyMatch[2]}-${dmyMatch[1]}`;
+    }
+    return dateStr;
 }
 
 // ── Public API ──

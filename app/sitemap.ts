@@ -77,7 +77,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     const dailyNewsPages: MetadataRoute.Sitemap = dailyNews.map((news) => ({
         url: `${SITE_URL}/daily-news/${news.slug}`,
-        lastModified: new Date(news.date),
+        lastModified: (() => {
+            const d = new Date(news.date);
+            return isNaN(d.getTime()) ? new Date() : d;
+        })(),
         changeFrequency: "daily" as const,
         priority: 0.9,
     }));
