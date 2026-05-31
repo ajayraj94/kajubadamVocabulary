@@ -8,6 +8,7 @@ const dailyNewsDirectory = path.join(process.cwd(), "content", "daily-news");
 // ── Types ──
 
 export type SectionType =
+    // Old format
     | "error-detection"
     | "sentence-improvement"
     | "para-jumbles"
@@ -15,7 +16,15 @@ export type SectionType =
     | "synonyms"
     | "antonyms"
     | "collocation"
-    | "reading-comprehension";
+    | "reading-comprehension"
+    // New Super Mock format
+    | "context-vocabulary-shifts"
+    | "advanced-spotting-error"
+    | "triple-sentence-fillers"
+    | "fragment-completion"
+    | "advanced-cloze-test"
+    | "advanced-para-jumbles"
+    | "collocations-fixed-prepositions";
 
 const SECTION_TYPE_MAP: Record<string, SectionType> = {
     "1": "error-detection",
@@ -28,6 +37,17 @@ const SECTION_TYPE_MAP: Record<string, SectionType> = {
     "8": "reading-comprehension",
 };
 
+const NEW_SECTION_TYPE_MAP: Record<string, SectionType> = {
+    "1": "context-vocabulary-shifts",
+    "2": "advanced-spotting-error",
+    "3": "triple-sentence-fillers",
+    "4": "fragment-completion",
+    "5": "advanced-cloze-test",
+    "6": "advanced-para-jumbles",
+    "7": "collocations-fixed-prepositions",
+    "8": "reading-comprehension",
+};
+
 export interface DailyNewsMeta {
     slug: string;
     date: string;
@@ -36,7 +56,7 @@ export interface DailyNewsMeta {
 }
 
 export interface DailyNewsQuestion {
-    id: number; // 1-5
+    id: number; // 1-5 (local to section) or global
     stem: string;
     options: string[];
     correctAnswer: string; // "A", "B", "C", "D", or "E"
@@ -97,11 +117,17 @@ function loadAllRawArticles(): CachedArticle[] {
 
             const slug = name.replace(/\.md$/, "");
 
+            // If frontmatter has aeoDefinition or metaDescription but no date/source,
+            // treat as new Super Mock format — use slug as date
+                        const date = data.date || slug;
+            const source = data.source || "Daily Editorial Analysis";
+            const title = data.title || slug;
+
             return {
                 slug,
-                date: data.date || slug,
-                title: data.title || "Untitled",
-                source: data.source || "Unknown",
+                date,
+                title,
+                source,
                 content,
             };
         })
@@ -158,11 +184,147 @@ function parseEditorial(lines: string[]): {
 // ── Section Question Parser ──
 
 const SECTION_HEADER_REGEX = /^##\s+(\d+)\.\s+(.+)$/;
+
+// ── New format patterns (Super Mock / SEO-optimized) ──
+
+const NEW_SECTION_HEADER_REGEX = /^##\s*\S*\s*Section\s+(\d+)[:.)]\s*(.*)$/;
+const NEW_ANSWER_MARKER = /(?:🟢\s*)?\*{0,2}Correct Answer:\s*\(?([A-E])\)?/i;
 const QUESTION_HEADER_REGEX = /^###\s+Q(\d+)\.\s*(.*)$/;
 const OPTION_REGEX = /^([A-E])\)\s*(.*)$/;
 const ANSWER_REGEX = /^Ans:\s*([A-E])$/;
 const EXPLANATION_REGEX = /^Explanation:\s*(.*)$/;
-const EXPLANATION_CONT_REGEX = /^\s+(.*)$/; // continuation lines of explanation
+
+function isNewFormat(body: string): boolean {
+    return /^##\s+[^\n]*?Section\s+\d+\s*[:.)]/im.test(body);
+}
+
+function parseNewFormatEditorial(body: string): string[] {
+    // Editorial content is everything before the first section header
+    const secMatch = body.match(/^##\s+[^\n]*?Section\s+\d+\s*[:.)]/m);
+    if (!secMatch) return [];
+    const editorialText = body.substring(0, secMatch.index).trim();
+    return editorialText ? [editorialText] : [];
+}
+
+function parseNewFormatSections(body: string): DailyNewsSection[] {
+    const sections: DailyNewsSection[] = [];
+
+    // Find all section header positions
+    const sectionStarts: Array<{ index: number; num: string; name: string }> = [];
+    let secMatch: RegExpExecArray | null;
+    const secRe = new RegExp(NEW_SECTION_HEADER_REGEX.source, "gm");
+    while ((secMatch = secRe.exec(body)) !== null) {
+        sectionStarts.push({
+            index: secMatch.index,
+            num: secMatch[1],
+            name: secMatch[2].trim() || `Section ${secMatch[1]}`,
+        });
+    }
+
+    for (let s = 0; s < sectionStarts.length; s++) {
+        const { num: secNum, name: secName, index: secIndex } = sectionStarts[s];
+        const nextSecIndex = s + 1 < sectionStarts.length ? sectionStarts[s + 1].index : body.length;
+        const secContent = body.substring(secIndex, nextSecIndex);
+
+        const sectionType = NEW_SECTION_TYPE_MAP[secNum];
+        if (!sectionType) continue;
+
+        const section: DailyNewsSection = {
+            type: sectionType,
+            typeName: secName,
+            number: parseInt(secNum),
+            questions: [],
+        };
+
+        // Find all question positions within this section
+        const qStarts: Array<{ index: number; num: number; name: string }> = [];
+        let qMatch: RegExpExecArray | null;
+        const qRe = /^###\s+Q(\d+)\.\s*(.*)$/gm;
+        while ((qMatch = qRe.exec(secContent)) !== null) {
+            qStarts.push({
+                index: qMatch.index,
+                num: parseInt(qMatch[1]),
+                name: qMatch[2].trim(),
+            });
+        }
+
+        for (let q = 0; q < qStarts.length; q++) {
+            const { num: qNum, name: qName, index: qIndex } = qStarts[q];
+            const nextQIndex = q + 1 < qStarts.length ? qStarts[q + 1].index : secContent.length;
+            const qContent = secContent.substring(qIndex, nextQIndex);
+
+            // Extract options: (A), (B), etc.
+            const options: string[] = [];
+            const optRe = /^\(([A-E])\)\s*(.*)$/gm;
+            let optMatch: RegExpExecArray | null;
+            while ((optMatch = optRe.exec(qContent)) !== null) {
+                options.push(optMatch[2].trim());
+            }
+
+            // If no options found with (A) format, try A) format
+            if (options.length === 0) {
+                const oldOptRe = /^([A-E]\))\s*(.*)$/gm;
+                let oldOptMatch: RegExpExecArray | null;
+                while ((oldOptMatch = oldOptRe.exec(qContent)) !== null) {
+                    options.push(oldOptMatch[2].trim());
+                }
+            }
+
+            // Extract correct answer
+            let correctAnswer = "";
+            const ansMatch = qContent.match(NEW_ANSWER_MARKER);
+            if (ansMatch) {
+                correctAnswer = ansMatch[1];
+            } else {
+                const oldAns = qContent.match(ANSWER_REGEX);
+                if (oldAns) {
+                    correctAnswer = oldAns[1];
+                }
+            }
+
+            // Extract explanation (everything after the answer line)
+            let explanation = "";
+            const ansLineIdx = qContent.search(/(?:🟢\s*)?\*{0,2}Correct Answer:[^\n]*/i);
+            if (ansLineIdx >= 0) {
+                const lineEnd = qContent.indexOf("\n", ansLineIdx);
+                const afterAns = lineEnd >= 0 ? qContent.substring(lineEnd + 1) : "";
+                explanation = afterAns
+                    .replace(/^[\s\-—=*]+/, "")
+                    .replace(/\n{3,}/g, "\n\n")
+                    .trim()
+                    .substring(0, 2000);
+            }
+
+            // Extract full question stem (text between Q header and options/answer)
+            let stem = qName || `Question ${qNum}`;
+            const questionBodyEnd = qContent.search(/^\*{0,2}Options\*{0,2}:?\*{0,2}\s*$/m);
+            const questionBodyStart = qContent.search(/^\*{0,2}Question\*{0,2}:?\*{0,2}\s*$/m);
+            if (questionBodyStart >= 0 && questionBodyEnd > questionBodyStart) {
+                const nlIdx = qContent.indexOf("\n", questionBodyStart);
+                const rawBody = nlIdx >= 0
+                    ? qContent.substring(nlIdx + 1, questionBodyEnd).trim()
+                    : qContent.substring(questionBodyStart, questionBodyEnd).trim();
+                if (rawBody) {
+                    stem = rawBody.substring(0, 600);
+                }
+            }
+
+            section.questions.push({
+                id: qNum,
+                stem,
+                options,
+                correctAnswer,
+                explanation,
+            });
+        }
+
+        if (section.questions.length > 0) {
+            sections.push(section);
+        }
+    }
+
+    return sections;
+}
 
 function parseSections(body: string): DailyNewsSection[] {
     const sections: DailyNewsSection[] = [];
@@ -294,23 +456,33 @@ export function getDailyNewsArticle(slug: string): DailyNewsArticle | null {
     if (!matched) return null;
 
     const body = matched.content;
-    const sections = parseSections(body);
+    const isNew = isNewFormat(body);
 
-    // Extract editorial from the body manually
-    const editorialLines: string[] = [];
-    const lines = body.split("\n");
-    let inEditorial = false;
+    let sections: DailyNewsSection[];
+    let editorialLines: string[];
 
-    for (const rawLine of lines) {
-        const trimmed = rawLine.trim();
-        if (trimmed === "## Editorial") {
-            inEditorial = true;
-            continue;
-        }
-        if (inEditorial) {
-            // Stop at next section
-            if (SECTION_HEADER_REGEX.test(trimmed)) break;
-            editorialLines.push(rawLine);
+    if (isNew) {
+        sections = parseNewFormatSections(body);
+        editorialLines = parseNewFormatEditorial(body);
+    } else {
+        sections = parseSections(body);
+
+        // Extract editorial from the body manually (old format)
+        editorialLines = [];
+        const lines = body.split("\n");
+        let inEditorial = false;
+
+        for (const rawLine of lines) {
+            const trimmed = rawLine.trim();
+            if (trimmed === "## Editorial") {
+                inEditorial = true;
+                continue;
+            }
+            if (inEditorial) {
+                // Stop at next section
+                if (SECTION_HEADER_REGEX.test(trimmed)) break;
+                editorialLines.push(rawLine);
+            }
         }
     }
 

@@ -63,6 +63,14 @@ const SECTION_COLORS: Record<string, string> = {
     antonyms: "bg-pink-500",
     collocation: "bg-cyan-500",
     "reading-comprehension": "bg-indigo-500",
+    // New Super Mock format
+    "context-vocabulary-shifts": "bg-violet-500",
+    "advanced-spotting-error": "bg-rose-600",
+    "triple-sentence-fillers": "bg-teal-500",
+    "fragment-completion": "bg-orange-500",
+    "advanced-cloze-test": "bg-sky-600",
+    "advanced-para-jumbles": "bg-lime-600",
+    "collocations-fixed-prepositions": "bg-fuchsia-500",
 };
 
 type FilterMode = "all" | "correct" | "incorrect" | "skip";
