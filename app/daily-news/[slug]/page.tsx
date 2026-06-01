@@ -102,10 +102,18 @@ export async function generateMetadata({
     const sectionTypeNames = article.sections.map((s) => s.typeName);
     const slugLower = slug.toLowerCase();
 
+    // ── Build keyword-rich title ──
+    const seoTitle = `${article.title} — ${article.source} Editorial: ${totalQ} Exam Vocabulary Questions for SSC CGL, Banking & UPSC`;
+
     return {
-        title: article.title,
+        title: seoTitle,
         description: `${article.title} — ${article.date} editorial from ${article.source}. ${totalQ} exam-style vocabulary questions covering ${sectionTypeNames.join(", ")}. Bilingual (English-Hindi) daily news vocabulary quiz for SSC CGL, Banking, and UPSC preparation with detailed explanations.`,
         keywords: [
+            "SSC CGL vocabulary practice",
+            "Banking English grammar",
+            "daily editorial vocabulary",
+            "UPSC English preparation",
+            "English vocabulary with Hindi meaning",
             "daily news vocabulary",
             article.source.toLowerCase(),
             "current affairs vocabulary",
@@ -117,8 +125,8 @@ export async function generateMetadata({
             ...sectionTypeNames.map((n) => n.toLowerCase()),
         ],
         openGraph: {
-            title: `${article.title} — Daily News Vocabulary Quiz | kajubadam`,
-            description: `${totalQ} bilingual vocabulary questions from ${article.source} editorial (${article.date}). Learn exam-relevant English words with Hindi translations for SSC/Banking/UPSC.`,
+            title: `${article.title} — ${totalQ} SSC CGL & Banking Exam Vocab Questions from ${article.source} Editorial`,
+            description: `${totalQ} bilingual vocabulary questions from ${article.source} editorial (${article.date}). Learn exam-relevant English words with Hindi translations for SSC CGL, Banking, UPSC.`,
             url: `${SITE_URL}/daily-news/${slug}`,
             siteName: "kajubadam Vocabulary",
             locale: "en_IN",
@@ -127,8 +135,8 @@ export async function generateMetadata({
         },
         twitter: {
             card: "summary_large_image",
-            title: `${article.title} — Daily News Vocab Quiz`,
-            description: `${totalQ} bilingual vocabulary questions from ${article.source} editorial. SSC/Banking/UPSC exam prep.`,
+            title: `${article.title} — ${totalQ} Exam Vocab Questions for SSC CGL & Banking`,
+            description: `${totalQ} bilingual vocabulary questions from ${article.source} editorial. SSC CGL, Banking, UPSC exam prep with Hindi meanings.`,
         },
         robots: {
             index: true,
@@ -147,6 +155,7 @@ export async function generateMetadata({
         other: {
             "article:published_time": article.date,
             "article:section": "Daily News Vocabulary",
+            "article:tag": "SSC CGL, Banking English, UPSC, Editorial Analysis, Bilingual Vocabulary",
         },
     };
 }
@@ -193,6 +202,8 @@ export default async function DailyNewsPage({
     const sectionTypeNames = sectionsInfo.map((s) => s.typeName);
     const totalQ = allQuestions.length;
     const boldWords = extractBoldWords(article.editorialParagraphs);
+    const OPTION_LETTERS = ["A", "B", "C", "D", "E"];
+
     const faqItems = getFaqItems(article.title, sectionTypeNames, totalQ, article.date, article.source);
 
     const sectionListItems = sectionsInfo.map((s, i) => ({
@@ -201,6 +212,37 @@ export default async function DailyNewsPage({
         name: `${s.number}. ${s.typeName}`,
         description: `${s.typeName} questions for vocabulary practice`, 
     }));
+
+    // Build FAQPage mainEntity from FAQ items
+    const faqMainEntity = faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: {
+            "@type": "Answer",
+            text: item.a,
+        },
+    }));
+
+    // Build QAPage data from first 5 quiz questions (shows question + correct answer in search)
+    const quizQuestions = allQuestions.slice(0, 5).map((q) => {
+        const answerLetter = q.correctAnswer;
+        const letterIndex = OPTION_LETTERS.indexOf(answerLetter);
+        const answerText = letterIndex >= 0 && letterIndex < q.options.length
+            ? `${answerLetter}) ${q.options[letterIndex]}`
+            : answerLetter;
+        return {
+            "@type": "Question",
+            name: q.stem.substring(0, 150),
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: `The correct answer is ${answerLetter}: ${answerText}. ${q.explanation.substring(0, 200)}`,
+            },
+            suggestedAnswer: q.options.map((opt, idx) => ({
+                "@type": "Answer",
+                text: `${OPTION_LETTERS[idx]}) ${opt}`,
+            })),
+        };
+    });
 
     // Clean editorial body for articleBody (strip markdown bold markers)
     const cleanEditorialBody = article.editorialEnglish
@@ -283,6 +325,16 @@ export default async function DailyNewsPage({
                 description: `${totalQ} vocabulary questions organized across ${sectionsInfo.length} sections`,
                 numberOfItems: totalQ,
                 itemListElement: sectionListItems,
+            },
+            // ── FAQPage for rich snippet eligibility ──
+            {
+                "@type": "FAQPage",
+                mainEntity: faqMainEntity,
+            },
+            // ── QAPage for quiz questions (first 5) ──
+            {
+                "@type": "QAPage",
+                mainEntity: quizQuestions,
             },
         ],
     };

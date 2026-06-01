@@ -80,45 +80,67 @@ export default function DailyNewsPageClient({ dailyNews }: Props) {
                     <p className="text-gray-400 text-[14px]">Daily news articles will appear here once added.</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-4">
                     {paginatedDaily.map((item) => {
                         const isRead = readSlugs.includes(item.slug);
                         return (
-                            <div key={item.slug} className="relative">
-                                <button
-                                    onClick={(e) => toggleRead(item.slug, e)}
-                                    className={`absolute top-2 right-2 z-10 p-1 rounded-full border transition-all active:scale-90 ${isRead
-                                        ? "bg-green-500 border-green-500 text-white shadow-sm"
-                                        : "bg-white border-gray-200 text-gray-300 hover:text-gray-500 hover:border-gray-300"
-                                        }`}
-                                    title={isRead ? "Mark as Unread" : "Mark as Read"}
-                                >
-                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.5" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </button>
-                                <Link
-                                    href={`/daily-news/${item.slug}`}
-                                    className={`block bg-white border rounded-xl p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] flex flex-col justify-between hover:shadow-lg hover:border-[#FF7722]/20 transition-all duration-300 min-h-[150px] group ${isRead ? "border-green-200 bg-green-50/10" : "border-gray-100"
-                                        }`}
-                                >
-                                    <div>
-                                        <h4 className="text-[11px] font-black text-[#FF7722] uppercase tracking-wider mb-1.5">
-                                            {isRead && "✅ "}{item.date}
-                                        </h4>
-                                        <h3 className="text-[14px] font-bold text-gray-800 leading-snug group-hover:text-[#FF7722] transition-colors">
-                                            {item.title}
-                                        </h3>
-                                    </div>
-                                    <div className="flex items-center justify-between mt-2">
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase bg-gray-50 border border-gray-200/60 rounded px-2 py-0.5">
-                                            {item.source}
+                            <div key={item.slug}
+                              className={`group relative rounded-2xl p-5 transition-all duration-300 flex flex-col justify-between min-h-[170px] ${
+                                isRead
+                                  ? "bg-gradient-to-br from-emerald-50/40 to-white ring-1 ring-emerald-200/50"
+                                  : "bg-white shadow-[0_2px_12px_-3px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_-8px_rgba(217,119,6,0.15)] hover:-translate-y-0.5"
+                              }`}>
+                                {/* Top row: date + Qs + read toggle */}
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="flex items-center gap-2.5">
+                                        <span className="text-[13px] font-bold text-[#d97706] tracking-tight">
+                                            {item.date}
                                         </span>
-                                        <span className="text-[10px] font-black text-[#FF7722] bg-[#FF7722]/5 border border-[#FF7722]/10 rounded px-2 py-0.5">
+                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                          isRead ? "bg-emerald-100 text-emerald-600" : "bg-amber-100 text-amber-700"
+                                        }`}>
                                             {item.questionCount} Qs
                                         </span>
                                     </div>
-                                </Link>
+                                    <button
+                                        onClick={(e) => toggleRead(item.slug, e)}
+                                        type="button"
+                                        className={`p-1 rounded-full transition-all duration-200 active:scale-90 ${
+                                          isRead
+                                            ? "text-emerald-500 hover:text-emerald-600"
+                                            : "text-gray-300 hover:text-amber-500 md:opacity-0 md:group-hover:opacity-100"
+                                        }`}
+                                        title={isRead ? "Mark as Unread" : "Mark as Read"}
+                                    >
+                                        <svg className="w-4 h-4" fill={isRead ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                {/* Title */}
+                                <div className="flex-1">
+                                    <h3 className="text-[15px] font-bold text-gray-800 leading-snug group-hover:text-[#d97706] transition-colors duration-200">
+                                        {item.title.length > 80 ? item.title.slice(0, 80) + "..." : item.title}
+                                    </h3>
+                                    <p className="text-[11px] text-gray-400 mt-1.5">{item.source} &middot; Daily Editorial</p>
+                                </div>
+
+                                {/* Buttons */}
+                                <div className="flex gap-2 mt-4">
+                                    <Link
+                                      href={`/daily-news/${item.slug}`}
+                                      className="flex-1 text-center bg-[#d97706] hover:bg-[#b45309] text-white text-[12px] font-bold py-2 rounded-xl transition-all duration-200 active:scale-[0.97]"
+                                    >
+                                        📖 Read
+                                    </Link>
+                                    <Link
+                                      href={`/daily-news/${item.slug}#quiz`}
+                                      className="flex-1 text-center bg-white hover:bg-amber-50 text-[#d97706] border border-[#d97706] text-[12px] font-bold py-2 rounded-xl transition-all duration-200 active:scale-[0.97]"
+                                    >
+                                        📝 Quiz
+                                    </Link>
+                                </div>
                             </div>
                         );
                     })}

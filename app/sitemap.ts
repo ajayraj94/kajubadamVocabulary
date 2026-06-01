@@ -1,6 +1,8 @@
 import { MetadataRoute } from "next";
 import { getAllStories } from "@/lib/stories";
 import { getAllDailyNews } from "@/lib/daily-news";
+import { getErrorDetectionData } from "@/lib/error-detection";
+import { getSentenceImprovementData } from "@/lib/sentence-improvement";
 import { isStoryFree } from "@/lib/access";
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
@@ -8,6 +10,8 @@ const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
 export default function sitemap(): MetadataRoute.Sitemap {
     const stories = getAllStories();
     const dailyNews = getAllDailyNews();
+    const errorDetectionData = getErrorDetectionData();
+    const sentenceImprovementData = getSentenceImprovementData();
 
     // ── Static Core Pages ──
     const staticPages: MetadataRoute.Sitemap = [
@@ -85,5 +89,44 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9,
     }));
 
-    return [...staticPages, ...freeStoryPages, ...dailyNewsListing, ...dailyNewsPages];
+    // ── Error Detection (free: page 1 only) ──
+    const errorDetectionPages: MetadataRoute.Sitemap = [
+        {
+            url: `${SITE_URL}/error-detection`,
+            lastModified: new Date(),
+            changeFrequency: "weekly" as const,
+            priority: 0.8,
+        },
+        {
+            url: `${SITE_URL}/error-detection/1`,
+            lastModified: new Date(),
+            changeFrequency: "weekly" as const,
+            priority: 0.8,
+        },
+    ];
+
+    // ── Sentence Improvement (free: page 1 only) ──
+    const sentenceImprovementPages: MetadataRoute.Sitemap = [
+        {
+            url: `${SITE_URL}/sentence-improvement`,
+            lastModified: new Date(),
+            changeFrequency: "weekly" as const,
+            priority: 0.8,
+        },
+        {
+            url: `${SITE_URL}/sentence-improvement/1`,
+            lastModified: new Date(),
+            changeFrequency: "weekly" as const,
+            priority: 0.8,
+        },
+    ];
+
+    return [
+        ...staticPages,
+        ...freeStoryPages,
+        ...dailyNewsListing,
+        ...dailyNewsPages,
+        ...errorDetectionPages,
+        ...sentenceImprovementPages,
+    ];
 }

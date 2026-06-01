@@ -123,7 +123,9 @@ function loadAllRawArticles(): CachedArticle[] {
             // treat as new Super Mock format — use slug as date
                         const date = data.date ? normalizeDate(data.date) : normalizeDate(slug);
             const source = data.source || "Daily Editorial Analysis";
-            const title = data.title || slug;
+            // Extract title: first from frontmatter, then from first # heading in content, else slug
+            const firstHeading = content.match(/^#\s+(.+)$/m);
+            const title = data.title || (firstHeading ? firstHeading[1].trim() : slug);
 
             return {
                 slug,
