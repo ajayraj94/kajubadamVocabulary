@@ -153,6 +153,7 @@ export default async function DailyNewsPage({
             sectionType: section.type,
             sectionName: section.typeName,
             sectionNumber: section.number,
+            sectionContext: q.sectionContext,
         }))
     );
 

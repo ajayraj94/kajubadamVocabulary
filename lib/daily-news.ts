@@ -53,6 +53,7 @@ export interface DailyNewsMeta {
     date: string;
     title: string;
     source: string;
+    questionCount: number;
 }
 
 export interface DailyNewsQuestion {
@@ -61,6 +62,7 @@ export interface DailyNewsQuestion {
     options: string[];
     correctAnswer: string; // "A", "B", "C", "D", or "E"
     explanation: string;
+    sectionContext?: string; // Shared context text (e.g., para jumble sentences A-F)
 }
 
 export interface DailyNewsSection {
@@ -203,7 +205,45 @@ function parseNewFormatEditorial(body: string): string[] {
     const secMatch = body.match(/^##\s+[^\n]*?Section\s+\d+\s*[:.)]/m);
     if (!secMatch) return [];
     const editorialText = body.substring(0, secMatch.index).trim();
-    return editorialText ? [editorialText] : [];
+    const lines = editorialText.split('\n');
+    // Stop at the first standalone '---' (frontmatter separator)
+    // This keeps only the actual editorial text and avoids YAML/intro noise
+    const result: string[] = [];
+    for (const line of lines) {
+        if (line.trim() === '---') break;
+        result.push(line);
+    }
+    return result;
+}
+
+// ── Clean markdown artifacts from explanation text ──
+
+function cleanMarkdown(text: string): string {
+    if (!text) return "";
+    return text
+        .split("\n")
+        .map((line) => {
+            let l = line;
+            // Remove blockquote prefix (> ) and optional [!TAG]
+            l = l.replace(/^>\s*(\[!\w+\])?\s*/, "");
+            // Remove HTML tags used in markdown
+            l = l.replace(/<\/?details>/gi, "");
+            l = l.replace(/<\/?summary>/gi, "");
+            l = l.replace(/<\/?b>/gi, "");
+            l = l.replace(/<br\s*\/?>/gi, "");
+            // Remove horizontal rules (---, ***, ___) and table separators (|---|---|)
+            if (/^[-*_]{3,}\s*$/.test(l.trim())) return "";
+            if (/^\|?[-:| ]+\|[-:| ]+(\|[-:| ]+)*$/.test(l.trim())) return "";
+            // Remove markdown headers (###, ####, etc.)
+            l = l.replace(/^#{1,6}\s+/, "");
+            // Remove leading list markers (•, -, *, etc.)
+            l = l.replace(/^[•●○▪➢]\s*/, "");
+            return l;
+        })
+        .filter((line) => line.trim())
+        .join("\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
 }
 
 function parseNewFormatSections(body: string): DailyNewsSection[] {
@@ -226,8 +266,18 @@ function parseNewFormatSections(body: string): DailyNewsSection[] {
         const nextSecIndex = s + 1 < sectionStarts.length ? sectionStarts[s + 1].index : body.length;
         const secContent = body.substring(secIndex, nextSecIndex);
 
-        const sectionType = NEW_SECTION_TYPE_MAP[secNum];
+        let sectionType = NEW_SECTION_TYPE_MAP[secNum];
         if (!sectionType) continue;
+
+        // Override section type by name when numeric mapping doesn't match content
+        const nameLower = secName.toLowerCase();
+        if (nameLower.includes('reading comprehension') || nameLower.includes('inference')) {
+            sectionType = "reading-comprehension";
+        } else if (nameLower.includes('collocation') || nameLower.includes('fixed preposition')) {
+            sectionType = "collocations-fixed-prepositions";
+        } else if (nameLower.includes('para jumble') || nameLower.includes('sentence rearrangement')) {
+            sectionType = "advanced-para-jumbles";
+        }
 
         const section: DailyNewsSection = {
             type: sectionType,
@@ -293,12 +343,14 @@ function parseNewFormatSections(body: string): DailyNewsSection[] {
                     .replace(/\n{3,}/g, "\n\n")
                     .trim()
                     .substring(0, 2000);
+                // Strip markdown block formatting for clean display
+                explanation = cleanMarkdown(explanation);
             }
 
             // Extract full question stem (text between Q header and options/answer)
             let stem = qName || `Question ${qNum}`;
             const questionBodyEnd = qContent.search(/^\*{0,2}Options\*{0,2}:?\*{0,2}\s*$/m);
-            const questionBodyStart = qContent.search(/^\*{0,2}Question\*{0,2}:?\*{0,2}\s*$/m);
+            const questionBodyStart = qContent.search(/^\*{0,2}Question\*{0,2}:?\*{0,2}/m);
             if (questionBodyStart >= 0 && questionBodyEnd > questionBodyStart) {
                 const nlIdx = qContent.indexOf("\n", questionBodyStart);
                 const rawBody = nlIdx >= 0
@@ -316,6 +368,33 @@ function parseNewFormatSections(body: string): DailyNewsSection[] {
                 correctAnswer,
                 explanation,
             });
+        }
+
+        // Extract shared context — text between section header and first question
+        // (used for para jumbles, shared reading passages, etc.)
+        let sectionContext = '';
+        if (qStarts.length > 0) {
+            const secHeaderEnd = secContent.indexOf('\n');
+            const firstQStart = qStarts[0].index;
+            if (firstQStart > secHeaderEnd + 1) {
+                const raw = secContent.substring(secHeaderEnd + 1, firstQStart).trim();
+                if (raw) {
+                    // Clean markdown: remove blockquote prefixes, HTML tags, headings
+                    sectionContext = raw
+                        .split('\n')
+                        .map(l => l.replace(/^>\s*(\[!\w+\])?\s*/, '').trim())
+                        .filter(l => l && !/^#{1,6}\s/.test(l) && !/^---/.test(l) && !l.startsWith('<') && !l.endsWith('>'))
+                        .join('\n')
+                        .replace(/\n{3,}/g, '\n\n')
+                        .trim();
+                    // Clean hyphen range notations like "Q11-Q15" → "Q11–Q15" (en dash)
+                    sectionContext = sectionContext.replace(/(Q\d+)-(Q\d+)/g, '$1–$2');
+                }
+            }
+        }
+
+        if (sectionContext) {
+            section.questions = section.questions.map(q => ({ ...q, sectionContext }));
         }
 
         if (section.questions.length > 0) {
@@ -458,6 +537,8 @@ export function getAllDailyNews(): DailyNewsMeta[] {
         date: a.date,
         title: a.title,
         source: a.source,
+        // Count questions by matching ### Q headers in raw content
+        questionCount: (a.content.match(/^###\s+Q\d+\./gm) || []).length,
     }));
 }
 

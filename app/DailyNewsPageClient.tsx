@@ -62,7 +62,7 @@ export default function DailyNewsPageClient({ dailyNews }: Props) {
                         Daily News Vocab
                     </h2>
                     <p className="text-[#FF7722] text-[15px] font-semibold bg-[#FF7722]/5 inline-block px-3 py-1 rounded-md border border-[#FF7722]/10">
-                        {readSlugs.length} / {dailyNews.length} Read &middot; 40 Questions Each
+                        {readSlugs.length} / {dailyNews.length} Read
                     </p>
                 </div>
                 <div className="text-right text-[13px] text-gray-400 font-medium">
@@ -115,7 +115,7 @@ export default function DailyNewsPageClient({ dailyNews }: Props) {
                                             {item.source}
                                         </span>
                                         <span className="text-[10px] font-black text-[#FF7722] bg-[#FF7722]/5 border border-[#FF7722]/10 rounded px-2 py-0.5">
-                                            40 Qs
+                                            {item.questionCount} Qs
                                         </span>
                                     </div>
                                 </Link>

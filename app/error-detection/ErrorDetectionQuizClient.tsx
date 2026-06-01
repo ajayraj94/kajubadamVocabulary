@@ -350,10 +350,19 @@ export default function ErrorDetectionQuizClient({
     <div className="min-h-screen bg-[#faf5ef] font-sans flex flex-col overflow-x-hidden">
       {/* TOP HEADER */}
       <header className="bg-[#8B0000] text-white px-4 py-3 flex justify-between items-center shadow-sm sticky top-0 z-30">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
           <Link href="/?tab=error-detection" className="hover:bg-[#6B0000] p-1.5 rounded-full transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </Link>
+          <Link
+            href="/"
+            className="hover:bg-[#6B0000] p-1.5 rounded-full transition-colors"
+            title="Home"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
           </Link>
           <div>
