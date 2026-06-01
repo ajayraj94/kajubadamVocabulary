@@ -17,15 +17,33 @@ import DailyNewsVocabQuizClient from "./DailyNewsVocabQuizClient";
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
 
 // ── Helper: Extract bolded vocabulary words from editorial ──
-function extractBoldWords(paragraphs: EditorialParagraph[]): { word: string; context: string }[] {
+function isNonVocabularyWord(word: string): boolean {
+    // Skip author bylines with initials (e.g. "S. Anandan")
+    if (/^[A-Z]\.\s+/.test(word)) return true;
+    // Skip all-caps headings (e.g. "STATE OF PLAY")
+    if (word === word.toUpperCase() && word.length > 3) return true;
+    return false;
+}
+
+function extractBoldWords(paragraphs: EditorialParagraph[]): { word: string; context: string; hindi?: string }[] {
     const seen = new Set<string>();
-    const result: { word: string; context: string }[] = [];
+    const result: { word: string; context: string; hindi?: string }[] = [];
 
     for (const para of paragraphs) {
-        const matches = para.english.matchAll(/\*\*([^*]+)\*\*/g);
-        for (const match of matches) {
+        // Extract all bold words from English text, tracking their order
+        const enMatches = Array.from(para.english.matchAll(/\*\*([^*]+)\*\*/g));
+        // Extract all bold words from Hindi text, tracking their order
+        const hiMatches = para.hindi ? Array.from(para.hindi.matchAll(/\*\*([^*]+)\*\*/g)) : [];
+
+        for (let i = 0; i < enMatches.length; i++) {
+            const match = enMatches[i];
             const word = match[1].trim();
-            if (word && !seen.has(word.toLowerCase())) {
+            if (!word || isNonVocabularyWord(word)) continue;
+
+            // Get Hindi equivalent: nth bold in English ↔ nth bold in Hindi
+            const hindiWord = i < hiMatches.length ? hiMatches[i][1].trim() : undefined;
+
+            if (!seen.has(word.toLowerCase())) {
                 seen.add(word.toLowerCase());
                 const idx = match.index!;
                 const start = Math.max(0, idx - 60);
@@ -33,7 +51,7 @@ function extractBoldWords(paragraphs: EditorialParagraph[]): { word: string; con
                 let context = para.english.slice(start, end).replace(/\*\*/g, "");
                 if (start > 0) context = "..." + context;
                 if (end < para.english.length) context = context + "...";
-                result.push({ word, context });
+                result.push({ word, context, hindi: hindiWord });
             }
         }
     }
@@ -310,6 +328,7 @@ export default async function DailyNewsPage({
                             <thead>
                                 <tr className="bg-amber-50 border-b-2 border-amber-200 text-left">
                                     <th className="px-4 md:px-6 py-3 font-bold text-gray-700">English Word</th>
+                                    <th className="px-4 md:px-6 py-3 font-bold text-gray-700">Hindi Meaning</th>
                                     <th className="px-4 md:px-6 py-3 font-bold text-gray-700">Context in Editorial</th>
                                 </tr>
                             </thead>
@@ -322,6 +341,9 @@ export default async function DailyNewsPage({
                                         <td className="px-4 md:px-6 py-3 font-bold text-amber-900 text-[14px]">
                                             {row.word}
                                         </td>
+                                        <td className="px-4 md:px-6 py-3 text-[14px] font-medium text-emerald-700">
+                                            {row.hindi || "—"}
+                                        </td>
                                         <td className="px-4 md:px-6 py-3 text-gray-600 text-[13px] leading-relaxed italic">
                                             &ldquo;{row.context}&rdquo;
                                         </td>
@@ -333,9 +355,9 @@ export default async function DailyNewsPage({
                             <div className="px-6 py-4 bg-amber-50/50 border-t border-amber-100 text-center">
                                 <p className="text-[13px] text-gray-500">
                                     Showing 15 of {boldWords.length} key vocabulary words.
-                                    <span className="text-amber-700 font-medium ml-1">
+                                    <a href="#quiz" className="text-amber-700 font-medium ml-1 hover:text-amber-900 hover:underline transition-colors cursor-pointer">
                                         Start the quiz to practice all {totalQ} questions &rarr;
-                                    </span>
+                                    </a>
                                 </p>
                             </div>
                         )}

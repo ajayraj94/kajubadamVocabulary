@@ -83,6 +83,16 @@ function renderEditorialLine(line: string): { type: 'heading' | 'body'; level: n
     return { type: 'body', level: 0, content: renderInline(line) };
 }
 
+// ── Detect if a line is a byline (bold-only author name) ──
+function isByline(text: string): boolean {
+    const trimmed = text.trim();
+    // Must be exactly **text**
+    if (!/^\*\*[^*]+\*\*$/.test(trimmed)) return false;
+    const inner = trimmed.slice(2, -2);
+    // Must look like a name — has a dot (initial) or mixed case
+    return inner.includes('.') || /[a-z]/.test(inner);
+}
+
 const OPTION_LETTERS = ["A", "B", "C", "D", "E"];
 
 const SECTION_COLORS: Record<string, string> = {
@@ -133,15 +143,20 @@ export default function DailyNewsVocabQuizClient({
         ? OPTION_LETTERS.slice(0, currentQuestion.options.length)
         : [];
 
-    // ── Scroll to quiz on mount if hash ──
+    // ── Scroll to quiz & auto-start on #quiz hash (mount + click) ──
     useEffect(() => {
+        const handleHashChange = () => {
+            if (window.location.hash === "#quiz") {
+                handleStartQuiz();
+            }
+        };
+        // Check on mount
         if (window.location.hash === "#quiz") {
-            setTimeout(() => {
-                document
-                    .getElementById("quiz-section-anchor")
-                    ?.scrollIntoView({ behavior: "smooth" });
-            }, 400);
+            handleStartQuiz();
         }
+        // Listen for hash changes (when user clicks vocab table link)
+        window.addEventListener("hashchange", handleHashChange);
+        return () => window.removeEventListener("hashchange", handleHashChange);
     }, []);
 
     const scrollToQuizSection = () => {
@@ -398,8 +413,7 @@ export default function DailyNewsVocabQuizClient({
                                 const eng = renderEditorialLine(para.english || '');
                                 const hin = para.hindi ? renderEditorialLine(para.hindi) : null;
                                 return (
-                                    <div key={idx} className={idx > 0 ? "pt-3 border-t border-gray-100" : ""}>
-                                        {eng.type === 'heading' ? (
+                                    <div key={idx} className={idx > 0 ? "pt-3 border-t border-gray-100" : ""}>                                            {eng.type === 'heading' ? (
                                             <>
                                                 {eng.level === 1 && (
                                                     <h1 className="text-[22px] md:text-[26px] font-black text-[#0f172a] leading-tight mb-1">{eng.content}</h1>
@@ -422,6 +436,17 @@ export default function DailyNewsVocabQuizClient({
                                                     </>
                                                 )}
                                             </>
+                                        ) : para.english && isByline(para.english) ? (
+                                                <div className="text-right mt-1 mb-2">
+                                                    <p className="text-[11px] md:text-[12px] text-gray-400 font-medium tracking-wide">
+                                                        — {renderInline(para.english)}
+                                                    </p>
+                                                    {para.hindi && isByline(para.hindi) && (
+                                                        <p className="text-[10px] md:text-[11px] text-gray-400 mt-0.5">
+                                                            — {renderInline(para.hindi)}
+                                                        </p>
+                                                    )}
+                                                </div>
                                         ) : (
                                             <>
                                                 {para.english && (
@@ -650,11 +675,11 @@ export default function DailyNewsVocabQuizClient({
                                RC questions get the left panel split into
                                passage (top) + question (bottom)
                                ════════════════════════════════════════════ */}
-                                <main className="flex-1 flex flex-col lg:flex-row p-2 md:p-4 gap-3 md:gap-4 min-h-0">
+                                <main className="flex-1 flex flex-row p-2 md:p-4 gap-3 md:gap-4 min-h-0">
                                     {/* ── LEFT: Passage / Sentences Column (desktop) — RC or Para Jumbles ── */}
                                     {((currentQuestion.sectionType === "reading-comprehension" && editorialParagraphs.length > 0) ||
                                        (currentQuestion.sectionType === "advanced-para-jumbles" || currentQuestion.sectionType === "para-jumbles") && currentQuestion.sectionContext) && (
-                                        <div className="hidden lg:flex lg:w-[340px] flex-col bg-white border border-slate-200 rounded-lg shadow-sm min-h-0 overflow-hidden">
+                                        <div className="flex w-1/3 lg:w-[340px] flex-col bg-white border border-slate-200 rounded-lg shadow-sm min-h-0 overflow-hidden">
                                             <div className="px-4 py-[11px] bg-gray-50 border-b border-gray-200 shrink-0">
                                                 {currentQuestion.sectionType === "reading-comprehension" ? (
                                                     <>
@@ -689,43 +714,6 @@ export default function DailyNewsVocabQuizClient({
                                                 )}
                                             </div>
                                         </div>
-                                    )}
-
-                                    {/* Mobile: Collapsible Passage / Sentences — RC or Para Jumbles */}
-                                    {((currentQuestion.sectionType === "reading-comprehension" && editorialParagraphs.length > 0) ||
-                                       (currentQuestion.sectionType === "advanced-para-jumbles" || currentQuestion.sectionType === "para-jumbles") && currentQuestion.sectionContext) && (
-                                        <details className="lg:hidden border-2 border-gray-200 bg-white rounded-none overflow-hidden shrink-0">
-                                            <summary className="flex items-center gap-2 border-b-2 border-gray-200 px-4 py-2.5 cursor-pointer text-[12px] font-bold text-gray-500 uppercase tracking-[0.1em] select-none list-none">
-                                                {currentQuestion.sectionType === "reading-comprehension" ? (
-                                                    <><span>📖 Passage</span><span className="ml-auto text-[10px] text-gray-400 normal-case font-normal">{editorialParagraphs.length} paragraphs</span></>
-                                                ) : (
-                                                    <span>📋 Sentences A&ndash;F</span>
-                                                )}
-                                            </summary>
-                                            <div className="px-4 py-3 space-y-3 font-serif text-[14px] text-gray-700 leading-[1.8]">
-                                                {currentQuestion.sectionType === "reading-comprehension" ? (
-                                                    editorialParagraphs
-                                                        .filter(para => para.english && !/^(title|metaDescription|keywords|aeoDefinition):/i.test(para.english.trim()))
-                                                        .map((para, idx) => (
-                                                            para.english ? (
-                                                                <p key={idx}>{renderInline(para.english)}</p>
-                                                            ) : null
-                                                        ))
-                                                ) : (
-                                                    currentQuestion.sectionContext!
-                                                        .split('\n')
-                                                        .filter(line => {
-                                                            const content = line.trim().replace(/^\*\s*/, '');
-                                                            return /^\([A-F]\)/.test(content) || /^\*\*\([A-F]\)\*\*/.test(content) || /^\*{0,2}Directions/i.test(content);
-                                                        })
-                                                        .map((line, i) => {
-                                                            const trimmed = line.trim();
-                                                            if (!trimmed) return null;
-                                                            return <p key={i}>{renderInline(trimmed)}</p>;
-                                                        })
-                                                )}
-                                            </div>
-                                        </details>
                                     )}
 
                                     {/* ── MIDDLE: Question Area ── */}
