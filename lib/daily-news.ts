@@ -2,6 +2,13 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
+// ── FAQ Item Type ──
+
+export interface FaqItem {
+    q: string;
+    a: string;
+}
+
 // ── Directory ──
 const dailyNewsDirectory = path.join(process.cwd(), "content", "daily-news");
 
@@ -24,7 +31,9 @@ export type SectionType =
     | "fragment-completion"
     | "advanced-cloze-test"
     | "advanced-para-jumbles"
-    | "collocations-fixed-prepositions";
+    | "collocations-fixed-prepositions"
+    | "active-passive-voice"
+    | "direct-indirect-speech";
 
 const SECTION_TYPE_MAP: Record<string, SectionType> = {
     "1": "error-detection",
@@ -45,7 +54,8 @@ const NEW_SECTION_TYPE_MAP: Record<string, SectionType> = {
     "5": "advanced-cloze-test",
     "6": "advanced-para-jumbles",
     "7": "collocations-fixed-prepositions",
-    "8": "reading-comprehension",
+    "8": "active-passive-voice",
+    "9": "direct-indirect-speech",
 };
 
 export interface DailyNewsMeta {
@@ -86,6 +96,9 @@ export interface DailyNewsArticle {
     editorialEnglish: string;
     editorialHindi: string;
     sections: DailyNewsSection[];
+    faqItems: FaqItem[];
+    vocabRawMarkdown: string;
+    keepLearningMarkdown: string;
 }
 
 // ── Cache (only in production; dev always reads fresh from disk) ──
@@ -121,7 +134,7 @@ function loadAllRawArticles(): CachedArticle[] {
 
             // If frontmatter has aeoDefinition or metaDescription but no date/source,
             // treat as new Super Mock format — use slug as date
-                        const date = data.date ? normalizeDate(data.date) : normalizeDate(slug);
+            const date = data.date ? normalizeDate(data.date) : normalizeDate(slug);
             const source = data.source || "Daily Editorial Analysis";
             // Extract title: first from frontmatter, then from first # heading in content, else slug
             const firstHeading = content.match(/^#\s+(.+)$/m);
@@ -191,20 +204,20 @@ const SECTION_HEADER_REGEX = /^##\s+(\d+)\.\s+(.+)$/;
 
 // ── New format patterns (Super Mock / SEO-optimized) ──
 
-const NEW_SECTION_HEADER_REGEX = /^##\s*\S*\s*Section\s+(\d+)[:.)]\s*(.*)$/;
-const NEW_ANSWER_MARKER = /(?:🟢\s*)?\*{0,2}Correct Answer:\s*\(?([A-E])\)?/i;
-const QUESTION_HEADER_REGEX = /^###\s+Q(\d+)\.\s*(.*)$/;
+const NEW_SECTION_HEADER_REGEX = /^#{2,3}\s*\S*\s*Section\s+(\d+)[:.)]\s*(.*)$/;
+const NEW_ANSWER_MARKER = /(?:\*{0,2}Correct\s*(?:Answer)?\s*[-:–—]\s*\*{0,2}\s*)\(?([A-E])\)?/i;
+const QUESTION_HEADER_REGEX = /^#{3,4}\s+Q(\d+)\.\s*(.*)$/;
 const OPTION_REGEX = /^([A-E])\)\s*(.*)$/;
 const ANSWER_REGEX = /^Ans:\s*([A-E])$/;
 const EXPLANATION_REGEX = /^Explanation:\s*(.*)$/;
 
 function isNewFormat(body: string): boolean {
-    return /^##\s+[^\n]*?Section\s+\d+\s*[:.)]/im.test(body);
+    return /^#{2,3}\s+[^\n]*?Section\s+\d+\s*[:.)]/im.test(body);
 }
 
 function parseNewFormatEditorial(body: string): string[] {
     // Editorial content is everything before the first section header
-    const secMatch = body.match(/^##\s+[^\n]*?Section\s+\d+\s*[:.)]/m);
+    const secMatch = body.match(/^#{2,3}\s+[^\n]*?Section\s+\d+\s*[:.)]/m);
     if (!secMatch) return [];
     const editorialText = body.substring(0, secMatch.index).trim();
     const lines = editorialText.split('\n');
@@ -226,6 +239,8 @@ function cleanMarkdown(text: string): string {
         .split("\n")
         .map((line) => {
             let l = line;
+            // Remove bold labels like **Reasoning:** or **Correct - X** etc.
+            l = l.replace(/^\*{0,2}(?:Reasoning|Correct(?:\s*-\s*[A-E])?)\s*[-:]*\*{0,2}\s*/i, "");
             // Remove blockquote prefix (> ) and optional [!TAG]
             l = l.replace(/^>\s*(\[!\w+\])?\s*/, "");
             // Remove HTML tags used in markdown
@@ -266,7 +281,20 @@ function parseNewFormatSections(body: string): DailyNewsSection[] {
     for (let s = 0; s < sectionStarts.length; s++) {
         const { num: secNum, name: secName, index: secIndex } = sectionStarts[s];
         const nextSecIndex = s + 1 < sectionStarts.length ? sectionStarts[s + 1].index : body.length;
-        const secContent = body.substring(secIndex, nextSecIndex);
+        let secContent = body.substring(secIndex, nextSecIndex);
+
+        // ── Truncate section content at any non-section ## heading ──
+        // This prevents content outside the section (e.g., ## ❓ Frequently Asked Questions)
+        // from being incorrectly parsed as questions within this section
+        const secHeaderEnd = secContent.indexOf('\n');
+        if (secHeaderEnd > 0) {
+            const afterHeader = secContent.substring(secHeaderEnd + 1);
+            // Match ## NOT followed by # (i.e., not ###) — catches standalone level-2 headings
+            const secondaryHeadingMatch = afterHeader.match(/^##(?!#)\s+.+$/m);
+            if (secondaryHeadingMatch) {
+                secContent = secContent.substring(0, secHeaderEnd + 1 + secondaryHeadingMatch.index);
+            }
+        }
 
         let sectionType = NEW_SECTION_TYPE_MAP[secNum];
         if (!sectionType) continue;
@@ -279,6 +307,10 @@ function parseNewFormatSections(body: string): DailyNewsSection[] {
             sectionType = "collocations-fixed-prepositions";
         } else if (nameLower.includes('para jumble') || nameLower.includes('sentence rearrangement')) {
             sectionType = "advanced-para-jumbles";
+        } else if (nameLower.includes('active') || nameLower.includes('passive') || nameLower.includes('voice')) {
+            sectionType = "active-passive-voice";
+        } else if (nameLower.includes('direct') || nameLower.includes('indirect') || nameLower.includes('narration') || nameLower.includes('speech')) {
+            sectionType = "direct-indirect-speech";
         }
 
         const section: DailyNewsSection = {
@@ -291,7 +323,7 @@ function parseNewFormatSections(body: string): DailyNewsSection[] {
         // Find all question positions within this section
         const qStarts: Array<{ index: number; num: number; name: string }> = [];
         let qMatch: RegExpExecArray | null;
-        const qRe = /^###\s+Q(\d+)\.\s*(.*)$/gm;
+        const qRe = /^#{3,4}\s+Q(\d+)\.\s*(.*)$/gm;
         while ((qMatch = qRe.exec(secContent)) !== null) {
             qStarts.push({
                 index: qMatch.index,
@@ -336,30 +368,36 @@ function parseNewFormatSections(body: string): DailyNewsSection[] {
 
             // Extract explanation (everything after the answer line)
             let explanation = "";
-            const ansLineIdx = qContent.search(/(?:🟢\s*)?\*{0,2}Correct Answer:[^\n]*/i);
+            const ansLineIdx = qContent.search(/(?:\*{0,2}Correct\s*(?:Answer)?\s*[-:–—][^\n]*)/i);
             if (ansLineIdx >= 0) {
                 const lineEnd = qContent.indexOf("\n", ansLineIdx);
                 const afterAns = lineEnd >= 0 ? qContent.substring(lineEnd + 1) : "";
                 explanation = afterAns
                     .replace(/^[\s\-—=*]+/, "")
                     .replace(/\n{3,}/g, "\n\n")
-                    .trim()
-                    .substring(0, 2000);
+                    .trim();
                 // Strip markdown block formatting for clean display
                 explanation = cleanMarkdown(explanation);
             }
 
             // Extract full question stem (text between Q header and options/answer)
             let stem = qName || `Question ${qNum}`;
-            const questionBodyEnd = qContent.search(/^\*{0,2}Options\*{0,2}:?\*{0,2}\s*$/m);
-            const questionBodyStart = qContent.search(/^\*{0,2}Question\*{0,2}:?\*{0,2}/m);
+            // Try to find the question body start: **Question:** or **Sentences:**
+            const questionBodyStart = qContent.search(/^\*{0,2}(?:Question|Sentences)\*{0,2}:?\*{0,2}/m);
+            // Try to find the options start: **Options ... :** or **Options**
+            const questionBodyEnd = qContent.search(/^\*{0,2}Options(?:\s+\([^)]*\))?\*{0,2}:?\*{0,2}\s*$/m);
             if (questionBodyStart >= 0 && questionBodyEnd > questionBodyStart) {
                 const nlIdx = qContent.indexOf("\n", questionBodyStart);
                 const rawBody = nlIdx >= 0
                     ? qContent.substring(nlIdx + 1, questionBodyEnd).trim()
                     : qContent.substring(questionBodyStart, questionBodyEnd).trim();
                 if (rawBody) {
-                    stem = rawBody.substring(0, 600);
+                    // Clean markdown list markers (*) from each line — no truncation
+                    stem = rawBody
+                        .split('\n')
+                        .map(line => line.replace(/^\s*\*\s+/, '').trim())
+                        .filter(Boolean)
+                        .join('\n');
                 }
             }
 
@@ -539,8 +577,11 @@ export function getAllDailyNews(): DailyNewsMeta[] {
         date: a.date,
         title: a.title,
         source: a.source,
-        // Count questions by matching ### Q headers in raw content
-        questionCount: (a.content.match(/^###\s+Q\d+\./gm) || []).length,
+        // Count questions: new format uses #### Q (4 hashes), old format uses ### Q (3 hashes)
+        // This avoids counting FAQ questions (which also use ### Q)
+        questionCount: isNewFormat(a.content)
+            ? (a.content.match(/^####\s+Q\d+\./gm) || []).length
+            : (a.content.match(/^###\s+Q\d+\./gm) || []).length,
     }));
 }
 
@@ -580,6 +621,10 @@ export function getDailyNewsArticle(slug: string): DailyNewsArticle | null {
         }
     }
 
+    const faqItems = extractFaqItems(body);
+    const vocabRawMarkdown = extractVocabSection(body);
+    const keepLearningMarkdown = extractKeepLearning(body);
+
     const { paragraphs, english, hindi } = parseEditorial(editorialLines);
 
     return {
@@ -591,6 +636,9 @@ export function getDailyNewsArticle(slug: string): DailyNewsArticle | null {
         editorialEnglish: english,
         editorialHindi: hindi,
         sections,
+        faqItems,
+        vocabRawMarkdown,
+        keepLearningMarkdown,
     };
 }
 
@@ -601,6 +649,98 @@ export function getDailyNewsSection(
     const article = getDailyNewsArticle(slug);
     if (!article) return null;
     return article.sections.find((s) => s.type === sectionType) || null;
+}
+
+// ── Vocab Section Extractor ──
+// Captures the raw markdown of "##  What are the most important vocabulary words from this editorial?"
+// and its following table, everything between Q45 and the FAQ section.
+function extractVocabSection(body: string): string {
+    // Look for the vocab heading after Q45 and before FAQ
+    const vocabMatch = body.match(/^##\s+What are the most important vocabulary words from this editorials?\?$/im);
+    if (!vocabMatch) return '';
+
+    const startIdx = vocabMatch.index!;
+
+    // Find the first newline after the vocab heading, then search for next ## heading
+    const afterVocabLine = body.indexOf('\n', startIdx);
+    if (afterVocabLine < 0) return '';
+    const afterVocab = body.substring(afterVocabLine + 1);
+    const nextHeading = afterVocab.match(/^##(?!#)\s+.+$/m);
+    const endIdx = nextHeading
+        ? afterVocabLine + 1 + nextHeading.index!
+        : body.length;
+
+    // Return the raw markdown content from vocab heading to before FAQ
+    let raw = body.substring(startIdx, endIdx).trim();
+
+    // Also strip trailing whitespace / extra newlines
+    raw = raw.replace(/\n{3,}/g, '\n\n').trim();
+    return raw;
+}
+
+// ── FAQ Parser ──
+
+function extractFaqItems(body: string): FaqItem[] {
+    const items: FaqItem[] = [];
+
+    // Find FAQ section header: ## ❓ Frequently Asked Questions (FAQ)
+    const faqSectionMatch = body.match(/^## ❓ Frequently Asked Questions \(FAQ\)$/m);
+    if (!faqSectionMatch) return items;
+
+    const faqStart = faqSectionMatch.index! + faqSectionMatch[0].length;
+
+    // Find where FAQ section ends — next ## heading that's not ###
+    const afterFaq = body.substring(faqStart);
+    const nextHeadingMatch = afterFaq.match(/^##(?!#)\s+/m);
+    const faqEnd = nextHeadingMatch
+        ? faqStart + nextHeadingMatch.index!
+        : body.length;
+
+    const faqContent = body.substring(faqStart, faqEnd);
+
+    // Parse individual Q&A from: ### Q<num>. <question> ... **Answer:** <text>
+    const qRe = /^### Q(\d+)\.\s*(.*)$/gm;
+    let match: RegExpExecArray | null;
+    while ((match = qRe.exec(faqContent)) !== null) {
+        const questionText = match[2].trim();
+
+        // Find the answer for this question
+        const qStartInFaq = match.index;
+        const remainingAfterQ = faqContent.substring(qStartInFaq);
+        const answerMarkerMatch = remainingAfterQ.match(/\*\*Answer:\*\*\s*/);
+        if (!answerMarkerMatch) {
+            items.push({ q: questionText, a: '' });
+            continue;
+        }
+
+        const answerStart = qStartInFaq + answerMarkerMatch.index! + answerMarkerMatch[0].length;
+
+        // Find next question or end of FAQ content
+        const nextQMatch = faqContent.substring(answerStart).match(/^### Q\d+\./m);
+        const answerEnd = nextQMatch
+            ? answerStart + nextQMatch.index!
+            : faqContent.length;
+
+        const answerText = faqContent.substring(answerStart, answerEnd).trim();
+        items.push({ q: questionText, a: answerText });
+    }
+
+    return items;
+}
+
+// ── Keep Learning Extractor ──
+// Captures the "### 🎓 Keep Learning with kajubadamvocabulary.in" section
+function extractKeepLearning(body: string): string {
+    const match = body.match(/^#{1,3}\s+🎓\s*Keep Learning with kajubadamvocabulary\.in[.!]?\s*$/im);
+    if (!match) return '';
+
+    const startIdx = match.index!;
+    const afterLine = body.indexOf('\n', startIdx);
+    if (afterLine < 0) return '';
+
+    // Everything from the heading to end of file
+    let raw = body.substring(startIdx).trim();
+    return raw;
 }
 
 // ── Total question count helper ──

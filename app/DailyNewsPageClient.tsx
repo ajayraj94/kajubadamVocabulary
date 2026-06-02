@@ -88,7 +88,7 @@ export default function DailyNewsPageClient({ dailyNews }: Props) {
                               className={`group relative rounded-2xl p-5 transition-all duration-300 flex flex-col justify-between min-h-[170px] ${
                                 isRead
                                   ? "bg-gradient-to-br from-emerald-50/40 to-white ring-1 ring-emerald-200/50"
-                                  : "bg-white shadow-[0_2px_12px_-3px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_-8px_rgba(217,119,6,0.15)] hover:-translate-y-0.5"
+                                  : "bg-white shadow-[0_2px_12px_-3px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_-8px_rgba(217,119,6,0.15)]"
                               }`}>
                                 {/* Top row: date + Qs + read toggle */}
                                 <div className="flex items-center justify-between mb-3">
@@ -120,7 +120,7 @@ export default function DailyNewsPageClient({ dailyNews }: Props) {
 
                                 {/* Title */}
                                 <div className="flex-1">
-                                    <h3 className="text-[15px] font-bold text-gray-800 leading-snug group-hover:text-[#d97706] transition-colors duration-200">
+                                    <h3 className="text-[15px] font-bold text-gray-800 leading-snug">
                                         {item.title.length > 80 ? item.title.slice(0, 80) + "..." : item.title}
                                     </h3>
                                     <p className="text-[11px] text-gray-400 mt-1.5">{item.source} &middot; Daily Editorial</p>
@@ -136,7 +136,7 @@ export default function DailyNewsPageClient({ dailyNews }: Props) {
                                     </Link>
                                     <Link
                                       href={`/daily-news/${item.slug}#quiz`}
-                                      className="flex-1 text-center bg-white hover:bg-amber-50 text-[#d97706] border border-[#d97706] text-[12px] font-bold py-2 rounded-xl transition-all duration-200 active:scale-[0.97]"
+                                      className="flex-1 text-center bg-[#d97706] hover:bg-[#b45309] text-white text-[12px] font-bold py-2 rounded-xl transition-all duration-200 active:scale-[0.97]"
                                     >
                                         📝 Quiz
                                     </Link>

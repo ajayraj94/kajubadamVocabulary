@@ -11,73 +11,9 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
 }
 
 import { getAllDailyNews, getDailyNewsArticle } from "@/lib/daily-news";
-import type { EditorialParagraph } from "@/lib/daily-news";
 import DailyNewsVocabQuizClient from "./DailyNewsVocabQuizClient";
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
-
-// ── Helper: Extract bolded vocabulary words from editorial ──
-function isNonVocabularyWord(word: string): boolean {
-    // Skip author bylines with initials (e.g. "S. Anandan")
-    if (/^[A-Z]\.\s+/.test(word)) return true;
-    // Skip all-caps headings (e.g. "STATE OF PLAY")
-    if (word === word.toUpperCase() && word.length > 3) return true;
-    return false;
-}
-
-function extractBoldWords(paragraphs: EditorialParagraph[]): { word: string; context: string; hindi?: string }[] {
-    const seen = new Set<string>();
-    const result: { word: string; context: string; hindi?: string }[] = [];
-
-    for (const para of paragraphs) {
-        // Extract all bold words from English text, tracking their order
-        const enMatches = Array.from(para.english.matchAll(/\*\*([^*]+)\*\*/g));
-        // Extract all bold words from Hindi text, tracking their order
-        const hiMatches = para.hindi ? Array.from(para.hindi.matchAll(/\*\*([^*]+)\*\*/g)) : [];
-
-        for (let i = 0; i < enMatches.length; i++) {
-            const match = enMatches[i];
-            const word = match[1].trim();
-            if (!word || isNonVocabularyWord(word)) continue;
-
-            // Get Hindi equivalent: nth bold in English ↔ nth bold in Hindi
-            const hindiWord = i < hiMatches.length ? hiMatches[i][1].trim() : undefined;
-
-            if (!seen.has(word.toLowerCase())) {
-                seen.add(word.toLowerCase());
-                const idx = match.index!;
-                const start = Math.max(0, idx - 60);
-                const end = Math.min(para.english.length, idx + match[0].length + 60);
-                let context = para.english.slice(start, end).replace(/\*\*/g, "");
-                if (start > 0) context = "..." + context;
-                if (end < para.english.length) context = context + "...";
-                result.push({ word, context, hindi: hindiWord });
-            }
-        }
-    }
-
-    return result;
-}
-
-// ── Dynamic FAQ items ──
-interface FaqItem { q: string; a: string; }
-
-function getFaqItems(title: string, sectionNames: string[], totalQ: number, date: string, source: string): FaqItem[] {
-    return [
-        {
-            q: `How does the "${title}" daily news editorial help with English exam preparation?`,
-            a: `This daily news article from ${source} (${date}) contains ${totalQ} exam-style vocabulary questions across ${sectionNames.length} sections including ${sectionNames.join(", ")}. Reading current affairs editorials with bilingual (English-Hindi) support helps SSC CGL, UPSC, and Banking aspirants build contextual vocabulary for competitive exams far more effectively than static word lists.`,
-        },
-        {
-            q: `What types of vocabulary questions are included in this daily news article?`,
-            a: `This article covers ${sectionNames.join(", ")} sections with a total of ${totalQ} questions. Each question includes the original sentence context, multiple-choice options with letters (A-E), the correct answer, and a detailed bilingual explanation in both English and Hindi. The explanations break down grammar rules, word meanings, and usage patterns.`,
-        },
-        {
-            q: `Are there Hindi translations available for the vocabulary questions?`,
-            a: `Yes. Every question in this daily news article comes with a detailed Hindi (हिंदी) explanation. The editorial passage itself is fully bilingual with English and Hindi translations side by side, making it ideal for Hindi-medium aspirants preparing for SSC CGL, Banking PO, UPSC, and other government exams.`,
-        },
-    ];
-}
 
 // ── Pre-render all daily news slugs ──
 export async function generateStaticParams() {
@@ -197,14 +133,14 @@ export default async function DailyNewsPage({
         editorialParagraphs: article.editorialParagraphs,
         allQuestions,
         sections: sectionsInfo,
+        vocabRawMarkdown: article.vocabRawMarkdown,
+        faqItems: article.faqItems,
+        keepLearningMarkdown: article.keepLearningMarkdown,
     };
 
     const sectionTypeNames = sectionsInfo.map((s) => s.typeName);
     const totalQ = allQuestions.length;
-    const boldWords = extractBoldWords(article.editorialParagraphs);
     const OPTION_LETTERS = ["A", "B", "C", "D", "E"];
-
-    const faqItems = getFaqItems(article.title, sectionTypeNames, totalQ, article.date, article.source);
 
     const sectionListItems = sectionsInfo.map((s, i) => ({
         "@type": "ListItem",
@@ -213,8 +149,8 @@ export default async function DailyNewsPage({
         description: `${s.typeName} questions for vocabulary practice`, 
     }));
 
-    // Build FAQPage mainEntity from FAQ items
-    const faqMainEntity = faqItems.map((item) => ({
+    // Build FAQPage mainEntity from static FAQ items
+    const faqMainEntity = article.faqItems.map((item) => ({
         "@type": "Question",
         name: item.q,
         acceptedAnswer: {
@@ -344,78 +280,7 @@ export default async function DailyNewsPage({
             <JsonLd data={schema} />
             <DailyNewsVocabQuizClient {...commonProps} />
 
-            {/* ═══════════════════════════════════════════════
-               GEO: FAQ SECTION — helps LLMs answer user queries
-               ═══════════════════════════════════════════════ */}
-            <section className="max-w-[860px] mx-auto px-5 py-10 md:py-14">
-                <div className="bg-[#f9f9f9] border border-amber-200 rounded-xl p-6 md:p-8">
-                    <h2 className="text-xl md:text-2xl font-black text-gray-800 mb-6">
-                        Frequently Asked Questions
-                    </h2>
-                    <div className="space-y-5">
-                        {faqItems.map((item, i) => (
-                            <div key={i} className="border-b border-gray-200 pb-5 last:border-b-0 last:pb-0">
-                                <h3 className="text-[15px] font-bold text-gray-700 mb-2">
-                                    Q: {item.q}
-                                </h3>
-                                <p className="text-[14px] text-gray-600 leading-relaxed">
-                                    <strong>A:</strong> {item.a}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
-            {/* ═══════════════════════════════════════════════
-               GEO: VOCABULARY WORD TABLE — helps AI extract structured data
-               ═══════════════════════════════════════════════ */}
-            {boldWords.length > 0 && (
-                <section className="max-w-[860px] mx-auto px-5 pb-12 md:pb-16">
-                    <div className="overflow-x-auto border border-amber-200 rounded-xl">
-                        <h2 className="text-lg md:text-xl font-black text-gray-800 px-6 pt-6 pb-3">
-                            Key Vocabulary Words from Editorial: &ldquo;{article.title}&rdquo;
-                        </h2>
-                        <table className="w-full border-collapse text-sm md:text-[14px]">
-                            <thead>
-                                <tr className="bg-amber-50 border-b-2 border-amber-200 text-left">
-                                    <th className="px-4 md:px-6 py-3 font-bold text-gray-700">English Word</th>
-                                    <th className="px-4 md:px-6 py-3 font-bold text-gray-700">Hindi Meaning</th>
-                                    <th className="px-4 md:px-6 py-3 font-bold text-gray-700">Context in Editorial</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {boldWords.slice(0, 15).map((row, i) => (
-                                    <tr
-                                        key={i}
-                                        className={`border-b border-amber-100 ${i % 2 === 0 ? "bg-white" : "bg-amber-50/30"} hover:bg-amber-50/60 transition-colors`}
-                                    >
-                                        <td className="px-4 md:px-6 py-3 font-bold text-amber-900 text-[14px]">
-                                            {row.word}
-                                        </td>
-                                        <td className="px-4 md:px-6 py-3 text-[14px] font-medium text-emerald-700">
-                                            {row.hindi || "—"}
-                                        </td>
-                                        <td className="px-4 md:px-6 py-3 text-gray-600 text-[13px] leading-relaxed italic">
-                                            &ldquo;{row.context}&rdquo;
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {boldWords.length > 15 && (
-                            <div className="px-6 py-4 bg-amber-50/50 border-t border-amber-100 text-center">
-                                <p className="text-[13px] text-gray-500">
-                                    Showing 15 of {boldWords.length} key vocabulary words.
-                                    <a href="#quiz" className="text-amber-700 font-medium ml-1 hover:text-amber-900 hover:underline transition-colors cursor-pointer">
-                                        Start the quiz to practice all {totalQ} questions &rarr;
-                                    </a>
-                                </p>
-                            </div>
-                        )}
-                    </div>
-                </section>
-            )}
         </>
     );
 }

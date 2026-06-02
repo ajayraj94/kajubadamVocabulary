@@ -80,6 +80,7 @@ export default function SagaVocabQuizClient({
     const [filterMode, setFilterMode] = useState<FilterMode>("all");
     const [showFilterDropdown, setShowFilterDropdown] = useState(false);
     const [showQuiz, setShowQuiz] = useState(false);
+    const [showMobileStats, setShowMobileStats] = useState(false);
     const quizSectionRef = useRef<HTMLDivElement>(null);
     const paletteRef = useRef<HTMLDivElement>(null);
     const PALETTE_COLS = 10;
@@ -876,6 +877,83 @@ export default function SagaVocabQuizClient({
                                     </div>
                                 </div>
                             </div>
+
+                            {/* ── Mobile: Floating Stats Toggle ── */}
+                            <div className="lg:hidden fixed bottom-5 right-5 z-50">
+                                <button
+                                    onClick={() => setShowMobileStats(true)}
+                                    className="w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all active:scale-90"
+                                    style={{ backgroundColor: theme.accent, color: 'white' }}
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            {/* ── Mobile: Stats Overlay ── */}
+                            {showMobileStats && (
+                                <div className="lg:hidden fixed inset-0 z-50 flex justify-end">
+                                    <div className="absolute inset-0 bg-black/40" onClick={() => setShowMobileStats(false)} />
+                                    <div className="relative w-[280px] bg-white shadow-xl overflow-y-auto p-4 animate-in slide-in-from-right">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <span className="font-bold text-sm text-slate-700">📊 Stats &amp; Navigation</span>
+                                            <button onClick={() => setShowMobileStats(false)} className="text-slate-400 hover:text-slate-600 p-1">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div className="grid grid-cols-3 gap-1 text-center mb-3">
+                                            <div className="border border-emerald-100 bg-emerald-50 rounded p-2">
+                                                <span className="block text-emerald-600 font-bold text-sm">{correctCount}</span>
+                                                <span className="block text-[8px] text-emerald-600 font-bold uppercase">Correct</span>
+                                            </div>
+                                            <div className="border border-rose-100 bg-rose-50 rounded p-2">
+                                                <span className="block text-rose-500 font-bold text-sm">{wrongCount}</span>
+                                                <span className="block text-[8px] text-rose-500 font-bold uppercase">Wrong</span>
+                                            </div>
+                                            <div className="border border-slate-200 bg-slate-50 rounded p-2">
+                                                <span className="block text-slate-600 font-bold text-sm">{skipCount}</span>
+                                                <span className="block text-[8px] text-slate-500 font-bold uppercase">Skip</span>
+                                            </div>
+                                        </div>
+                                        <div className="bg-sky-50 border border-sky-100 rounded p-2 text-center mb-4">
+                                            <span className="block text-[9px] text-sky-700 font-bold uppercase tracking-wider">Score</span>
+                                            <span className={`block text-xl font-black my-0.5 ${netScore >= 0 ? "text-sky-800" : "text-red-600"}`}>{netScore.toFixed(2)}</span>
+                                            <span className="block text-[9px] text-sky-600">{correctCount}/{totalQuestions} correct</span>
+                                        </div>
+                                        <div className="grid grid-cols-10 gap-[2px] justify-items-center mb-4">
+                                            {quizQuestions.map((q, idx) => {
+                                                const isAnswered = !!answers[idx];
+                                                const isCorrectQ = answers[idx] === q.correctAnswer;
+                                                const isActive = idx === currentQIndex;
+                                                let circleClass = "bg-slate-100 text-slate-600";
+                                                if (isActive) circleClass = "bg-[#008080] text-white ring-2 ring-teal-300";
+                                                else if (isAnswered && isCorrectQ) circleClass = "bg-emerald-600 text-white";
+                                                else if (isAnswered && !isCorrectQ) circleClass = "bg-rose-500 text-white";
+                                                return (
+                                                    <button key={idx} onClick={() => { goToQuestion(idx); setShowMobileStats(false); }}
+                                                        className={`w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-bold ${circleClass}`}
+                                                    >
+                                                        {idx + 1}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                        <button onClick={() => { handleRestart(); setShowMobileStats(false); }}
+                                            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-[11px] px-3 py-2 rounded-lg mb-2"
+                                        >
+                                            🔄 Restart Quiz
+                                        </button>
+                                        <button onClick={() => { scrollToPassage(); setShowMobileStats(false); }}
+                                            className="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-[10px] px-3 py-2 rounded-lg"
+                                        >
+                                            ↑ Back to Reading
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* ═══ Right Side: Stats + Palette (25%) ═══ */}
                             <div className="hidden lg:flex lg:w-[320px] flex-col gap-4 min-h-0">
