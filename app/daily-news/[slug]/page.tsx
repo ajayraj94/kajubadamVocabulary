@@ -183,9 +183,13 @@ export default async function DailyNewsPage({
     // Google prefers datetime with timezone, e.g. 2026-06-03T00:00:00+05:30
     const dateTimeWithTz = article.date + 'T00:00:00+05:30';
 
+    const questionOptionsText = 'Options: ' + collocationsQ.options.map((opt, idx) => `(${OPTION_LETTERS[idx]}) ${opt}`).join(', ');
+
     const quizQuestion = {
         "@type": "Question",
         name: cleanStem,
+        // text differs from name by including all options — avoids "identical values" warning
+        text: cleanStem + ' — ' + questionOptionsText,
         answerCount: collocationsQ.options.length,
         datePublished: dateTimeWithTz,
         author: {
