@@ -1,8 +1,4 @@
-यहाँ `Saga 1-01.md` की कहानी को संशोधित किया गया है। सभी स्लैश वाले समूह (जैसे `EXCURSION / INCURSION`, `GRACEFUL / GRACIOUS` आदि) को अलग-अलग वाक्यों में इस तरह पिरोया गया है जिससे उनके सूक्ष्म अर्थ (shaded meanings) पूरी तरह से स्पष्ट हो जाएँ और उनके बीच का भ्रम दूर हो जाए। बाकी कहानी के मूल रूप में कोई भी अन्य बदलाव नहीं किया गया है।
 
----
-
----
 slug: "shadows-of-the-forsaken"
 title: "Shadows of the Forsaken"
 saga_id: "Saga 1-01"
@@ -17,6 +13,7 @@ vocab_part: "part 1"
 ---
 
 ### Chapter 1: The Architect of Ruins
+Hard works pays off not always,99.99% done, you are unscuessfull.
 
 The dark wizard was **ILL WITH** _(suffering from a specific sickness)_ a soul-rot that no elixir could cure, for he had traded his vitality for forbidden lore.  
 दुष्ट जादूगर आत्मा के क्षय से **बीमार** _(एक विशिष्ट बीमारी से पीड़ित)_ था जिसे कोई भी अमृत ठीक नहीं कर सकता था, क्योंकि उसने वर्जित ज्ञान के लिए अपनी जीवन शक्ति का सौदा किया था।
