@@ -171,49 +171,49 @@ export default async function DailyNewsPage({
         },
     }));
 
-    // Build QAPage data from first 5 quiz questions (shows question + correct answer in search)
-    const quizQuestions = allQuestions.slice(0, 5).map((q) => {
-        const answerLetter = q.correctAnswer;
-        const letterIndex = OPTION_LETTERS.indexOf(answerLetter);
-        const answerText = letterIndex >= 0 && letterIndex < q.options.length
-            ? `${answerLetter}) ${q.options[letterIndex]}`
-            : answerLetter;
-        const cleanStem = stripMarkdown(q.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 500);
-        const fullStem = stripMarkdown(q.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 2000);
-        return {
-            "@type": "Question",
-            name: cleanStem,
-            text: fullStem,
-            answerCount: q.options.length,
+    // Build QAPage data from Section 6 (Collocations) first question
+    // (shows question + correct answer in search — using 1 question to comply with Google QAPage guidelines)
+    const collocationsQ = allQuestions.find(q => q.sectionType === 'collocations-fixed-prepositions') || allQuestions[0];
+    const qAnswerLetter = collocationsQ.correctAnswer;
+    const qLetterIndex = OPTION_LETTERS.indexOf(qAnswerLetter);
+    const qAnswerText = qLetterIndex >= 0 && qLetterIndex < collocationsQ.options.length
+        ? `${qAnswerLetter}) ${collocationsQ.options[qLetterIndex]}`
+        : qAnswerLetter;
+    const cleanStem = stripMarkdown(collocationsQ.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 500);
+    const fullStem = stripMarkdown(collocationsQ.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 2000);
+    const quizQuestion = {
+        "@type": "Question",
+        name: cleanStem,
+        text: fullStem,
+        answerCount: collocationsQ.options.length,
+        datePublished: article.date,
+        author: {
+            "@type": "Organization",
+            name: article.source,
+        },
+        acceptedAnswer: {
+            "@type": "Answer",
+            text: `The correct answer is ${qAnswerLetter}: ${qAnswerText}. ${collocationsQ.explanation.substring(0, 500)}`,
             datePublished: article.date,
+            url: `${SITE_URL}/daily-news/${slug}`,
             author: {
                 "@type": "Organization",
-                name: article.source,
+                name: "kajubadam Vocabulary",
             },
-            acceptedAnswer: {
-                "@type": "Answer",
-                text: `The correct answer is ${answerLetter}: ${answerText}. ${q.explanation.substring(0, 500)}`,
-                datePublished: article.date,
-                url: `${SITE_URL}/daily-news/${slug}`,
-                author: {
-                    "@type": "Organization",
-                    name: "kajubadam Vocabulary",
-                },
-                upvoteCount: 0,
+            upvoteCount: 0,
+        },
+        suggestedAnswer: collocationsQ.options.map((opt, idx) => ({
+            "@type": "Answer",
+            text: `${OPTION_LETTERS[idx]}) ${opt}`,
+            datePublished: article.date,
+            url: `${SITE_URL}/daily-news/${slug}`,
+            author: {
+                "@type": "Organization",
+                name: "kajubadam Vocabulary",
             },
-            suggestedAnswer: q.options.map((opt, idx) => ({
-                "@type": "Answer",
-                text: `${OPTION_LETTERS[idx]}) ${opt}`,
-                datePublished: article.date,
-                url: `${SITE_URL}/daily-news/${slug}`,
-                author: {
-                    "@type": "Organization",
-                    name: "kajubadam Vocabulary",
-                },
-                upvoteCount: 0,
-            })),
-        };
-    });
+            upvoteCount: 0,
+        })),
+    };
 
     // Clean editorial body for articleBody (strip markdown bold markers)
     const cleanEditorialBody = article.editorialEnglish
@@ -302,10 +302,10 @@ export default async function DailyNewsPage({
                 "@type": "FAQPage",
                 mainEntity: faqMainEntity,
             },
-            // ── QAPage for quiz questions (first 5) ──
+            // ── QAPage for Section 6 (Collocations) first question ──
             {
                 "@type": "QAPage",
-                mainEntity: quizQuestions,
+                mainEntity: quizQuestion,
             },
         ],
     };
