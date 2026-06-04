@@ -178,11 +178,12 @@ export default async function DailyNewsPage({
         const answerText = letterIndex >= 0 && letterIndex < q.options.length
             ? `${answerLetter}) ${q.options[letterIndex]}`
             : answerLetter;
-        const cleanStem = stripMarkdown(q.stem).substring(0, 200);
+        const cleanStem = stripMarkdown(q.stem).substring(0, 500);
+        const fullStem = stripMarkdown(q.stem).substring(0, 2000);
         return {
             "@type": "Question",
             name: cleanStem,
-            text: cleanStem,
+            text: fullStem,
             answerCount: q.options.length,
             datePublished: article.date,
             author: {
@@ -191,7 +192,7 @@ export default async function DailyNewsPage({
             },
             acceptedAnswer: {
                 "@type": "Answer",
-                text: `The correct answer is ${answerLetter}: ${answerText}. ${q.explanation.substring(0, 250)}`,
+                text: `The correct answer is ${answerLetter}: ${answerText}. ${q.explanation.substring(0, 500)}`,
                 datePublished: article.date,
                 url: `${SITE_URL}/daily-news/${slug}`,
                 author: {
