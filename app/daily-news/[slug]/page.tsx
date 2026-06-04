@@ -183,10 +183,13 @@ export default async function DailyNewsPage({
     // Google prefers datetime with timezone, e.g. 2026-06-03T00:00:00+05:30
     const dateTimeWithTz = article.date + 'T00:00:00+05:30';
 
+    const optionsText = collocationsQ.options.map((opt, idx) => `(${OPTION_LETTERS[idx]}) ${opt}`).join(', ');
+
     const quizQuestion = {
         "@type": "Question",
         name: cleanStem,
-        // text omitted on Question — optional field, avoids "identical values" warning with name
+        // text starts with a distinct prefix so it NEVER matches name — fixes "identical values" warning
+        text: `Collocations Quiz Q.${collocationsQ.id}: Fill in the blank. Options: ${optionsText}`,
         answerCount: collocationsQ.options.length,
         datePublished: dateTimeWithTz,
         author: {
