@@ -450,7 +450,7 @@ export default function DailyNewsVocabQuizClient({
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 font-sans flex flex-col overflow-x-hidden">
+        <div className="min-h-screen bg-gray-50 font-sans flex flex-col overflow-x-hidden w-full min-w-0">
             {/* Print styles */}
             <style>{PRINT_STYLES}</style>
 
@@ -504,7 +504,7 @@ export default function DailyNewsVocabQuizClient({
             </header>
 
             {/* ═══ READING VIEW ═══ */}                            {!quizStarted && (
-                <div className="max-w-[860px] mx-auto px-5 py-8 md:py-10 break-words">
+                <div className="max-w-[860px] mx-auto px-5 py-8 md:py-10 break-words w-full min-w-0">
                     {/* Hero Header */}
                     <div className="bg-white rounded-xl border border-amber-200/60 shadow-md overflow-hidden mb-6 md:mb-8 print:shadow-none print:border-0 print:rounded-none print:mb-2">
                         <div className="bg-gradient-to-br print:hidden from-[#0f172a] via-[#d97706] to-[#0f172a] px-6 md:px-8 py-6 md:py-7 relative overflow-hidden">
