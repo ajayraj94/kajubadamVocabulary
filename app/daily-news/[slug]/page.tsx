@@ -199,9 +199,10 @@ export default async function DailyNewsPage({
         },
         acceptedAnswer: {
             "@type": "Answer",
+            "@id": `${SITE_URL}/daily-news/${slug}#answer-accepted`,
             text: `The correct answer is ${qAnswerLetter}: ${qAnswerText}. ${collocationsQ.explanation.substring(0, 500)}`,
             datePublished: dateTimeWithTz,
-            url: `${SITE_URL}/daily-news/${slug}`,
+            url: `${SITE_URL}/daily-news/${slug}#answer-accepted`,
             author: {
                 "@type": "Organization",
                 name: "kajubadam Vocabulary",
@@ -209,18 +210,22 @@ export default async function DailyNewsPage({
             },
             upvoteCount: 0,
         },
-        suggestedAnswer: collocationsQ.options.map((opt, idx) => ({
-            "@type": "Answer",
-            text: `${OPTION_LETTERS[idx]}) ${opt}`,
-            datePublished: dateTimeWithTz,
-            url: `${SITE_URL}/daily-news/${slug}`,
-            author: {
-                "@type": "Organization",
-                name: "kajubadam Vocabulary",
-                url: SITE_URL,
-            },
-            upvoteCount: 0,
-        })),
+        suggestedAnswer: collocationsQ.options
+            .map((opt, idx) => ({ opt, idx }))
+            .filter(({ idx }) => idx !== qLetterIndex)
+            .map(({ opt, idx }) => ({
+                "@type": "Answer",
+                "@id": `${SITE_URL}/daily-news/${slug}#answer-${OPTION_LETTERS[idx].toLowerCase()}`,
+                text: `${OPTION_LETTERS[idx]}) ${opt}`,
+                datePublished: dateTimeWithTz,
+                url: `${SITE_URL}/daily-news/${slug}#answer-${OPTION_LETTERS[idx].toLowerCase()}`,
+                author: {
+                    "@type": "Organization",
+                    name: "kajubadam Vocabulary",
+                    url: SITE_URL,
+                },
+                upvoteCount: 0,
+            })),
     };
 
     // Clean editorial body for articleBody (strip markdown bold markers)
