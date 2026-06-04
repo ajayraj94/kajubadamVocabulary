@@ -178,8 +178,8 @@ export default async function DailyNewsPage({
         const answerText = letterIndex >= 0 && letterIndex < q.options.length
             ? `${answerLetter}) ${q.options[letterIndex]}`
             : answerLetter;
-        const cleanStem = stripMarkdown(q.stem).substring(0, 500);
-        const fullStem = stripMarkdown(q.stem).substring(0, 2000);
+        const cleanStem = stripMarkdown(q.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 500);
+        const fullStem = stripMarkdown(q.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 2000);
         return {
             "@type": "Question",
             name: cleanStem,
