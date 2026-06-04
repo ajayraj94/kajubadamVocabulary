@@ -179,7 +179,9 @@ export default async function DailyNewsPage({
     const qAnswerText = qLetterIndex >= 0 && qLetterIndex < collocationsQ.options.length
         ? `${qAnswerLetter}) ${collocationsQ.options[qLetterIndex]}`
         : qAnswerLetter;
-    const cleanStem = stripMarkdown(collocationsQ.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 500);
+    const cleanStem = stripMarkdown(collocationsQ.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 100);
+    // Full stem with options for the text field (always longer than name to avoid "identical values" warning)
+    const fullStem = stripMarkdown(collocationsQ.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 2000);
     // Google prefers datetime with timezone, e.g. 2026-06-03T00:00:00+05:30
     const dateTimeWithTz = article.date + 'T00:00:00+05:30';
 
@@ -188,8 +190,8 @@ export default async function DailyNewsPage({
     const quizQuestion = {
         "@type": "Question",
         name: cleanStem,
-        // text differs from name by including all options — avoids "identical values" warning
-        text: cleanStem + ' — ' + questionOptionsText,
+        // text is the full stem + options — always differs from truncated name (100 chars)
+        text: fullStem + ' — ' + questionOptionsText,
         answerCount: collocationsQ.options.length,
         datePublished: dateTimeWithTz,
         author: {
