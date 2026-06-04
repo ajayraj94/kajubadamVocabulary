@@ -1,3 +1,7 @@
+यहाँ `Saga 1-01.md` की कहानी को संशोधित किया गया है। सभी स्लैश वाले समूह (जैसे `EXCURSION / INCURSION`, `GRACEFUL / GRACIOUS` आदि) को अलग-अलग वाक्यों में इस तरह पिरोया गया है जिससे उनके सूक्ष्म अर्थ (shaded meanings) पूरी तरह से स्पष्ट हो जाएँ और उनके बीच का भ्रम दूर हो जाए। बाकी कहानी के मूल रूप में कोई भी अन्य बदलाव नहीं किया गया है।
+
+---
+
 ---
 slug: "shadows-of-the-forsaken"
 title: "Shadows of the Forsaken"
@@ -74,69 +78,132 @@ The void had a ravenous **APPETITE FOR** _(a strong desire or liking for somethi
 He remained **DEVOTED TO** _(very loving or loyal to a person or cause)_ the prophecy that foretold the return of the Night Father.  
 वह उस भविष्यवाणी के प्रति **समर्पित** _(किसी व्यक्ति या कारण के प्रति बहुत प्रेमपूर्ण या वफादार)_ रहा जिसने 'नाइट फादर' की वापसी की सूचना दी थी।
 
-The wizard prepared for a short **EXCURSION / INCURSION** _(a brief journey / a sudden invasion)_ into the mortal realm to reclaim what was stolen.  
-जादूगर ने जो चोरी हुआ था उसे पुनः प्राप्त करने के लिए नश्वर क्षेत्र में एक संक्षिप्त **भ्रमण / आक्रमण** _(एक छोटी यात्रा / अचानक हमला)_ के लिए खुद को तैयार किया।
+He recalled his last peaceful **EXCURSION** _(a brief journey or trip)_ to the Whispering Mountains, a rare journey undertaken before the darkness took him.  
+वह विस्परिंग माउंटेन की अपनी अंतिम शांतिपूर्ण **यात्रा/भ्रमण** _(एक संक्षिप्त यात्रा)_ को याद करता था, जो अंधेरे के हावी होने से पहले की गई एक दुर्लभ यात्रा थी।
 
-He looked at the **PITIABLE / PITIFUL** _(deserving pity / deserving of contempt)_ creatures groveling at his feet, deciding their fate with a flick of his wrist.  
-उसने अपने पैरों पर रेंगने वाले **दयनीय / तिरस्कारपूर्ण** _(करुणा के योग्य / अवमानना के योग्य)_ प्राणियों की ओर देखा, और अपनी कलाई के एक झटके से उनके भाग्य का फैसला किया।
+Now, he prepared for a violent **INCURSION** _(a sudden invasion or attack)_ into the mortal realm to reclaim his stolen artifact by force.  
+अब, उसने बलपूर्वक अपने चोरी हुए अवशेष को वापस पाने के लिए नश्वर क्षेत्र में एक हिंसक **आक्रमण/घुसपैठ** _(अचानक हमला)_ की तैयारी की।
 
-He moved with a **GRACEFUL / GRACIOUS** _(elegant in movement / kind and pleasant)_ step that betrayed the immense power contained within his withered frame.  
-वह एक **सुंदर / विनीत** _(गति में सुरुचिपूर्ण / दयालु और सुखद)_ कदम के साथ चला जिसने उसके मुरझाए हुए शरीर के भीतर समाहित अपार शक्ति को प्रकट किया।
+He looked at the starving peasants, their frail and **PITIABLE** _(deserving pity)_ state reminding him of the mortality he had discarded.  
+उसने भूखे किसानों की ओर देखा, जिनकी कमज़ोर और **दयनीय** _(करुणा के योग्य)_ स्थिति ने उसे उस नश्वरता की याद दिला दी जिसे उसने त्याग दिया था।
 
-His answer was **AMBIGUOUS / AMBIVALENT** _(open to more than one interpretation / having mixed feelings)_ leaving his followers in a state of constant dread.  
-उसका उत्तर **अस्पष्ट / द्विधापूर्ण** _(एक से अधिक व्याख्याओं के लिए खुला / मिश्रित भावनाएँ होना)_ था, जिससे उसके अनुयायी निरंतर भय की स्थिति में रहते थे।
+Yet, their cowardly whimpering was merely **PITIFUL** _(deserving of contempt)_ to his cold eyes, evoking only his disgust.  
+फिर भी, उनका कायरतापूर्ण रोना उसकी ठंडी आँखों के लिए केवल **तिरस्कारपूर्ण** _(अवमानना के योग्य)_ था, जिससे केवल घृणा उत्पन्न होती थी।
 
-"The stars **ARE / HOUR / OUR** _(present tense of be / 60 minutes / belonging to us)_ alignment is near," he whispered, "and the final breath of light is at hand."  
-"सितारों का संरेखण **है / घंटा / हमारा** _(होना / ६० मिनट / हमारा)_ करीब है," उसने फुसफुसाया, "और प्रकाश की अंतिम सांस निकट है।"
+He moved with a **GRACEFUL** _(elegant in movement)_ step that betrayed the immense power contained within his withered frame.  
+वह एक **सुंदर** _(गति में सुरुचिपूर्ण)_ कदम के साथ चला जिसने उसके मुरझाए हुए शरीर के भीतर समाहित अपार शक्ति को प्रकट किया।
+
+Though powerful, he was never **GRACIOUS** _(kind, pleasant, and polite)_ to his servants, offering only cold commands.  
+यद्यपि वे शक्तिशाली थे, वे कभी भी अपने सेवकों के प्रति **कृपालु/विनीत** _(दयालु और सुखद)_ नहीं थे, वे केवल ठंडे आदेश देते थे।
+
+His ancient prophecy was **AMBIGUOUS** _(open to more than one interpretation)_, leaving his followers in a state of constant dread.  
+उनकी प्राचीन भविष्यवाणी **अस्पष्ट** _(एक से अधिक व्याख्याओं के लिए खुली)_ थी, जिससे उनके अनुयायी निरंतर भय की स्थिति में रहते थे।
+
+He remained deeply **AMBIVALENT** _(having mixed feelings or contradictory ideas)_ about the fate of the mortals, caring neither for their survival nor their doom.  
+वह नश्वर लोगों के भाग्य के बारे में गहराई से **द्विधापूर्ण** _(मिश्रित भावनाएँ होना)_ रहा, उसे न तो उनके जीवित रहने की चिंता थी और न ही उनके विनाश की।
+
+"The stars **ARE** _(present tense of be)_ aligned," he whispered, gazing at the pitch-black sky.  
+"सितारे संरेखित **हैं** _(होना)_," उसने काले आसमान की ओर देखते हुए फुसफुसाया।
+
+"The final **HOUR** _(a period of 60 minutes)_ of the light is at hand."  
+"प्रकाश का अंतिम **घंटा** _(६० मिनट)_ निकट है।"
+
+"And soon, **OUR** _(belonging to us)_ dark legacy will cover the entire world."  
+"और जल्द ही, **हमारा** _(हमारा)_ काला इतिहास पूरी दुनिया को ढक लेगा।"
 
 ---
 
 ### Chapter 2: The Forbidden Tome
 
-The seeker read the **FOREWORD / FORWARD** _(introductory remarks / towards the front)_ of the ancient grimoire, feeling the cold seep into his bones as the words shifted on the page.  
-साधक ने प्राचीन ग्रिमोर (grimoire) की **प्रस्तावना / आगे** _(प्रारंभिक टिप्पणी / सामने की ओर)_ पढ़ी, और जैसे ही पृष्ठ पर शब्द बदले, उसे अपनी हड्डियों में ठंडक महसूस हुई।
+The seeker read the **FOREWORD** _(introductory remarks in a book)_ of the ancient grimoire, feeling the cold seep into his bones as the words shifted on the page.  
+साधक ने प्राचीन ग्रंथ की **प्रस्तावना** _(प्रारंभिक टिप्पणी)_ पढ़ी, और जैसे ही पृष्ठ पर शब्द बदले, उसे अपनी हड्डियों में ठंडक महसूस हुई।
+
+He then took a step **FORWARD** _(towards the front or onward)_ into the dark vault to uncover its secrets.  
+फिर उसने इसके रहस्यों को उजागर करने के लिए अंधेरे तहखाने में **आगे** _(सामने की ओर)_ कदम बढ़ाया।
 
 He was allowed to **PASS** _(to go past or across something)_ through the gate of whispers only because he bore the mark of the broken crown.  
 उसे फुसफुसाहटों के द्वार से **गुजरने** _(किसी चीज़ के पीछे या पार जाना)_ की अनुमति केवल इसलिए दी गई क्योंकि उसके पास टूटे हुए मुकुट का निशान था।
 
-The incense of **BASIL / BASILICA** _(an aromatic herb / a large church)_ filled the underground temple, though no holy prayers had been spoken there for a thousand years.  
-भूमिगत मंदिर में **तुलसी / बेसिलिका** _(एक सुगंधित जड़ी-बूटी / एक बड़ा चर्च)_ की धूप भरी हुई थी, हालाँकि वहां एक हज़ार वर्षों से कोई पवित्र प्रार्थना नहीं की गई थी।
+The sharp scent of dried **BASIL** _(an aromatic herb)_ hung in the air of the ritual room.  
+अनुष्ठान कक्ष की हवा में सूखी **तुलसी** _(एक सुगंधित जड़ी-बूटी)_ की तीखी गंध आ रही थी।
 
-Despite the gloom, the seeker’s spirit remained **BLITHE / LITHE** _(happy and carefree / thin, supple, and graceful)_ as if he didn't realize he was walking into a trap.  
-अंधेरे के बावजूद, साधक की आत्मा **प्रसन्न / लचीली** _(खुश और बेफिक्र / पतली, कोमल और सुंदर)_ रही जैसे कि उसे पता ही न हो कि वह एक जाल में फंसने जा रहा है।
+The grand underground **BASILICA** _(a large, grand church)_ echoed with the heavy footsteps of the guards.  
+विशाल भूमिगत **बेसिलिका** _(एक बड़ा चर्च)_ रक्षकों के भारी कदमों की आवाज़ से गूंज उठा।
 
-He needed a **HERO / HEROIN / HEROINE** _(brave person / a drug / brave woman)_ to guide him through the labyrinth of souls, but he found only shadows.  
-उसे आत्माओं की भूलभुलैया के माध्यम से मार्गदर्शन करने के लिए एक **नायक / हेरोइन / नायिका** _(बहादुर व्यक्ति / एक नशीली दवा / बहादुर महिला)_ की आवश्यकता थी, लेकिन उसे केवल साये मिले।
+Despite the gloom, the seeker’s spirit remained **BLITHE** _(happy and carefree)_, unaware of the dangers ahead.  
+अंधेरे के बावजूद, साधक की आत्मा **प्रसन्न** _(खुश और बेफिक्र)_ रही, जो आगे आने वाले खतरों से अनजान थी।
 
-It would take **SOME TIME / SOMETIME / SOMETIMES** _(a period of time / at an unspecified time / occasionally)_ to decode the cipher that protected the chamber of silence.  
-मौन के कक्ष की रक्षा करने वाले सिफर (cipher) को डिकोड करने में **कुछ समय / कभी / कभी-कभी** _(समय की अवधि / अनिर्दिष्ट समय पर / कभी-कभी)_ लगेगा।
+Beside him, a **LITHE** _(thin, supple, and graceful)_ shadow-serpent slid silently through the cracks in the stone.  
+उसके बगल में, एक **लचीला** _(पतला, कोमल और सुंदर)_ छाया-सर्प पत्थर की दरारों से चुपचाप निकल गया।
 
-He had gained **ADMISSION / ADMITTANCE** _(permission to enter / the process of entering)_ to the inner sanctum, a place where reality began to fray at the edges.  
-उसे आंतरिक गर्भगृह में **प्रवेश / अनुमति** _(प्रवेश की अनुमति / प्रवेश की प्रक्रिया)_ मिल गई थी, एक ऐसी जगह जहाँ वास्तविकता के किनारे उखड़ने लगे थे।
+The realm desperately needed a brave **HERO** _(a brave person, typically a man)_ to fight the shadows.  
+अंधेरे से लड़ने के लिए साम्राज्य को एक बहादुर **नायक** _(बहादुर व्यक्ति)_ की सख्त जरूरत थी।
 
-He found it hard to **BREATH / BREATHE** _(the air inhaled / the act of inhaling)_ as the ancient air was thick with the dust of forgotten gods.  
-उसके लिए **साँस / साँस लेना** _(अंदर ली गई हवा / सांस लेने की क्रिया)_ मुश्किल हो गया क्योंकि प्राचीन हवा विस्मृत देवताओं की धूल से भरी हुई थी।
+Instead, they sent a fearless **HEROINE** _(a brave woman)_ armed with a sword of light.  
+इसके बजाय, उन्होंने प्रकाश की तलवार से लैस एक निडर **नायिका** _(बहादुर महिला)_ को भेजा।
 
-He had to **RING / WRING** _(to make a sound / to twist and compress)_ the bell of sorrow three times to awaken the guardian of the gate.  
-द्वार के रक्षक को जगाने के लिए उसे दुख की घंटी को तीन बार **बजाना / मरोड़ना** _(आवाज़ करना / मोड़ना और दबाना)_ पड़ा।
+In the slums, weak men lost themselves to the sleep of **HEROIN** _(a highly addictive drug)_, seeking escape from the dread.  
+झुग्गियों में, कमजोर लोग डर से बचने की तलाश में **हेरोइन** _(एक नशीली दवा)_ की नींद में खुद को खो देते थे।
 
-The dark priest was offered a **BERTH / BIRTH** _(a sleeping place / the emergence of a baby)_ on the ghost ship that sailed the sea of tears.  
-उस प्रेत जहाज पर काले पुजारी को एक **शयन स्थान / जन्म** _(सोने की जगह / बच्चे का जन्म)_ की पेशकश की गई जो आंसुओं के समुद्र में तैरता था।
+It would take **SOME TIME** _(a period of time)_ to decode the complex cipher protecting the door.  
+दरवाजे की रक्षा करने वाले जटिल सिफर को डिकोड करने में **कुछ समय** _(समय की अवधि)_ लगेगा।
+
+He hoped to finish his translation **SOMETIME** _(at an unspecified time)_ before the eclipse.  
+उसे ग्रहण से पहले **कभी** _(अनिर्णित समय पर)_ अपना अनुवाद पूरा करने की आशा थी।
+
+**SOMETIMES** _(occasionally)_, the shifting runes seemed to mock his efforts by changing shape.  
+**कभी-कभी** _(कभी-कभी)_ बदलते हुए प्रतीक अपना आकार बदलकर उसके प्रयासों का मजाक उड़ाते प्रतीत होते थे।
+
+By his own **ADMISSION** _(the acknowledgment of a fact or truth)_, he had stolen the key to the archives.  
+अपनी स्वयं की **स्वीकृति** _(तथ्य की स्वीकारोक्ति)_ से, उसने अभिलेखागार की चाबी चुराई थी।
+
+Thus, he was granted **ADMITTANCE** _(the permission or process of entering a place)_ into the forbidden vaults.  
+इस प्रकार, उसे प्रतिबंधित तहखानों में **प्रवेश** _(प्रवेश की अनुमति)_ प्रदान की गई।
+
+His freezing **BREATH** _(the air inhaled and exhaled)_ was visible in the cold air of the tomb.  
+मकबरे की ठंडी हवा में उसकी जमती हुई **साँस** _(अंदर ली गई हवा)_ दिखाई दे रही थी।
+
+He found it hard to **BREATHE** _(the act of inhaling and exhaling)_ because the air was thick with ancient dust.  
+उसके लिए **साँस लेना** _(सांस लेने की क्रिया)_ मुश्किल था क्योंकि हवा प्राचीन धूल से भारी थी।
+
+He had to **RING** _(to make a sound, as a bell)_ the bell of sorrow three times to awaken the guard.  
+द्वारपाल को जगाने के लिए उसे दुख की घंटी को तीन बार **बजाना** _(आवाज़ करना)_ पड़ा।
+
+The terror of the moment made him **WRING** _(to twist and compress tightly)_ his hands in silent agony.  
+उस क्षण के आतंक ने उसे मौन पीड़ा में अपने हाथ **मरोड़ने** _(मोड़ना और दबाना)_ पर मजबूर कर दिया।
+
+The dark priest was offered a small **BERTH** _(a sleeping place on a ship)_ on the ghost ship.  
+प्रेत जहाज पर काले पुजारी को एक छोटा **शयन स्थान** _(सोने की जगह)_ दिया गया था।
+
+This ritual, he believed, would trigger the **BIRTH** _(the emergence of a baby or new life)_ of a new god.  
+उसका मानना था कि यह अनुष्ठान एक नए देवता के **जन्म** _(बच्चे का जन्म/नया जीवन)_ को गति देगा।
 
 The seeker had to **ADDRESS** _(to speak to or write to someone)_ the entity not as a god, but as a hunger that never slept.  
 साधक को उस सत्ता को एक देवता के रूप में नहीं, बल्कि एक ऐसी भूख के रूप में **संबोधित** _(किसी से बोलना या लिखना)_ करना था जो कभी नहीं सोती थी।
 
-The guardian was **CONSCIENTIOUS / CONSENSUS** _(wishing to do what is right / a general agreement)_ in its duty, never allowing any unworthy soul to pass through the threshold.  
-रक्षक अपने कर्तव्य में **ईमानदार / आम सहमति** _(सही काम करने की इच्छा रखना / एक सामान्य समझौता)_ था, जिसने कभी भी किसी अयोग्य आत्मा को दहलीज से गुजरने की अनुमति नहीं दी।
+The guardian was **CONSCIENTIOUS** _(wishing to do what is right and thorough)_ in checking every seal.  
+रक्षक हर सील की जाँच करने में बहुत **ईमानदार** _(सही काम करने की इच्छा रखना)_ था।
 
-It was common **PRACTICE / PRACTISE** _(the actual application / to perform an activity)_ among the cultists to offer their memories as tribute to the void.  
-पंथियों के बीच अपनी यादों को शून्य को श्रद्धांजलि के रूप में अर्पित करना एक सामान्य **अभ्यास / अभ्यास करना** _(वास्तविक अनुप्रयोग / किसी गतिविधि को करना)_ था।
+However, there was no **CONSENSUS** _(a general agreement)_ among the council on how to defeat the beast.  
+हालाँकि, परिषद के बीच इस बात पर कोई **आम सहमति** _(एक सामान्य समझौता)_ नहीं थी कि उस जीव को कैसे हराया जाए।
 
-The seeker bowed **RESPECTFULLY / RESPECTIVELY** _(with deference / in the order already mentioned)_ to the ancient shadows, hoping to avoid their cold embrace.  
-साधक प्राचीन सायों के सामने **सम्मानपूर्वक / क्रमशः** _(आदर के साथ / पहले बताए गए क्रम में)_ झुका, उनके ठंडे आलिंगन से बचने की आशा में।
+It was common **PRACTICE** _(the actual application or custom)_ among cultists to wear black robes.  
+काले वस्त्र पहनना पंथियों के बीच एक सामान्य **प्रथा/अभ्यास** _(वास्तविक अनुप्रयोग)_ था।
 
-The frozen lake was a **POLE / POLL** _(a long piece of wood / a survey of opinion)_ of absolute zero, where even the stars' light seemed to shatter into ice.  
-जमी हुई झील परम शून्य का एक **ध्रुव / सर्वेक्षण** _(लकड़ी का एक लंबा टुकड़ा / राय का सर्वेक्षण)_ थी, जहाँ सितारों की रोशनी भी बर्फ में बिखरती हुई प्रतीत होती थी।
+The novices had to **PRACTISE** _(to perform an activity repeatedly to gain skill)_ their spells daily.  
+नौसिखियों को प्रतिदिन अपने मंत्रों का **अभ्यास करना** _(किसी गतिविधि को करना)_ पड़ता था।
+
+The seeker bowed **RESPECTFULLY** _(with deference and honor)_ to the ancient shadows.  
+साधक प्राचीन सायों के सामने **सम्मानपूर्वक** _(आदर के साथ)_ झुका।
+
+The warrior and the mage took their places on the left and right, **RESPECTIVELY** _(in the order already mentioned)_.  
+योद्धा और जादूगर ने क्रमशः बाईं और दाईं ओर अपना स्थान लिया, **क्रमशः** _(पहले बताए गए क्रम में)_।
+
+He carried a long wooden **POLE** _(a long piece of wood or metal)_ to test the depth of the dark waters.  
+उसने काले पानी की गहराई को मापने के लिए लकड़ी का एक लंबा **खंभा/डंडा** _(लकड़ी का एक लंबा टुकड़ा)_ लिया था।
+
+The village held a **POLL** _(a survey of opinion or voting)_ to decide who would enter the forest next.  
+गाँव ने यह तय करने के लिए एक **मतदान/सर्वेक्षण** _(राय का सर्वेक्षण)_ कराया कि जंगल में अगला कौन प्रवेश करेगा।
 
 The oracle told him to **TAKE TIME BY THE FORELOCK** _(to seize an opportunity immediately)_ before the moon turned red and the gates closed forever.  
 ओरेकल (oracle) ने उसे बताया कि चाँद के लाल होने और दरवाजों के हमेशा के लिए बंद होने से पहले **अवसर का तुरंत लाभ उठाएं** _(तुरंत अवसर को पकड़ना)_।
@@ -321,7 +388,7 @@ The noble family refused to betray their kin, for **BLOOD IS THICKER THAN WATER*
 कुलीन परिवार ने अपने परिजनों को धोखा देने से इनकार कर दिया, क्योंकि **अपना अपना होता है, पराया पराया** _(पारिवारिक रिश्ते किसी भी अन्य बंधन से मजबूत होते हैं)_।
 
 The sorceress burned the village to stop the plague, believing **THE END JUSTIFIES THE MEANS** _(a good outcome makes any actions taken to achieve it acceptable)_.  
-जादूगरनी ने प्लेग को रोकने के लिए गाँव को जला दिया, यह मानते हुए कि **साध्य ही साधनों का औचित्य सिद्ध करता है** _(एक अच्छा परिणाम उसे प्राप्त करने के लिए की गई किसी भी कार्रवाई को स्वीकार्य बनाता है)_।
+जादूगरनी ने प्लेग को रोकने के लिए गाँव को जला दिया, यह मानने हुए कि **साध्य ही साधनों का औचित्य सिद्ध करता है** _(एक अच्छा परिणाम उसे प्राप्त करने के लिए की गई किसी भी कार्रवाई को स्वीकार्य बनाता है)_।
 
 As the shadow army approached, the defenders locked shields, for **UNITED WE STAND, DIVIDED WE FALL** _(working together leads to success, while lack of unity leads to failure)_.  
 जैसे ही छाया सेना करीब आई, रक्षकों ने ढालों को बंद कर दिया, क्योंकि **एकता में बल है** _(एक साथ काम करने से सफलता मिलती है, जबकि एकता की कमी से विफलता होती है)_।
