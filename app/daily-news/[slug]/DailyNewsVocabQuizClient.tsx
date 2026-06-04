@@ -163,7 +163,7 @@ function renderFaqText(text: string): React.ReactNode {
             }
             return part;
         });
-        return <p key={i} className="text-[14px] text-gray-600 leading-relaxed mb-2 last:mb-0">{rendered}</p>;
+        return <p key={i} className="text-[14px] text-gray-600 leading-relaxed mb-2 last:mb-0 break-words">{rendered}</p>;
     });
 }
 
@@ -181,8 +181,7 @@ function renderPipeTable(tableString: string): React.ReactNode {
         <table className="w-full border-collapse text-sm md:text-[14px]">
             <thead>
                 <tr className="bg-amber-50 border-b-2 border-amber-200 text-left">
-                    {headers.map((h, i) => (
-                        <th key={i} className="px-4 md:px-6 py-3 font-bold text-gray-700 text-[13px]">{renderInline(h)}</th>
+                    {headers.map((h, i) => (                            <th key={i} className="px-4 md:px-6 py-3 font-bold text-gray-700 text-[13px] break-words">{renderInline(h)}</th>
                     ))}
                 </tr>
             </thead>
@@ -190,7 +189,7 @@ function renderPipeTable(tableString: string): React.ReactNode {
                 {rows.map((row, ri) => (
                     <tr key={ri} className={`border-b border-amber-100 ${ri % 2 === 0 ? 'bg-white' : 'bg-amber-50/30'}`}>
                         {row.map((cell, ci) => (
-                            <td key={ci} className={`px-4 md:px-6 py-3 text-[13px] leading-relaxed ${ci === 1 ? 'font-medium text-emerald-700' : ci === 0 ? 'font-bold text-amber-900' : 'text-gray-600 italic'}`}>
+                            <td key={ci} className={`px-4 md:px-6 py-3 text-[13px] leading-relaxed break-words ${ci === 1 ? 'font-medium text-emerald-700' : ci === 0 ? 'font-bold text-amber-900' : 'text-gray-600 italic'}`}>
                                 {renderInline(cell)}
                             </td>
                         ))}
@@ -248,16 +247,14 @@ function renderVocabSection(markdown: string): React.ReactNode {
             elements.push(<div key={`table-${i}`} className="overflow-x-auto mb-4">{renderPipeTable(tableLines.join('\n'))}</div>);
             tableLines = [];
             inTable = false;
-        }
-
-        // Regular text (like **Answer:** or paragraph)
-        if (trimmed) {
-            // Skip the separator lines
-            if (trimmed === '---') continue;
-            elements.push(
-                <p key={`p-${i}`} className="text-[14px] text-gray-600 leading-relaxed mb-2">{renderInline(trimmed)}</p>
-            );
-        }
+        }            // Regular text (like **Answer:** or paragraph)
+            if (trimmed) {
+                // Skip the separator lines
+                if (trimmed === '---') continue;
+                elements.push(
+                    <p key={`p-${i}`} className="text-[14px] text-gray-600 leading-relaxed mb-2 break-words">{renderInline(trimmed)}</p>
+                );
+            }
     }
 
     // Flush any remaining table
@@ -506,9 +503,8 @@ export default function DailyNewsVocabQuizClient({
                 </div>
             </header>
 
-            {/* ═══ READING VIEW ═══ */}
-            {!quizStarted && (
-                <div className="max-w-[860px] mx-auto px-5 py-8 md:py-10">
+            {/* ═══ READING VIEW ═══ */}                            {!quizStarted && (
+                <div className="max-w-[860px] mx-auto px-5 py-8 md:py-10 break-words">
                     {/* Hero Header */}
                     <div className="bg-white rounded-xl border border-amber-200/60 shadow-md overflow-hidden mb-6 md:mb-8 print:shadow-none print:border-0 print:rounded-none print:mb-2">
                         <div className="bg-gradient-to-br print:hidden from-[#0f172a] via-[#d97706] to-[#0f172a] px-6 md:px-8 py-6 md:py-7 relative overflow-hidden">
@@ -578,33 +574,33 @@ export default function DailyNewsVocabQuizClient({
                                         {eng.type === 'heading' ? (
                                             <>
                                                 {eng.level === 1 && (
-                                                    <h1 className="text-[22px] md:text-[26px] font-black text-[#0f172a] leading-tight mb-1">{eng.content}</h1>
+                                                    <h1 className="text-[22px] md:text-[26px] font-black text-[#0f172a] leading-tight mb-1 break-words">{eng.content}</h1>
                                                 )}
                                                 {eng.level === 2 && (
-                                                    <h2 className="text-[18px] md:text-[20px] font-extrabold text-[#0f172a] leading-snug mb-1">{eng.content}</h2>
+                                                    <h2 className="text-[18px] md:text-[20px] font-extrabold text-[#0f172a] leading-snug mb-1 break-words">{eng.content}</h2>
                                                 )}
                                                 {eng.level === 3 && (
-                                                    <h3 className="text-[15px] md:text-[17px] font-bold text-[#d97706] leading-snug">{eng.content}</h3>
+                                                    <h3 className="text-[15px] md:text-[17px] font-bold text-[#d97706] leading-snug break-words">{eng.content}</h3>
                                                 )}
                                                 {eng.level === 4 && (
-                                                    <h4 className="text-[14px] md:text-[16px] font-extrabold text-[#0f172a] uppercase tracking-wider leading-snug mt-3 mb-1">{eng.content}</h4>
+                                                    <h4 className="text-[14px] md:text-[16px] font-extrabold text-[#0f172a] uppercase tracking-wider leading-snug mt-3 mb-1 break-words">{eng.content}</h4>
                                                 )}
                                                 {hin && hin.type === 'heading' && (
                                                     <>
-                                                        {hin.level === 1 && <h1 className="text-[18px] md:text-[22px] font-black text-gray-700 leading-tight mt-1">{hin.content}</h1>}
-                                                        {hin.level === 2 && <h2 className="text-[16px] md:text-[18px] font-extrabold text-gray-700 leading-snug mt-1">{hin.content}</h2>}
-                                                        {hin.level === 3 && <h3 className="text-[14px] md:text-[15px] font-bold text-gray-500 leading-snug mt-1">{hin.content}</h3>}
-                                                        {hin.level === 4 && <h4 className="text-[13px] md:text-[14px] font-extrabold text-gray-500 uppercase tracking-wider mt-1">{hin.content}</h4>}
+                                                        {hin.level === 1 && <h1 className="text-[18px] md:text-[22px] font-black text-gray-700 leading-tight mt-1 break-words">{hin.content}</h1>}
+                                                        {hin.level === 2 && <h2 className="text-[16px] md:text-[18px] font-extrabold text-gray-700 leading-snug mt-1 break-words">{hin.content}</h2>}
+                                                        {hin.level === 3 && <h3 className="text-[14px] md:text-[15px] font-bold text-gray-500 leading-snug mt-1 break-words">{hin.content}</h3>}
+                                                        {hin.level === 4 && <h4 className="text-[13px] md:text-[14px] font-extrabold text-gray-500 uppercase tracking-wider mt-1 break-words">{hin.content}</h4>}
                                                     </>
                                                 )}
                                             </>
                                         ) : para.english && isByline(para.english) ? (
                                             <div className="text-right mt-1 mb-2">
-                                                <p className="text-[11px] md:text-[12px] text-gray-400 font-medium tracking-wide">
+                                                <p className="text-[11px] md:text-[12px] text-gray-400 font-medium tracking-wide break-words">
                                                     — {renderInline(para.english)}
                                                 </p>
                                                 {para.hindi && isByline(para.hindi) && (
-                                                    <p className="text-[10px] md:text-[11px] text-gray-400 mt-0.5">
+                                                    <p className="text-[10px] md:text-[11px] text-gray-400 mt-0.5 break-words">
                                                         — {renderInline(para.hindi)}
                                                     </p>
                                                 )}
@@ -612,12 +608,12 @@ export default function DailyNewsVocabQuizClient({
                                         ) : (
                                             <div>
                                                 {para.english && (
-                                                    <p className="text-[14px] md:text-[15px] text-gray-800 leading-[1.7] print:leading-[1.4] print:text-[11px]">
+                                                    <p className="text-[14px] md:text-[15px] text-gray-800 leading-[1.7] print:leading-[1.4] print:text-[11px] break-words">
                                                         {eng.content}
                                                     </p>
                                                 )}
                                                 {para.hindi && (
-                                                    <p className="text-[13px] md:text-[14px] text-gray-500 leading-[1.7] print:leading-[1.4] print:text-[10px]">
+                                                    <p className="text-[13px] md:text-[14px] text-gray-500 leading-[1.7] print:leading-[1.4] print:text-[10px] break-words">
                                                         {hin?.content}
                                                     </p>
                                                 )}
@@ -645,10 +641,10 @@ export default function DailyNewsVocabQuizClient({
                                                         Section {q.sectionNumber}: {q.sectionName}
                                                     </h2>
                                                     {q.sectionContext && (
-                                                        <div className="mt-2 p-4 bg-gradient-to-r from-amber-50 to-white border border-amber-200/50 rounded-xl">
+                                                        <div className="mt-2 p-4 bg-gradient-to-r from-amber-50 to-white border border-amber-200/50 rounded-xl break-words">
                                                             <div className="text-[13px] text-amber-900 leading-relaxed space-y-1.5">
                                                                 {q.sectionContext.split('\n').filter(Boolean).map((line, i) => (
-                                                                    <p key={i}>{renderInline(line)}</p>
+                                                                    <p key={i} className="break-words">{renderInline(line)}</p>
                                                                 ))}
                                                             </div>
                                                         </div>
@@ -679,7 +675,7 @@ export default function DailyNewsVocabQuizClient({
                                                             {q.sectionName}
                                                         </span>
                                                     </div>
-                                                    <h3 className="text-[14px] md:text-[16px] font-bold text-gray-900 leading-snug mt-0.5">{renderStem(q.stem)}</h3>
+                                                    <h3 className="text-[14px] md:text-[16px] font-bold text-gray-900 leading-snug mt-0.5 break-words">{renderStem(q.stem)}</h3>
                                                 </div>
                                                 <div className="hidden md:flex items-center gap-1 shrink-0 bg-emerald-50 border border-emerald-200 rounded-md px-2 py-1 mt-1">
                                                     <svg className="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -710,7 +706,7 @@ export default function DailyNewsVocabQuizClient({
                                                             }`}>
                                                                 {OPTION_LETTERS[idx]}
                                                             </span>
-                                                            <span className={`${isCorrectOpt ? "font-semibold text-emerald-800" : "text-gray-700"}`}>
+                                                            <span className={`min-w-0 break-words ${isCorrectOpt ? "font-semibold text-emerald-800" : "text-gray-700"}`}>
                                                                 {opt}
                                                             </span>
                                                             {isCorrectOpt && (
@@ -742,7 +738,7 @@ export default function DailyNewsVocabQuizClient({
                                                         </div>
                                                         <div className="text-[13px] md:text-[14px] text-amber-900 leading-relaxed space-y-2">
                                                             {q.explanation.split('\n').filter(Boolean).map((para, i) => (
-                                                                <p key={i}>{renderInline(para)}</p>
+                                                                <p key={i} className="break-words">{renderInline(para)}</p>
                                                             ))}
                                                         </div>
                                                     </div>
@@ -917,7 +913,7 @@ export default function DailyNewsVocabQuizClient({
                                             {editorialParagraphs
                                                 .filter(para => para.english && !/^(title|metaDescription|keywords|aeoDefinition):/i.test(para.english.trim()))
                                                 .map((para, idx) => (
-                                                    para.english ? <p key={idx}>{renderInline(para.english)}</p> : null
+                                                    para.english ? <p key={idx} className="break-words">{renderInline(para.english)}</p> : null
                                                 ))}
                                         </div>
                                     </div>

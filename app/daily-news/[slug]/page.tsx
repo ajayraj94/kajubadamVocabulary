@@ -142,6 +142,18 @@ export default async function DailyNewsPage({
     const totalQ = allQuestions.length;
     const OPTION_LETTERS = ["A", "B", "C", "D", "E"];
 
+    // Strip markdown bold/italic markers and link syntax from text for schema.org
+    function stripMarkdown(text: string): string {
+        if (!text) return "";
+        return text
+            .replace(/\*\*([^*]+)\*\*/g, '$1')  // **bold** → bold
+            .replace(/\*([^*]+)\*/g, '$1')        // *italic* → italic
+            .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')  // [text](url) → text
+            .replace(/^[#]+\s+/gm, '')              // ## headings → text
+            .replace(/`([^`]+)`/g, '$1')             // `code` → code
+            .trim();
+    }
+
     const sectionListItems = sectionsInfo.map((s, i) => ({
         "@type": "ListItem",
         position: i + 1,
@@ -166,16 +178,38 @@ export default async function DailyNewsPage({
         const answerText = letterIndex >= 0 && letterIndex < q.options.length
             ? `${answerLetter}) ${q.options[letterIndex]}`
             : answerLetter;
+        const cleanStem = stripMarkdown(q.stem).substring(0, 200);
         return {
             "@type": "Question",
-            name: q.stem.substring(0, 150),
+            name: cleanStem,
+            text: cleanStem,
+            answerCount: q.options.length,
+            datePublished: article.date,
+            author: {
+                "@type": "Organization",
+                name: article.source,
+            },
             acceptedAnswer: {
                 "@type": "Answer",
-                text: `The correct answer is ${answerLetter}: ${answerText}. ${q.explanation.substring(0, 200)}`,
+                text: `The correct answer is ${answerLetter}: ${answerText}. ${q.explanation.substring(0, 250)}`,
+                datePublished: article.date,
+                url: `${SITE_URL}/daily-news/${slug}`,
+                author: {
+                    "@type": "Organization",
+                    name: "kajubadam Vocabulary",
+                },
+                upvoteCount: 0,
             },
             suggestedAnswer: q.options.map((opt, idx) => ({
                 "@type": "Answer",
                 text: `${OPTION_LETTERS[idx]}) ${opt}`,
+                datePublished: article.date,
+                url: `${SITE_URL}/daily-news/${slug}`,
+                author: {
+                    "@type": "Organization",
+                    name: "kajubadam Vocabulary",
+                },
+                upvoteCount: 0,
             })),
         };
     });
