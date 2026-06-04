@@ -180,36 +180,40 @@ export default async function DailyNewsPage({
         ? `${qAnswerLetter}) ${collocationsQ.options[qLetterIndex]}`
         : qAnswerLetter;
     const cleanStem = stripMarkdown(collocationsQ.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 500);
-    const fullStem = stripMarkdown(collocationsQ.stem).replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').trim().substring(0, 2000);
+    // Google prefers datetime with timezone, e.g. 2026-06-03T00:00:00+05:30
+    const dateTimeWithTz = article.date + 'T00:00:00+05:30';
+
     const quizQuestion = {
         "@type": "Question",
         name: cleanStem,
-        text: fullStem,
         answerCount: collocationsQ.options.length,
-        datePublished: article.date,
+        datePublished: dateTimeWithTz,
         author: {
             "@type": "Organization",
             name: article.source,
+            url: `${SITE_URL}/daily-news/${slug}`,
         },
         acceptedAnswer: {
             "@type": "Answer",
             text: `The correct answer is ${qAnswerLetter}: ${qAnswerText}. ${collocationsQ.explanation.substring(0, 500)}`,
-            datePublished: article.date,
+            datePublished: dateTimeWithTz,
             url: `${SITE_URL}/daily-news/${slug}`,
             author: {
                 "@type": "Organization",
                 name: "kajubadam Vocabulary",
+                url: SITE_URL,
             },
             upvoteCount: 0,
         },
         suggestedAnswer: collocationsQ.options.map((opt, idx) => ({
             "@type": "Answer",
             text: `${OPTION_LETTERS[idx]}) ${opt}`,
-            datePublished: article.date,
+            datePublished: dateTimeWithTz,
             url: `${SITE_URL}/daily-news/${slug}`,
             author: {
                 "@type": "Organization",
                 name: "kajubadam Vocabulary",
+                url: SITE_URL,
             },
             upvoteCount: 0,
         })),
