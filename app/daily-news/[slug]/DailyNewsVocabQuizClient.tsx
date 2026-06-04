@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
+import { formatDate } from "@/lib/date-utils";
 
 // ── Print Styles ──
 const PRINT_STYLES = `
@@ -528,7 +529,7 @@ export default function DailyNewsVocabQuizClient({
                                     </span>
                                 </h1>
                                 <div className="flex items-center gap-2 text-sm md:text-base text-amber-100/80 mt-2 flex-wrap">
-                                    <span className="font-bold">{date}</span>
+                                    <span className="font-bold">{formatDate(date)}</span>
                                     <span className="w-1 h-1 rounded-full bg-amber-300/50 shrink-0" />
                                     <span>{source}</span>
                                 </div>
@@ -884,7 +885,7 @@ export default function DailyNewsVocabQuizClient({
                             {/* Sub Header */}
                             <div className="bg-slate-100 border-b border-slate-200 px-2 md:px-4 py-2 flex items-center overflow-x-auto whitespace-nowrap text-[10px] md:text-xs gap-1 shrink-0">
                                 <span className="text-[#d97706] font-black uppercase mr-1 border-r border-slate-300 pr-2 tracking-wider text-[12px]">Daily News Vocab</span>
-                                <span className="text-slate-500 font-bold uppercase mr-1 text-[11px]">{date}</span>
+                                <span className="text-slate-500 font-bold uppercase mr-1 text-[11px]">{formatDate(date)}</span>
                                 <button className="bg-[#d97706] text-white px-4 py-1.5 rounded-t font-semibold text-xs">Quiz Mode</button>
                                 <button
                                     onClick={handleBackToReading}

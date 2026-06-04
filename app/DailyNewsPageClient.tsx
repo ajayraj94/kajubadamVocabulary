@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { formatDate } from "@/lib/date-utils";
 import type { DailyNewsMeta } from "@/lib/daily-news";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function DailyNewsPageClient({ dailyNews }: Props) {
+    const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const [readSlugs, setReadSlugs] = useState<string[]>([]);
     const PAGE_SIZE = 10;
@@ -94,7 +96,7 @@ export default function DailyNewsPageClient({ dailyNews }: Props) {
                                 <div className="flex items-center justify-between mb-3">
                                     <div className="flex items-center gap-2.5">
                                         <span className="text-[13px] font-bold text-[#d97706] tracking-tight">
-                                            {item.date}
+                                            {formatDate(item.date)}
                                         </span>
                                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                                           isRead ? "bg-emerald-100 text-emerald-600" : "bg-amber-100 text-amber-700"
@@ -128,18 +130,20 @@ export default function DailyNewsPageClient({ dailyNews }: Props) {
 
                                 {/* Buttons */}
                                 <div className="flex gap-2 mt-4">
-                                    <Link
-                                      href={`/daily-news/${item.slug}`}
-                                      className="flex-1 text-center bg-[#d97706] hover:bg-[#b45309] text-white text-[12px] font-bold py-2 rounded-xl transition-all duration-200 active:scale-[0.97]"
+                                    <button
+                                      onClick={() => router.push(`/daily-news/${item.slug}`)}
+                                      type="button"
+                                      className="flex-1 text-center bg-[#d97706] hover:bg-[#b45309] active:bg-[#92400e] text-white text-[12px] font-bold py-2 rounded-xl transition-all duration-200 active:scale-[0.97] cursor-pointer select-none"
                                     >
                                         📖 Read
-                                    </Link>
-                                    <Link
-                                      href={`/daily-news/${item.slug}#quiz`}
-                                      className="flex-1 text-center bg-[#d97706] hover:bg-[#b45309] text-white text-[12px] font-bold py-2 rounded-xl transition-all duration-200 active:scale-[0.97]"
+                                    </button>
+                                    <button
+                                      onClick={() => router.push(`/daily-news/${item.slug}#quiz`)}
+                                      type="button"
+                                      className="flex-1 text-center bg-[#d97706] hover:bg-[#b45309] active:bg-[#92400e] text-white text-[12px] font-bold py-2 rounded-xl transition-all duration-200 active:scale-[0.97] cursor-pointer select-none"
                                     >
                                         📝 Quiz
-                                    </Link>
+                                    </button>
                                 </div>
                             </div>
                         );
