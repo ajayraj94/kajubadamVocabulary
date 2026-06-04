@@ -1,4 +1,4 @@
-
+---
 slug: "shadows-of-the-forsaken"
 title: "Shadows of the Forsaken"
 saga_id: "Saga 1-01"
@@ -13,7 +13,6 @@ vocab_part: "part 1"
 ---
 
 ### Chapter 1: The Architect of Ruins
-Hard works pays off not always,99.99% done, you are unscuessfull.
 
 The dark wizard was **ILL WITH** _(suffering from a specific sickness)_ a soul-rot that no elixir could cure, for he had traded his vitality for forbidden lore.  
 दुष्ट जादूगर आत्मा के क्षय से **बीमार** _(एक विशिष्ट बीमारी से पीड़ित)_ था जिसे कोई भी अमृत ठीक नहीं कर सकता था, क्योंकि उसने वर्जित ज्ञान के लिए अपनी जीवन शक्ति का सौदा किया था।
