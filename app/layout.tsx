@@ -1,9 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
+import { Inter, Merriweather } from "next/font/google";
 import "./globals.css";
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
+
+// ── Self-hosted Google Fonts via next/font (zero external requests, swap display for LCP) ──
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+const merriweather = Merriweather({
+  subsets: ["latin"],
+  weight: ["300", "400", "700", "900"],
+  display: "swap",
+  variable: "--font-merriweather",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -54,6 +69,14 @@ export const metadata: Metadata = {
     siteName: "kajubadam Vocabulary",
     locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/web-app-manifest-512x512.png`,
+        width: 512,
+        height: 512,
+        alt: "kajubadam Vocabulary — Master English-Hindi Vocabulary through Stories",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -74,6 +97,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      "en": SITE_URL,
+      "hi": SITE_URL,
+    },
   },
   // icon.svg, favicon.ico and apple-icon.png auto-discovered from app/
   // https://nextjs.org/docs/app/api-reference/file-conventions/metadata-files
@@ -101,8 +128,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="kajubadam" />
+
+        {/* ── Preconnect hints: eliminate connection delay for critical origins ── */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://*.supabase.co" />
+        <link rel="preconnect" href="https://*.razorpay.com" />
+        <link rel="dns-prefetch" href="https://*.supabase.co" />
+        <link rel="dns-prefetch" href="https://*.razorpay.com" />
       </head>
-      <body className="min-h-full flex flex-col font-sans">
+      <body className={`${inter.variable} ${merriweather.variable} min-h-full flex flex-col font-sans`}>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-KFLQ24ZX"

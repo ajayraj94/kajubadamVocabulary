@@ -82,6 +82,14 @@ export function proxy(request: NextRequest) {
   // ── For all HTML pages & API routes — prevent caching + security headers ──
   const response = NextResponse.next();
 
+  // Canonical Link header: reinforces the canonical URL for Google
+  // Use request origin instead of a static URL — works in all environments
+  const origin = request.nextUrl.origin;
+  response.headers.set(
+    "Link",
+    `<${origin}${pathname}>; rel="canonical"`
+  );
+
   // Cache-Control: no cache for HTML pages, allow for API (with revalidation)
   if (pathname.startsWith("/api/")) {
     response.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
