@@ -7,6 +7,7 @@ import DailyNewsPageClient from "./DailyNewsPageClient";
 import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
 import { FREE_SLUGS } from "@/lib/access";
 import { getProductPrice } from "@/lib/products";
+import ShareButtons from "@/components/ShareButtons";
 
 interface Story {
   slug: string;
@@ -89,8 +90,8 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
   const totalPages = activeTab === "daily"
     ? Math.max(1, Math.ceil(dailyItems.length / PAGE_SIZE))
     : activeTab === "error-detection"
-    ? 1
-    : Math.max(1, Math.ceil(activeStories.length / PAGE_SIZE));
+      ? 1
+      : Math.max(1, Math.ceil(activeStories.length / PAGE_SIZE));
 
   const errorDetectionBlocks = Array.from({ length: errorDetectionPages }, (_, i) => ({
     page: i + 1,
@@ -175,15 +176,14 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 {/* ── PART 1 row ── */}
                 <div className="flex items-center gap-x-1.5 gap-y-0.5 flex-wrap">
                   <span className="relative inline-flex items-center gap-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black px-2 py-0.5 rounded-lg text-[9px] md:text-[10px] shrink-0 shadow-[0_2px_8px_-2px_rgba(37,99,235,0.4)]">
-                    <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     PART 1
                   </span>
                   {['627 Homonyms', '2,300 Idioms', '1,028 Phrasal', '588 Prep', '219 Proverbs', '300 Stories'].map((t, i) => (
                     <span key={t} className="inline-flex items-center gap-x-1 px-1 py-0.5 rounded-md transition-all duration-200 hover:bg-white/80 hover:shadow-sm">
                       {i > 0 && <span className="text-gray-200 text-[9px]">•</span>}
-                      <span className={`font-bold text-[12px] md:text-[13px] ${
-                        i === 0 ? 'text-blue-600' : i === 1 ? 'text-emerald-600' : i === 2 ? 'text-violet-600' : i === 3 ? 'text-rose-600' : i === 4 ? 'text-amber-600' : 'text-cyan-600'
-                      }`}>{t}</span>
+                      <span className={`font-bold text-[12px] md:text-[13px] ${i === 0 ? 'text-blue-600' : i === 1 ? 'text-emerald-600' : i === 2 ? 'text-violet-600' : i === 3 ? 'text-rose-600' : i === 4 ? 'text-amber-600' : 'text-cyan-600'
+                        }`}>{t}</span>
                     </span>
                   ))}
                   <span className="text-gray-400 text-[9px] font-medium ml-auto hidden sm:inline-flex items-center gap-1 bg-blue-50/50 px-1.5 py-0.5 rounded-full border border-blue-100/50">
@@ -201,7 +201,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 {/* ── PART 2 row ── */}
                 <div className="flex items-center gap-x-1.5 gap-y-0.5 flex-wrap">
                   <span className="relative inline-flex items-center gap-1 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black px-2 py-0.5 rounded-lg text-[9px] md:text-[10px] shrink-0 shadow-[0_2px_8px_-2px_rgba(249,115,22,0.4)]">
-                    <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                     PART 2
                   </span>
                   <span className="inline-flex items-center gap-x-1 px-1 py-0.5 rounded-md transition-all duration-200 hover:bg-white/80 hover:shadow-sm">
@@ -226,8 +226,8 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
       {/* ── ORIGINAL HERO BANNER: FOMO + Trust + Urgency ── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0f172a] via-[#1c4a8a] to-[#0f172a] border-b border-blue-500/20">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl animate-pulse" style={{animationDuration: '4s'}}></div>
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl animate-pulse" style={{animationDuration: '6s'}}></div>
+          <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl animate-pulse" style={{ animationDuration: '4s' }}></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl animate-pulse" style={{ animationDuration: '6s' }}></div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-indigo-500/5 blur-3xl"></div>
         </div>
 
@@ -251,7 +251,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
             </h1>
 
             <p className="text-[14px] md:text-[16px] text-blue-100/80 mt-4 max-w-2xl mx-auto leading-relaxed">
-              <strong className="text-white font-bold">11,762+ exam-oriented words</strong> — हर शब्द SSC CGL, CHSL, IBPS, SBI PO, Railway, UPSC के पिछले 10 साल के पेपर से चुना गया। 
+              <strong className="text-white font-bold">11,762+ exam-oriented words</strong> — हर शब्द SSC CGL, CHSL, IBPS, SBI PO, Railway, UPSC के पिछले 10 साल के पेपर से चुना गया।
               जो आज खरीदेगा, वह कल अपने प्रतिद्वंद्वी से <strong className="text-amber-300 font-bold">एक कदम आगे</strong> होगा।
             </p>
           </div>
@@ -316,6 +316,18 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 </svg>
                 100% SSC Exam-Focused
               </span>
+            </div>
+
+            {/* Share with friends — Free viral distribution */}
+            <div className="mt-6 flex flex-col items-center gap-2">
+              <span className="text-[11px] md:text-[12px] text-blue-200/60 font-medium">📢 Share with friends — Free vocabulary for everyone!</span>
+              <ShareButtons
+                url="https://kajubadamvocabulary.in"
+                title="kajubadam Vocabulary — 11,762+ Free Exam Words (SSC CGL, Banking, UPSC)"
+                description="Learn English-Hindi vocabulary through immersive stories. 2 free stories + daily news vocab — completely free!"
+                variant="compact"
+                size="sm"
+              />
             </div>
           </div>
 
@@ -412,19 +424,17 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-none transition-all duration-200 select-none ${
-                    isActive
-                      ? 'shadow-md shadow-black/5'
-                      : 'hover:-translate-y-0.5 active:scale-95'
-                  }`}
+                  className={`flex-none transition-all duration-200 select-none ${isActive
+                    ? 'shadow-md shadow-black/5'
+                    : 'hover:-translate-y-0.5 active:scale-95'
+                    }`}
                 >
                   {/* Mobile: stacked icon + label pill */}
                   <div
-                    className={`md:hidden flex flex-col items-center justify-center rounded-2xl px-3.5 py-2 min-w-[60px] transition-all duration-200 border ${
-                      isActive
-                        ? 'border-gray-200/80'
-                        : 'border-transparent hover:border-gray-100'
-                    }`}
+                    className={`md:hidden flex flex-col items-center justify-center rounded-2xl px-3.5 py-2 min-w-[60px] transition-all duration-200 border ${isActive
+                      ? 'border-gray-200/80'
+                      : 'border-transparent hover:border-gray-100'
+                      }`}
                     style={{
                       backgroundColor: isActive ? `${tab.activeColor}0d` : 'transparent',
                       boxShadow: isActive ? `inset 0 0 0 1.5px ${tab.activeColor}25, 0 4px 12px ${tab.activeColor}15` : undefined,
@@ -451,11 +461,10 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
 
                   {/* Desktop: inline icon + label */}
                   <div
-                    className={`hidden md:inline-flex items-center gap-2 font-bold tracking-wide transition-all duration-200 rounded-xl px-4 py-2 border ${
-                      isActive
-                        ? 'shadow-sm'
-                        : 'text-gray-400 border-transparent hover:text-gray-700 hover:border-gray-200 hover:bg-gray-50/80'
-                    }`}
+                    className={`hidden md:inline-flex items-center gap-2 font-bold tracking-wide transition-all duration-200 rounded-xl px-4 py-2 border ${isActive
+                      ? 'shadow-sm'
+                      : 'text-gray-400 border-transparent hover:text-gray-700 hover:border-gray-200 hover:bg-gray-50/80'
+                      }`}
                     style={{
                       color: isActive ? tab.activeColor : undefined,
                       backgroundColor: isActive ? `${tab.activeColor}0d` : 'transparent',
@@ -505,15 +514,15 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 const isUnlocked = hasErrorDetection || block.page === 1;
                 return isUnlocked ? (
                   <div key={block.page} className="bg-white border border-gray-100 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)]">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="bg-[#8B0000] text-white text-[9px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
-                        <span className="text-[9px] font-semibold text-gray-400">{errorDetectionPages} pages</span>
-                      </div>
-                      <h3 className="text-[13px] font-bold text-gray-800">
-                        Q.{block.startQ} – Q.{block.endQ}
-                        {block.page === 1 && <span className="ml-1 text-[8px] text-emerald-600 bg-emerald-50 border border-emerald-200 px-1 py-0.5 rounded-full font-bold align-middle">FREE</span>}
-                      </h3>
-                      <p className="text-[10px] text-gray-400 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="bg-[#8B0000] text-white text-[9px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
+                      <span className="text-[9px] font-semibold text-gray-400">{errorDetectionPages} pages</span>
+                    </div>
+                    <h3 className="text-[13px] font-bold text-gray-800">
+                      Q.{block.startQ} – Q.{block.endQ}
+                      {block.page === 1 && <span className="ml-1 text-[8px] text-emerald-600 bg-emerald-50 border border-emerald-200 px-1 py-0.5 rounded-full font-bold align-middle">FREE</span>}
+                    </h3>
+                    <p className="text-[10px] text-gray-400 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
                     <div className="mt-3 flex gap-2">
                       <Link href={`/error-detection/${block.page}`} className="flex-1 text-center bg-[#8B0000] hover:bg-[#6B0000] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📖 Read</Link>
                       <Link href={`/error-detection/${block.page}#quiz`} className="flex-1 text-center bg-[#8B0000] hover:bg-[#6B0000] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📝 Quiz</Link>
@@ -567,15 +576,15 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 const isUnlocked = hasSentenceImprovement || block.page === 1;
                 return isUnlocked ? (
                   <div key={block.page} className="bg-white border border-gray-100 rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)]">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="bg-[#0d7a3e] text-white text-[9px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
-                        <span className="text-[9px] font-semibold text-gray-400">{sentenceImprovementTotalPages} pages</span>
-                      </div>
-                      <h3 className="text-[13px] font-bold text-gray-800">
-                        Q.{block.startQ} – Q.{block.endQ}
-                        {block.page === 1 && <span className="ml-1 text-[8px] text-emerald-600 bg-emerald-50 border border-emerald-200 px-1 py-0.5 rounded-full font-bold align-middle">FREE</span>}
-                      </h3>
-                      <p className="text-[10px] text-gray-400 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="bg-[#0d7a3e] text-white text-[9px] font-bold px-2 py-0.5 rounded">Page {block.page}</span>
+                      <span className="text-[9px] font-semibold text-gray-400">{sentenceImprovementTotalPages} pages</span>
+                    </div>
+                    <h3 className="text-[13px] font-bold text-gray-800">
+                      Q.{block.startQ} – Q.{block.endQ}
+                      {block.page === 1 && <span className="ml-1 text-[8px] text-emerald-600 bg-emerald-50 border border-emerald-200 px-1 py-0.5 rounded-full font-bold align-middle">FREE</span>}
+                    </h3>
+                    <p className="text-[10px] text-gray-400 mt-0.5">{block.endQ - block.startQ + 1} questions</p>
                     <div className="mt-3 flex gap-2">
                       <Link href={`/sentence-improvement/${block.page}`} className="flex-1 text-center bg-[#0d7a3e] hover:bg-[#0a5e2e] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📖 Read</Link>
                       <Link href={`/sentence-improvement/${block.page}#quiz`} className="flex-1 text-center bg-[#0d7a3e] hover:bg-[#0a5e2e] text-white text-[13px] font-bold py-1.5 rounded-full transition shadow-sm">📝 Quiz</Link>
@@ -650,9 +659,8 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
 
                   return (
                     <div key={story.slug}
-                      className={`bg-white border rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px] relative overflow-hidden ${
-                        isLocked ? "border-amber-200/40 bg-gradient-to-br from-white to-amber-50/50 select-none pointer-events-none" : isMastered ? "border-green-200 bg-green-50/10" : "border-gray-100"
-                      }`}>
+                      className={`bg-white border rounded-xl p-3 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px] relative overflow-hidden ${isLocked ? "border-amber-200/40 bg-gradient-to-br from-white to-amber-50/50 select-none pointer-events-none" : isMastered ? "border-green-200 bg-green-50/10" : "border-gray-100"
+                        }`}>
                       {!isLocked && !accessLoading && (
                         <button onClick={() => toggleMastery(story.slug)}
                           className={`absolute top-2 right-2 p-0.5 rounded-full border transition-all active:scale-90 ${isMastered ? "bg-green-500 border-green-500 text-white shadow-sm" : "bg-white border-gray-200 text-gray-300 hover:text-gray-500 hover:border-gray-300"}`}

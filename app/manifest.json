@@ -1,6 +1,18 @@
 {
-  "name": "Kajubadam Vocabulary",
-  "short_name": "Kajubadam",
+  "name": "Kajubadam Vocabulary — 11,762+ Exam Words",
+  "short_name": "Kajubadam Vocab",
+  "description": "Master 11,762+ exam-oriented English vocabulary words with Hindi translations through immersive bilingual stories. Free daily news vocab + 2 free stories. SSC CGL, Banking, UPSC.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "browser"],
+  "orientation": "portrait",
+  "theme_color": "#1c4a8a",
+  "background_color": "#f8fafc",
+  "categories": ["education", "books", "reference"],
+  "lang": "en-IN",
+  "dir": "ltr",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +27,5 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "screenshots": []
 }
