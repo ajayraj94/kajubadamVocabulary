@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { roadmapCategories, roadmapFormulas } from "@/lib/roadmap";
+import { roadmapCategories } from "@/lib/roadmap";
 
 // ── Progress data (update this as posts are published) ──
 const PUBLISHED_POSTS = 2;
@@ -211,49 +211,6 @@ export default function BlogRoadmapPage() {
                     </div>
                 </div>
 
-                {/* ── Formulas Section ── */}
-                <div className="bg-white border border-gray-100 rounded-xl p-5 md:p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)]">
-                    <h2 className="text-[18px] font-extrabold text-gray-800 mb-3">
-                        🧮 Topic Generation Formulas
-                    </h2>
-                    <p className="text-[13px] text-gray-500 mb-4">
-                        Beyond the 1,000 planned posts, these formulas can generate thousands more 
-                        topic combinations for infinite content.
-                    </p>
-                    <div className="grid md:grid-cols-2 gap-3">
-                        {roadmapFormulas.map((formula, idx) => (
-                            <div
-                                key={idx}
-                                className="border border-gray-100 rounded-lg p-3 md:p-4 hover:border-[#1c4a8a]/20 transition-colors"
-                            >
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-[11px] font-bold text-[#1c4a8a] bg-[#1c4a8a]/5 px-2 py-0.5 rounded-full">
-                                        Formula {idx + 1}
-                                    </span>
-                                    {formula.estimatedTopics > 0 && (
-                                        <span className="text-[10px] font-semibold text-gray-400">
-                                            ~{formula.estimatedTopics} topics
-                                        </span>
-                                    )}
-                                    {formula.estimatedTopics === -1 && (
-                                        <span className="text-[10px] font-semibold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full">
-                                            Infinite ♾️
-                                        </span>
-                                    )}
-                                </div>
-                                <h3 className="text-[14px] font-bold text-gray-700 mb-1">
-                                    {formula.name}
-                                </h3>
-                                <p className="text-[12px] text-gray-500 leading-relaxed">
-                                    {formula.description}
-                                </p>
-                                <p className="text-[11px] text-gray-400 italic mt-1">
-                                    Example: &ldquo;{formula.example}&rdquo;
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
 
                 {/* ── Published Posts ── */}
                 <div className="bg-white border border-gray-100 rounded-xl p-5 md:p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)]">

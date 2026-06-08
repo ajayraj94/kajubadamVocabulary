@@ -204,6 +204,107 @@
   }
 }
 
+/* ═══════════════════════════════════════════
+   BLOG CONTENT — Rich markdown typography
+   ═══════════════════════════════════════════ */
+
+.blog-content {
+  --blog-hr-color: #e5e7eb;
+  --blog-hr-opacity: 0.4;
+}
+
+/* Subtle horizontal rule — for blog story separators */
+.blog-content hr {
+  margin: 1.2rem 0;
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--blog-hr-color), transparent);
+  opacity: var(--blog-hr-opacity);
+}
+
+/* Exam-style question blocks */
+.blog-content h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.blog-content h5 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+  margin-top: 1.2rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Code blocks */
+.blog-content pre {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.blog-content pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Inline code */
+.blog-content code {
+  background: #f1f5f9;
+  font-size: 0.9em;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  color: #334155;
+}
+
+/* Quiz option styling — inline bold labels */
+.blog-content strong:has(+ br) {
+  /* Target standalone bold lines like "Correct Answer - B" */
+}
+
+/* Better spacing for question sections */
+.blog-content p:has(> strong:only-child:has(+ br)) {
+  margin-bottom: 0.3rem;
+}
+
+/* Emphasized text */
+.blog-content em {
+  font-style: italic;
+  color: #475569;
+}
+
+/* Definition lists / FAQ questions */
+.blog-content h3 + p strong:first-child {
+  color: #1c4a8a;
+}
+
+/* Image responsiveness */
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 1.5rem auto;
+  display: block;
+}
+
+/* Mobile tweaks */
+@media (max-width: 640px) {
+  .blog-content hr {
+    margin: 0.8rem 0;
+  }
+}
+
 /* ── MOBILE OVERFLOW SAFEGUARDS ── */
 .reading-body {
   overflow-wrap: break-word;

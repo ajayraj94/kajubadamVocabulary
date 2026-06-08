@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllBlogPosts } from "@/lib/blog";
+import BlogNav from "@/app/_components/BlogNav";
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
 
@@ -33,6 +34,8 @@ export default function BlogPage() {
 
     return (
         <div className="min-h-screen bg-gray-50/40 font-sans">
+            <BlogNav />
+
             {/* Header */}
             <div className="bg-white border-b border-gray-100">
                 <div className="max-w-[1000px] mx-auto px-4 lg:px-8 py-6 md:py-8">

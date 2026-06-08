@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getBlogPost } from "@/lib/blog";
+import BlogNav from "@/app/_components/BlogNav";
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
 
@@ -59,6 +60,8 @@ export default async function BlogPostPage({
 
     return (
         <div className="min-h-screen bg-gray-50/40 font-sans">
+            <BlogNav />
+
             {/* Header */}
             <div className="bg-white border-b border-gray-100">
                 <div className="max-w-[800px] mx-auto px-4 lg:px-8 py-5 md:py-6">
@@ -120,6 +123,16 @@ export default async function BlogPostPage({
                                     {children}
                                 </h3>
                             ),
+                            h4: ({ children, ...props }) => (
+                                <h4 className="text-[15px] font-extrabold text-gray-700 mt-5 mb-2" {...props}>
+                                    {children}
+                                </h4>
+                            ),
+                            h5: ({ children, ...props }) => (
+                                <h5 className="text-[14px] font-bold text-gray-600 mt-4 mb-1.5" {...props}>
+                                    {children}
+                                </h5>
+                            ),
                             p: ({ children, ...props }) => (
                                 <p className="text-[14px] md:text-[15px] text-gray-600 leading-[1.8] mb-4" {...props}>
                                     {children}
@@ -169,8 +182,18 @@ export default async function BlogPostPage({
                                     {children}
                                 </code>
                             ),
+                            pre: ({ children, ...props }) => (
+                                <pre className="bg-[#f8fafc] border border-gray-100 rounded-xl p-4 md:p-5 overflow-x-auto text-[13px] leading-relaxed mb-4" {...props}>
+                                    {children}
+                                </pre>
+                            ),
+                            em: ({ children, ...props }) => (
+                                <em className="italic text-gray-500" {...props}>
+                                    {children}
+                                </em>
+                            ),
                             hr: (props) => (
-                                <hr className="border-gray-100 my-8" {...props} />
+                                <hr className="border-gray-100 my-3 opacity-40" {...props} />
                             ),
                             table: ({ children, ...props }) => (
                                 <div className="overflow-x-auto mb-4">

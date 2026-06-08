@@ -18,43 +18,45 @@ To help you master these distinctions, the academic experts at **kajubadamvocabu
 
 ---
 
-## 💡 Learn Through Stories: The Tight Deadline — द्वैभाषी कहानी: कठिन समय-सीमा
+## 💡 Learn Through Stories: The Tight Deadline — : कठिन समय-सीमा
 
-Read this realistic corporate scenario line-by-line. Observe how each phrasal verb functions in context before reviewing the definition table below [13].
-
----
-
-*   **English:** Rohan knew he had to **look ahead** to his career goals rather than constantly **looking back** at his past failures.
-*   **Hindi:** रोहन जानता था कि उसे अपने अतीत की असफलताओं को बार-बार **याद करने (looking back)** के बजाय अपने करियर के लक्ष्यों के लिए **भविष्य की ओर देखना (look ahead)** होगा।
+Below is a short, contextual story containing seven critical phrasal verbs with **"Look"**. To help you build associations quickly, each sentence in English is immediately followed by its precise Hindi translation [13].
 
 ---
 
-*   **English:** Before submitting the financial proposal, his manager told him to **look over** the draft quickly for any obvious mistakes.
-*   **Hindi:** वित्तीय प्रस्ताव जमा करने से पहले, उसके मैनेजर ने उसे किसी भी स्पष्ट गलती को ढूंढने के लिए ड्राफ्ट को जल्दी से **सरसरी तौर पर जांचने (look over)** को कहा।
+Rohan knew he had to **look ahead** to his career goals rather than constantly **looking back** at his past failures.  
+रोहन जानता था कि उसे अपने अतीत की असफलताओं को बार-बार **याद करने (looking back)** के बजाय अपने करियर के लक्ष्यों के लिए **भविष्य की ओर देखना (look ahead)** होगा।
 
 ---
 
-*   **English:** So, Rohan spent hours **looking through** the heavy ledger files to verify each transaction.
-*   **Hindi:** इसलिए, रोहन ने प्रत्येक लेनदेन को सत्यापित करने के लिए भारी बही-खाता फाइलों को ध्यानपूर्वक **जांचने/पढ़ने (looking through)** में घंटों बिताए।
+Before submitting the financial proposal, his manager told him to **look over** the draft quickly for any obvious mistakes.  
+वित्तीय प्रस्ताव जमा करने से पहले, उसके मैनेजर ने उसे किसी भी स्पष्ट गलती को ढूंढने के लिए ड्राफ्ट को जल्दी से **सरसरी तौर पर जांचने (look over)** को कहा।
 
 ---
 
-*   **English:** His senior colleague sat nearby, **looking on** silently as Rohan worked tirelessly under pressure.
-*   **Hindi:** उसका वरिष्ठ सहकर्मी पास ही बैठा था, और रोहन को दबाव में अथक काम करते हुए चुपचाप **दर्शक बनकर देख (looking on)** रहा था।
+So, Rohan spent hours **looking through** the heavy ledger files to verify each transaction.  
+इसलिए, रोहन ने प्रत्येक लेनदेन को सत्यापित करने के लिए भारी बही-खाता फाइलों को ध्यानपूर्वक **जांचने/पढ़ने (looking through)** में घंटों बिताए।
 
 ---
 
-*   **English:** "You must **look out** for formatting errors, or the client might reject the proposal," the colleague warned.
-*   **Hindi:** "तुम्हें फॉर्मेटिंग की गलतियों के प्रति **सावधान रहना (look out)** होगा, अन्यथा क्लाइंट प्रस्ताव को खारिज कर सकता है," सहकर्मी ने चेतावनी दी।
+His senior colleague sat nearby, **looking on** silently as Rohan worked tirelessly under pressure.  
+उसका वरिष्ठ सहकर्मी पास ही बैठा था, और रोहन को दबाव में अथक काम करते हुए चुपचाप **दर्शक बनकर देख (looking on)** रहा था।
 
 ---
 
-*   **English:** Rohan thanked him and decided to **look up** the client's corporate guidelines to ensure absolute compliance.
-*   **Hindi:** रोहन ने उसका धन्यवाद किया और पूर्ण अनुपालन सुनिश्चित करने के लिए क्लाइंट के कॉर्पोरेट दिशानिर्देशों को डेटाबेस में **खोजने (look up)** का निर्णय लिया।
+"You must **look out** for formatting errors, or the client might reject the proposal," the colleague warned.  
+"तुम्हें फॉर्मेटिंग की गलतियों के प्रति **सावधान रहना (look out)** होगा, अन्यथा क्लाइंट प्रस्ताव को खारिज कर सकता है," सहकर्मी ने चेतावनी दी।
+
+---
+
+Rohan thanked him and decided to **look up** the client's corporate guidelines to ensure absolute compliance.  
+रोहन ने उसका धन्यवाद किया और पूर्ण अनुपालन सुनिश्चित करने के लिए क्लाइंट के कॉर्पोरेट दिशानिर्देशों को डेटाबेस में **खोजने (look up)** का निर्णय लिया।
 
 ---
 
 ## 📝 The Core Vocabulary Masterclass — मुख्य शब्दकोश तालिका
+
+Here is a detailed, exam-oriented breakdown of the phrasal verbs used in the story above.
 
 | Phrasal Verb | English Meaning | Hindi Meaning | Exam-Style Example | Grammar Trap / Key Usage |
 | :--- | :--- | :--- | :--- | :--- |
@@ -72,13 +74,13 @@ Read this realistic corporate scenario line-by-line. Observe how each phrasal ve
 
 ### ⚡ Spotlight 1: "Look Over" vs. "Look Through" (The Detail Scale)
 Examiners frequently play on the scale of attention to detail between these two phrasal verbs. Choosing the wrong one in a Cloze Test can cost you vital marks.
-*   **Look over:** Implies a quick, general inspection.
-    *   *Example:* "The teacher **looked over** the essay to check if the student had written the required number of words." (Quick glance).
-*   **Look through:** Implies a more exhaustive, thorough examination, often reading line-by-line.
-    *   *Example:* "The editor **looked through** the manuscript, correcting every minor punctuation and spelling error." (Detailed proofreading).
+*   **Look over:** Implies a quick, general inspection.  
+    *Example:* The teacher **looked over** the essay to check if the student had written the required number of words. (Quick glance).
+*   **Look through:** Implies a more exhaustive, thorough examination, often reading line-by-line.  
+    *Example:* The editor **looked through** the manuscript, correcting every minor punctuation and spelling error. (Detailed proofreading).
 
 ### ⚡ Spotlight 2: Separable Pronouns with "Look up" vs. "Look over"
-Both **"Look up"** (to search info) and **"Look over"** (to inspect) are transitive and **separable** phrasal verbs. If the object of the verb is a pronoun, the pronoun *must* be placed in the middle.
+Both **"Look up"** (to search info) and **"Look over"** (to inspect) are transitive and **separable** phrasal verbs. If the object of the verb is a pronoun, the pronoun must be placed in the middle.
 *   ❌ **Incorrect:** I don't know the telephone number; let me look up it.
 *   ✅ **Correct:** I don't know the telephone number; let me **look it up**.
 *   ❌ **Incorrect:** Here is the proposal draft; please look over it.
@@ -225,7 +227,7 @@ Both **"Look up"** (to search info) and **"Look over"** (to inspect) are transit
 **Correct Answer - E**
 **Detailed Explanation:**
 - **English:** This sentence is grammatically correct and contextually logical. In part (I), "looked through the files" is correct because searching for a resume requires careful reading. In part (III), "looked over" is used correctly because she "accidentally scanned/missed" (looked over can also mean to inspect quickly, which fits the context of making an accidental oversight due to quick scanning). Thus, there is no error.
-- **Hindi:** यह वाक्य व्याकरण और संदर्भ के अनुसार पूरी तरह से सही है। भाग (I) में "looked through the files" सही है क्योंकि रिज्यूमे खोजने के लिए फाइलों को ध्यान से देखना पड़ता है। भाग (III) में "looked over" का प्रयोग भी सही है क्योंकि उसने "गलती से सरसरी तौर पर देखते हुए मुख्य प्रमाणपत्रों को छोड़ दिया" (look over का अर्थ सरसरी तौर पर देखना भी होता है)। इसलिए वाक्य त्रुटिहीन है।
+- **Hindi:**  यह वाक्य व्याकरण और संदर्भ के अनुसार पूरी तरह से सही है। भाग (I) में "looked through the files" सही है क्योंकि रिज्यूमे खोजने के लिए फाइलों को ध्यान से देखना पड़ता है। भाग (III) में "looked over" का प्रयोग भी सही है क्योंकि उसने "गलती से सरसरी तौर पर देखते हुए मुख्य प्रमाणपत्रों को छोड़ दिया" (look over का अर्थ सरसरी तौर पर देखना भी होता है)। इसलिए वाक्य त्रुटिहीन है।
 
 
 ---

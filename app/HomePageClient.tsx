@@ -33,6 +33,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
     { id: 'daily', label: 'DAILY NEWS VOCAB', shortLabel: 'News', icon: '📰', activeColor: '#FF7722' },
     { id: 'error-detection', label: 'ERROR DETECTION', shortLabel: 'Error', icon: '🔍', activeColor: '#8B0000' },
     { id: 'sentence-improvement', label: 'SENTENCE IMPROVEMENT', shortLabel: 'Improve', icon: '✏️', activeColor: '#0d7a3e' },
+    { id: 'blog', label: 'BLOG', shortLabel: 'Blog', icon: '📝', activeColor: '#1c4a8a', external: true },
   ] as const;
   type TabId = typeof TABS[number]['id'];
 
@@ -142,6 +143,15 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
             <span className="bg-[#1c4a8a] text-white text-[9px] md:text-xs font-extrabold px-2.5 md:px-5 py-1.5 rounded-full shadow-sm whitespace-nowrap">
               Total: {totalVocabCount.toLocaleString()} Vocab
             </span>
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 text-[#0f172a] font-extrabold text-[9px] md:text-xs px-2.5 md:px-4 py-1.5 rounded-full shadow-[0_2px_8px_-2px_rgba(251,191,36,0.5)] hover:shadow-[0_4px_12px_-2px_rgba(251,191,36,0.7)] hover:scale-105 transition-all duration-200 active:scale-95 whitespace-nowrap"
+            >
+              <svg className="w-3 h-3 md:w-3.5 md:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+              </svg>
+              <span>📝 Blog</span>
+            </Link>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {isLoggedIn ? (
@@ -420,38 +430,37 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
           <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-1.5 md:gap-2 px-4 md:px-8 md:justify-center py-2.5 md:py-2">
             {TABS.map((tab) => {
               const isActive = activeTab === tab.id;
+              const isExternal = 'external' in tab && tab.external;
+              const TabWrapper = isExternal ? Link : 'button';
+              const wrapperProps = isExternal
+                ? { key: tab.id, href: '/blog', className: `flex-none transition-all duration-200 select-none hover:-translate-y-0.5 active:scale-95` }
+                : { key: tab.id, onClick: () => setActiveTab(tab.id), className: `flex-none transition-all duration-200 select-none ${isActive ? 'shadow-md shadow-black/5' : 'hover:-translate-y-0.5 active:scale-95'}` };
+
               return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex-none transition-all duration-200 select-none ${isActive
-                    ? 'shadow-md shadow-black/5'
-                    : 'hover:-translate-y-0.5 active:scale-95'
-                    }`}
-                >
+                <TabWrapper {...wrapperProps}>
                   {/* Mobile: stacked icon + label pill */}
                   <div
-                    className={`md:hidden flex flex-col items-center justify-center rounded-2xl px-3.5 py-2 min-w-[60px] transition-all duration-200 border ${isActive
+                    className={`md:hidden flex flex-col items-center justify-center rounded-2xl px-3.5 py-2 min-w-[60px] transition-all duration-200 border ${isActive && !isExternal
                       ? 'border-gray-200/80'
                       : 'border-transparent hover:border-gray-100'
                       }`}
                     style={{
-                      backgroundColor: isActive ? `${tab.activeColor}0d` : 'transparent',
-                      boxShadow: isActive ? `inset 0 0 0 1.5px ${tab.activeColor}25, 0 4px 12px ${tab.activeColor}15` : undefined,
+                      backgroundColor: isActive && !isExternal ? `${tab.activeColor}0d` : 'transparent',
+                      boxShadow: isActive && !isExternal ? `inset 0 0 0 1.5px ${tab.activeColor}25, 0 4px 12px ${tab.activeColor}15` : undefined,
                     }}
                   >
                     <span className="text-xl leading-none mb-1" style={{
-                      filter: isActive ? 'none' : 'grayscale(1) opacity(0.5)',
+                      filter: isActive && !isExternal ? 'none' : 'grayscale(1) opacity(0.5)',
                       transition: 'filter 0.2s',
                     }}>{tab.icon}</span>
                     <span
                       className="text-[10px] font-black tracking-tight leading-tight"
-                      style={{ color: isActive ? tab.activeColor : '#9ca3af' }}
+                      style={{ color: isActive && !isExternal ? tab.activeColor : '#9ca3af' }}
                     >
                       {tab.shortLabel}
                     </span>
                     {/* Active dot indicator */}
-                    {isActive && (
+                    {isActive && !isExternal && (
                       <span
                         className="mt-1 w-1.5 h-1.5 rounded-full"
                         style={{ backgroundColor: tab.activeColor }}
@@ -461,20 +470,20 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
 
                   {/* Desktop: inline icon + label */}
                   <div
-                    className={`hidden md:inline-flex items-center gap-2 font-bold tracking-wide transition-all duration-200 rounded-xl px-4 py-2 border ${isActive
+                    className={`hidden md:inline-flex items-center gap-2 font-bold tracking-wide transition-all duration-200 rounded-xl px-4 py-2 border ${isActive && !isExternal
                       ? 'shadow-sm'
                       : 'text-gray-400 border-transparent hover:text-gray-700 hover:border-gray-200 hover:bg-gray-50/80'
                       }`}
                     style={{
-                      color: isActive ? tab.activeColor : undefined,
-                      backgroundColor: isActive ? `${tab.activeColor}0d` : 'transparent',
-                      boxShadow: isActive ? `0 0 0 1.5px ${tab.activeColor}25` : undefined,
+                      color: isActive && !isExternal ? tab.activeColor : undefined,
+                      backgroundColor: isActive && !isExternal ? `${tab.activeColor}0d` : 'transparent',
+                      boxShadow: isActive && !isExternal ? `0 0 0 1.5px ${tab.activeColor}25` : undefined,
                     }}
                   >
                     <span className="text-[15px] leading-none">{tab.icon}</span>
                     <span className="text-[13px]">{tab.label}</span>
                   </div>
-                </button>
+                </TabWrapper>
               );
             })}
           </div>
