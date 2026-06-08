@@ -128,6 +128,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="kajubadam" />
+        <meta name="google-site-verification" content="SpVz4k1wVaC1zqg_dF-XqbnG7W2hX_odO98s3up0kWM" />
 
         {/* ── Preconnect hints: eliminate connection delay for critical origins ── */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
