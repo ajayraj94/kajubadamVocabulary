@@ -3,6 +3,7 @@ import { getAllStories } from "@/lib/stories";
 import { getAllDailyNews } from "@/lib/daily-news";
 import { getErrorDetectionData } from "@/lib/error-detection";
 import { getSentenceImprovementData } from "@/lib/sentence-improvement";
+import { getAllBlogPosts } from "@/lib/blog";
 import { isStoryFree } from "@/lib/access";
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
@@ -121,6 +122,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
     ];
 
+    // ── Blog Pages ──
+    const blogListing: MetadataRoute.Sitemap = [
+        {
+            url: `${SITE_URL}/blog`,
+            lastModified: new Date(),
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        {
+            url: `${SITE_URL}/blog/roadmap`,
+            lastModified: new Date(),
+            changeFrequency: "monthly",
+            priority: 0.5,
+        },
+    ];
+
+    const blogPosts: MetadataRoute.Sitemap = getAllBlogPosts().map((post) => ({
+        url: `${SITE_URL}/blog/${post.slug}`,
+        lastModified: (() => {
+            const d = new Date(post.date);
+            return isNaN(d.getTime()) ? new Date() : d;
+        })(),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+    }));
+
     return [
         ...staticPages,
         ...freeStoryPages,
@@ -128,5 +155,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...dailyNewsPages,
         ...errorDetectionPages,
         ...sentenceImprovementPages,
+        ...blogListing,
+        ...blogPosts,
     ];
 }

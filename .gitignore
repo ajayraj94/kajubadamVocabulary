@@ -183,3 +183,8 @@ ads/
 # 🖼️ GENERATED CAROUSEL SLIDES (for image conversion, not committed)
 # ============================
 carousel-slides/
+
+# ============================
+# 📋 CONTENT STRATEGY (internal planning docs, not for production)
+# ============================
+content/strategy/

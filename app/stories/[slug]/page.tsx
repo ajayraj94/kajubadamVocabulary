@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAllStorySlugs, getStoryBySlug, getStoryQuiz } from "@/lib/stories";
+import { getStoryBySlug, getStoryQuiz } from "@/lib/stories";
 import { isStoryFree } from "@/lib/access";
 import SagaVocabQuizClient from "./quiz/SagaVocabQuizClient";
 
@@ -12,11 +12,6 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
-}
-
-// ── Pre-render all story slugs at build time ──
-export async function generateStaticParams() {
-  return getAllStorySlugs();
 }
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";

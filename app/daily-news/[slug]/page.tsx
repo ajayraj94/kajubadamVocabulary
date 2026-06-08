@@ -10,16 +10,10 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
     );
 }
 
-import { getAllDailyNews, getDailyNewsArticle } from "@/lib/daily-news";
+import { getDailyNewsArticle } from "@/lib/daily-news";
 import DailyNewsVocabQuizClient from "./DailyNewsVocabQuizClient";
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
-
-// ── Pre-render all daily news slugs ──
-export async function generateStaticParams() {
-    const articles = getAllDailyNews();
-    return articles.map((a) => ({ slug: a.slug }));
-}
 
 // ── SEO metadata with full GEO optimization ──
 export async function generateMetadata({

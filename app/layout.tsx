@@ -305,6 +305,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </div>
             </div>
             <div className="flex gap-4">
+              <Link href="/blog" className="hover:text-gray-600 transition-colors">Blog</Link>
               <Link href="/privacy" className="hover:text-gray-600 transition-colors">Privacy</Link>
               <Link href="/about" className="hover:text-gray-600 transition-colors">About</Link>
               <Link href="/contact" className="hover:text-gray-600 transition-colors">Contact</Link>
