@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """
-Blog Post Tracker v3 — SerialNumber-Based Matching
-Reads 5 category strategy files from content/strategy/,
-extracts all planned post titles + serial numbers,
-scans content/blog/ for existing .md files,
-matches by serialNumber (not title),
-and reports which posts exist vs pending.
+Blog Post Tracker — Strategy File Annotator
+Scans content/blog/ for existing .md files,
+then updates each strategy .md file in content/strategy/
+with [✅] / [❌] markers next to each post title,
+plus a progress summary header at the top.
+
+FIXES:
+- Uses FULL RANGE for total count (endSerial - startSerial + 1)
+- ALWAYS replaces old banner with fresh, correct data
+- Idempotent: running multiple times gives same result
 """
 
 import io
@@ -25,9 +29,10 @@ CATEGORIES = [
     ("5.catogery 5 _ 150 post.md",  "Category 5: Daily Sentences & Spoken Eng", 851, 1000),
 ]
 
+BANNER_PREFIX = "> 📊 **Progress:"
+
 
 def extract_frontmatter_field(text: str, field: str) -> str | None:
-    """Extract a field from YAML frontmatter safely."""
     match = re.match(r"^---\s*\n(.*?)\n(?:---|\.\.\.)", text, re.DOTALL)
     if not match:
         return None
@@ -38,83 +43,13 @@ def extract_frontmatter_field(text: str, field: str) -> str | None:
     return None
 
 
-def parse_planned_posts(filepath: str, start_sn: int) -> list[dict]:
-    """
-    Parse a category strategy file and extract all numbered post entries.
-    Returns list of {sn, title} dicts sorted by serial number.
-    
-    Handles:
-    - Lines like "1. Title here" or "851. Title here"
-    - Both LOCAL numbering (1-200 within a category) and GLOBAL numbering (1-1000)
-    - Markdown bold formatting like "**Rule 1-5:** text"
-    - Section headers like "### Verb Family (Posts 1-4)"
-    """
-    if not os.path.isfile(filepath):
-        print(f"  [!] File not found: {os.path.basename(filepath)}")
-        return []
-    
-    with open(filepath, "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    if not content.strip():
-        print(f"  [!] Empty file: {os.path.basename(filepath)}")
-        return []
-
-    planned = []
-    seen_sns = set()
-    
-    for line in content.split("\n"):
-        # Match: optional whitespace, number, dot, space, then title
-        match = re.match(r"^\s*(\d+)\.\s+(.+)$", line)
-        if not match:
-            continue
-        
-        num = int(match.group(1))
-        title = match.group(2).strip()
-        
-        # Remove markdown bold markers
-        title = title.replace("**", "").strip()
-        
-        # Skip if title is too short (not a real post title)
-        if len(title) < 10:
-            continue
-        
-        # Skip if looks like a section/subtitle rather than a post title
-        # (e.g., "Part 1:", "Section A:", "Letter A:", etc.)
-        if re.match(r"^(Part|Section|Chapter|Letter|Theme|Sub-Category)\s+\d", title, re.IGNORECASE):
-            continue
-        
-        # Convert local numbering to global numbering
-        # Strategy files use LOCAL numbering (e.g., Category 3 lists 1-200, not 211-410)
-        # Blog posts use GLOBAL numbering (1-1000)
-        if num < start_sn:
-            num = start_sn + num - 1
-        
-        # Skip if outside the expected range
-        if not (1 <= num <= 1000):
-            continue
-        
-        # Skip duplicate serial numbers (take the first)
-        if num in seen_sns:
-            continue
-        
-        seen_sns.add(num)
-        planned.append({"sn": num, "title": title})
-    
-    # Sort by serial number
-    planned.sort(key=lambda x: x["sn"])
-    return planned
-
-
 def load_existing_posts() -> dict[int, dict]:
     """Scan content/blog/ and return dict of serialNumber -> {title, file}."""
-    if not os.path.isdir(BLOG_DIR):
-        print(f"  [!] Blog directory not found: {BLOG_DIR}")
-        return {}
-
     existing = {}
-    files = sorted(os.listdir(BLOG_DIR))
-    for fname in files:
+    if not os.path.isdir(BLOG_DIR):
+        return existing
+
+    for fname in sorted(os.listdir(BLOG_DIR)):
         if not fname.endswith(".md"):
             continue
         fpath = os.path.join(BLOG_DIR, fname)
@@ -133,106 +68,194 @@ def load_existing_posts() -> dict[int, dict]:
                 existing[sn] = {"title": title, "file": fname}
             except ValueError:
                 pass
-    
+
     return existing
 
 
-def generate_report(planned: list[dict], existing: dict[int, dict]):
-    """Match planned posts with existing by serialNumber and print report."""
-    
-    written_count = 0
-    pending_count = 0
-    
-    print("=" * 72)
-    print("  1000 BLOG POSTS TRACKER  --  SerialNumber Matching")
-    print("=" * 72)
-    
-    for cat_file, cat_name, start_sn, end_sn in CATEGORIES:
-        cat_posts = [p for p in planned if start_sn <= p["sn"] <= end_sn]
-        cat_written = [p for p in cat_posts if p["sn"] in existing]
-        cat_pending = [p for p in cat_posts if p["sn"] not in existing]
-        
-        written_count += len(cat_written)
-        pending_count += len(cat_pending)
-        
-        print(f"\n  [{cat_name}]")
-        total_in_cat = len(cat_posts)
-        pct = len(cat_written) * 100 // total_in_cat if total_in_cat > 0 else 0
-        print(f"  Posts {start_sn}-{end_sn}  |  Written: {len(cat_written)}/{total_in_cat} ({pct}%)")
-        print(f"  " + "-" * 68)
-        
-        # Show written posts
-        for p in cat_written:
-            e = existing[p["sn"]]
-            print(f"  [+] #{p['sn']:>4d}  {p['title'][:65]}")
-        
-        # Show pending count + gaps
-        if cat_pending:
-            pending_sns = sorted([p["sn"] for p in cat_pending])
-            
-            # Show first 5 and last 5 pending with titles
-            show_items = pending_sns[:5] + pending_sns[-5:] if len(pending_sns) > 10 else pending_sns
-            shown_set = set(show_items)
-            
-            for sn in show_items:
-                p = next((pp for pp in cat_pending if pp["sn"] == sn), None)
-                if p:
-                    print(f"  [-] #{p['sn']:>4d}  {p['title'][:65]}")
-            
-            if len(pending_sns) > 10:
-                hidden = len(pending_sns) - 10
-                print(f"  [-] ... and {hidden} more pending posts in this category")
+def strip_old_banner(lines: list[str]) -> list[str]:
+    """Remove ALL old progress banner lines from anywhere in the file.
+    Handles both top-of-file banners and banners after frontmatter."""
+    result = []
+    i = 0
+    while i < len(lines):
+        if lines[i].strip().startswith(BANNER_PREFIX):
+            i += 1  # Skip "> 📊 **Progress: ...**"
+            if i < len(lines) and "✅" in lines[i] and "❌" in lines[i]:
+                i += 1  # Skip "✅ Complete • ❌ Pending"
+            continue
+        result.append(lines[i])
+        i += 1
+    return result
+
+
+def find_insert_point(lines: list[str]) -> int:
+    """Find where to insert the banner. Returns index after frontmatter if any, else 0."""
+    if lines and lines[0].strip() == "---":
+        for j, line in enumerate(lines):
+            if j > 0 and line.strip() == "---":
+                return j + 1  # After closing ---
+    return 0
+
+
+def annotate_post_lines(lines: list[str], start_sn: int, end_sn: int,
+                        existing: dict[int, dict]) -> dict[int, tuple]:
+    """Parse lines to find numbered post entries and annotate them.
+    Returns dict of line_index -> (serialNumber, title, is_written)."""
+    post_info = {}
+    post_regex = re.compile(r"^(\s*)(\d+)\.\s+(.+)$")
+    in_frontmatter = False
+
+    for i, line in enumerate(lines):
+        # Track frontmatter
+        if i == 0 and line.strip() == "---":
+            in_frontmatter = True
+            continue
+        if in_frontmatter and line.strip() == "---":
+            in_frontmatter = False
+            continue
+        if in_frontmatter:
+            continue
+
+        match = post_regex.match(line)
+        if not match:
+            continue
+
+        num = int(match.group(2))
+        title = match.group(3).strip().replace("**", "").strip()
+
+        # Skip section headers and short lines
+        if len(title) < 10:
+            continue
+        if re.match(r"^(Part|Section|Chapter|Letter|Theme|Sub-Category|Verb Family)\s+\d",
+                    title, re.IGNORECASE):
+            continue
+
+        # Convert local numbering to global
+        if num < start_sn:
+            num = start_sn + num - 1
+
+        if not (start_sn <= num <= end_sn):
+            continue
+
+        post_info[i] = (num, title, num in existing)
+
+    return post_info
+
+
+def build_banner(written: int, total: int) -> str:
+    """Build the progress banner string."""
+    pct = (written * 100 // total) if total > 0 else 0
+    bar_len = 20
+    filled = round(bar_len * written / total) if total > 0 else 0
+    bar = "█" * filled + "░" * (bar_len - filled)
+    return f"> 📊 **Progress: {bar} {written}/{total} posts ({pct}%)**\n> ✅ Complete • ❌ Pending\n"
+
+
+def annotate_strategy_file(filepath: str, start_sn: int, end_sn: int,
+                           existing: dict[int, dict]) -> tuple[int, int, int]:
+    """
+    Read a strategy file, annotate with [✅] / [❌], and update banner.
+    Always replaces old banner with fresh data.
+    Returns (total_posts, written_count, pending_count).
+    """
+    if not os.path.isfile(filepath):
+        print(f"  [!] File not found: {os.path.basename(filepath)}")
+        return (0, 0, 0)
+
+    with open(filepath, "r", encoding="utf-8") as f:
+        original = f.read()
+
+    lines = original.split("\n") if original.strip() else []
+
+    # For empty files, still write a progress banner (so user sees 0/180 etc.)
+    if not lines:
+        total_posts = end_sn - start_sn + 1
+        banner = build_banner(0, total_posts)
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(banner)
+        return (total_posts, 0, total_posts)
+
+    # ── Step 1: Remove old banner if present ──
+    lines = strip_old_banner(lines)
+
+    # ── Step 2: Calculate correct totals using full range ──
+    total_posts = end_sn - start_sn + 1
+    written_count = sum(1 for sn in range(start_sn, end_sn + 1) if sn in existing)
+    pending_count = total_posts - written_count
+
+    # ── Step 3: Build fresh banner ──
+    banner = build_banner(written_count, total_posts)
+
+    # ── Step 4: Find post lines to annotate ──
+    post_info = annotate_post_lines(lines, start_sn, end_sn, existing)
+
+    # ── Step 5: Rebuild file with banner + annotations ──
+    insert_at = find_insert_point(lines)
+    post_regex = re.compile(r"^(\s*)(\d+)\.\s+(.+)$")
+
+    final = lines[:insert_at]  # Frontmatter lines (if any)
+    final.append(banner)       # Fresh banner
+
+    for i in range(insert_at, len(lines)):
+        line = lines[i]
+        if i in post_info:
+            _, _, is_written = post_info[i]
+            marker = "✅" if is_written else "❌"
+            match = post_regex.match(line)
+            if match:
+                indent = match.group(1)
+                raw_num = match.group(2)
+                rest = re.sub(r"^\s*[✅❌]\s*", "", match.group(3)).strip()
+                final.append(f"{indent}{raw_num}. {marker} {rest}")
+            else:
+                final.append(line)
         else:
-            print("  (no pending posts)")
-    
-    total_planned = len(planned)
-    pct = written_count * 100 // total_planned if total_planned > 0 else 0
-    
-    print("\n" + "=" * 72)
-    print(f"  TOTAL: {written_count}/{total_planned} written ({pct}%)  |  {pending_count} pending")
-    print("=" * 72)
+            final.append(line)
+
+    new_content = "\n".join(final)
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write(new_content)
+
+    return (total_posts, written_count, pending_count)
 
 
 def main():
     if not os.path.isdir(STRATEGY_DIR):
-        print(f"[!] Error: Strategy directory not found at {STRATEGY_DIR}")
-        # Try to create it
         os.makedirs(STRATEGY_DIR, exist_ok=True)
         print(f"[+] Created strategy directory: {STRATEGY_DIR}")
         print("[!] Please add the 5 category strategy files there first.")
         sys.exit(1)
-    
-    # Fix stdout encoding for Windows (handles Hindi text in titles)
+
     if hasattr(sys.stdout, 'buffer'):
         sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    
-    # Parse all strategy files
-    all_planned = []
+
+    existing = load_existing_posts()
+    print(f"[+] Found {len(existing)} existing blog posts\n")
+
+    grand_total = 0
+    grand_written = 0
+    grand_pending = 0
+
     for cat_file, cat_name, start_sn, end_sn in CATEGORIES:
         fpath = os.path.join(STRATEGY_DIR, cat_file)
-        posts = parse_planned_posts(fpath, start_sn)
-        
-        # Only keep posts within the expected range
-        posts = [p for p in posts if start_sn <= p["sn"] <= end_sn]
-        all_planned.extend(posts)
-    
-    # Load existing blog posts
-    existing = load_existing_posts()
-    
-    # Generate report
-    generate_report(all_planned, existing)
-    
-    # Check for unmatched existing posts (serialNumber not in any strategy file)
-    unmatched = []
-    for sn, e in existing.items():
-        if sn not in {p["sn"] for p in all_planned}:
-            unmatched.append(e)
-    
-    if unmatched:
-        print(f"\n  [!] {len(unmatched)} existing post(s) not found in any strategy file:")
-        for e in unmatched:
-            sn = next((s for s, ex in existing.items() if ex == e), "?")
-            print(f"      #{sn} -> {e['file']}  ({e['title'][:60]})")
+        print(f"  📄 {cat_name}")
+        total, written, pending = annotate_strategy_file(fpath, start_sn, end_sn, existing)
+
+        if total > 0:
+            pct = written * 100 // total
+            print(f"     Posts {start_sn}-{end_sn}: {written}/{total} ({pct}%) — {pending} pending")
+        else:
+            print(f"     No posts found in file")
+        print()
+
+        grand_total += total
+        grand_written += written
+        grand_pending += pending
+
+    pct = grand_written * 100 // grand_total if grand_total > 0 else 0
+    print("=" * 60)
+    print(f"  TOTAL: {grand_written}/{grand_total} ({pct}%)  |  {grand_pending} pending")
+    print("=" * 60)
 
 
 if __name__ == "__main__":

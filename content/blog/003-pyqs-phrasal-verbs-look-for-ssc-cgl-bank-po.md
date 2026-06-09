@@ -1,5 +1,3 @@
-अपनी भूल के लिए खेद है। मैंने टाइटल को कैटलॉग के अनुसार अपडेट कर दिया है। यहाँ पूरी तरह से संशोधित **Post 3** दिया गया है जिसमें "Category 4" सूची के अनुसार सटीक टाइटल का उपयोग किया गया है:
-
 ---
 title: "Previous Year SSC CGL/Bank Questions on 'Look' Phrasal Verbs with Solutions"
 metaDescription: "Master 'Look' phrasal verbs with previous year SSC CGL, IBPS, and SBI PO questions. Includes bilingual explanations, a mnemonic story, and core grammar highlights."
@@ -129,13 +127,11 @@ In exam-level questions, **"look up"** is tested in two distinct ways: semantic 
 **Question:** The state delegates said they were **looking forward to meet** the Prime Minister during the upcoming national conclave.
 
 **Options:**
-(A) looking forward to participating
+(A) looking forward to meeting
 (B) looking forward for meeting
 (C) looked forward to meet
 (D) looking forward to be met
 (E) No correction required
-
-*(Note: While the original option (A) listed "participating" in our earlier template, the correct grammatical shift for "meet" is "meeting".)*
 
 **Correct Answer - A**
 **Detailed Explanation:**

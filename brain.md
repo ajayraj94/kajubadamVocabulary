@@ -42,7 +42,7 @@
 | Daily News | 9 (31 May – 8 June 2026) | All free |
 | Error Detection PYQ | 716 questions | Page 1 free (50 Q), rest paid |
 | Sentence Improvement PYQ | 790 questions | Page 1 free (50 Q), rest paid |
-| **Blog Posts** | **2** (growing) | **All free** |
+| **Blog Posts** | **10** (serialNumber 1-10) | **All free** |
 | Static Pages | Home, About, Contact, Pricing, Privacy, Terms, Disclaimer, Blog | All free |
 
 ### Site Structure
@@ -75,13 +75,28 @@
 - ✅ Canonical URLs, hreflang (en/hi)
 
 ### SEO Improvements Made
-1. ✅ **Blog section created** at `/blog` with 2 initial posts targeting high-volume keywords
+1. ✅ **Blog section created** at `/blog` with 10 posts (serialNumber 1-10)
 2. ✅ **Footer updated** — Blog link added to all pages
 3. ✅ **Sitemap updated** — Blog pages included
+4. ✅ **Post 003 frontmatter bug fixed** — Hindi text before `---` was breaking gray-matter parsing
 
 ### Remaining SEO Gaps
 1. ❌ No hub/guide pages yet (e.g., "SSC CGL Vocabulary Complete Guide")
 2. ❌ Limited free content — only 2 free stories; more free entry points needed
+
+### Blog Posts Published (10)
+| # | Slug | Category |
+|---|------|----------|
+| 001 | `Top-phrasal-verbs-look-part-1` | Idioms & Phrasal Verbs |
+| 002 | `confusing-phrasal-verbs-look-part-2` | Idioms & Phrasal Verbs |
+| 003 | `pyqs-phrasal-verbs-look-for-ssc-cgl-bank-po` | Idioms & Phrasal Verbs |
+| 004 | `interactive-quiz-look-phrasal-verbs-part-4` | Idioms & Phrasal Verbs |
+| 005 | `phrasal-verbs-get-part-5` | Idioms & Phrasal Verbs |
+| 006 | `advanced-get-phrasal-verbs-part-6` | Idioms & Phrasal Verbs |
+| 007 | `pyqs-phrasal-verbs-get-part-7` | Idioms & Phrasal Verbs |
+| 008 | `fill-in-the-blanks-get-phrasal-verbs-quiz-part-8` | Idioms & Phrasal Verbs |
+| 009 | `most-common-phrasal-verbs-take-part-9` | Idioms & Phrasal Verbs |
+| 010 | `confusing-phrasal-verbs-take-part-10` | Idioms & Phrasal Verbs |
 
 ---
 
@@ -110,9 +125,28 @@
 | **Total** | | **1,000** | | |
 
 ### Note
-- Category 3 (Topic-wise Vocabulary, 180 posts) had an empty file — data sourced from masterplan outline
+- Category 2 (Topic-wise Vocabulary, 180 posts) had an empty file (`3.catogery 2_ 180 post.md`) — data sourced from masterplan outline
+- Category 3 (Grammar & Error Spotting, 200 posts) file is `2.catogery 3 _ 200 post.md` (filename prefix doesn't match category number)
 - URL hierarchy follows silo architecture: `/blog/{category}/{post-slug}`
 - The roadmap is dynamic (clickable accordions), no build-time overhead
+
+---
+
+## 📊 Progress Tracker (Offline)
+
+A Python script `scripts/track.py` tracks blog post progress and annotates strategy files:
+
+| File | Range | Current |
+|------|-------|---------|
+| `1.catogery 4_ 210 post.md` | 1-210 | **10/210** (4%) |
+| `2.catogery 3 _ 200 post.md` | 211-410 | **0/200** (0%) |
+| `3.catogery 2_ 180 post.md` | 411-590 | **0/180** (0%) |
+| `4.catogery 1_ 260 post.md` | 591-850 | **0/260** (0%) |
+| `5.catogery 5 _ 150 post.md` | 851-1000 | **0/150** (0%) |
+| **Total** | **1-1000** | **10/1000** (1%) |
+
+**Usage:** `python scripts/track.py` — updates all strategy files with fresh banners + ✅/❌ markers
+**How it works:** Reads `serialNumber` from blog post frontmatter, compares to strategy file ranges, annotates each post line
 
 ---
 
@@ -150,13 +184,20 @@
 ---
 
 ## 📋 Pending Tasks (To-Do)
-*Tasks the user has discussed but not yet implemented.*
 
 - [ ] Create Hub page: SSC CGL Vocabulary Complete Guide
 - [ ] Add "Latest from Blog" section on homepage
 - [ ] Create free resource page: "Top 100 SSC Vocabulary Words with Hindi Meanings"
 - [ ] Write detailed content strategy document
 - [ ] Add more blog posts targeting different keywords
+
+## ✅ Completed Tasks
+
+- [x] **Post 003 frontmatter bug fixed** — Hindi text before `---` was breaking gray-matter parsing
+- [x] **Tracking API route deleted** — `app/api/iswebkaram/tracking/` removed; tracking now offline only
+- [x] **Tracking tab removed from admin panel** — `app/iswebkaram/page.tsx` cleaned
+- [x] **Strategy files annotated** — All 5 strategy files get progress banners + [✅]/[❌] markers via `scripts/track.py`
+- [x] **Python tracker fixed** — Uses full range (endSerial - startSerial + 1) instead of line parsing; properly handles empty files
 
 ---
 

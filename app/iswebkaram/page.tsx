@@ -46,11 +46,8 @@ export default function AdminPage() {
   // Remove product
   const [removing, setRemoving] = useState<string | null>(null);
 
-  // Tracking state
-  const [trackingData, setTrackingData] = useState<any>(null);
-
   // Tab
-  const [activeTab, setActiveTab] = useState<"purchases" | "transactions" | "tracking">("purchases");
+  const [activeTab, setActiveTab] = useState<"purchases" | "transactions">("purchases");
 
   // Check for existing token on mount
   useEffect(() => {
@@ -75,14 +72,13 @@ export default function AdminPage() {
     try {
       const token = getToken();
 
-      const [purchasesRes, transactionsRes, trackingRes] = await Promise.all([
+      const [purchasesRes, transactionsRes] = await Promise.all([
         fetch("/api/admin/purchases", {
           headers: { "x-admin-token": token },
         }),
         fetch("/api/admin/transactions", {
           headers: { "x-admin-token": token },
         }),
-        fetch("/api/iswebkaram/tracking"),
       ]);
 
       if (!purchasesRes.ok) {
@@ -96,11 +92,9 @@ export default function AdminPage() {
 
       const purchasesData = await purchasesRes.json();
       const transactionsData = await transactionsRes.json();
-      const trackingDataRaw = await trackingRes.json();
 
       if (purchasesData.success) setPurchases(purchasesData.purchases || []);
       if (transactionsData.success) setTransactions(transactionsData.transactions || []);
-      if (trackingDataRaw.success) setTrackingData(trackingDataRaw.data);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -359,7 +353,7 @@ export default function AdminPage() {
           {addMessage && <p className="text-sm mt-3">{addMessage}</p>}
         </div>
 
-        {/* Tabs: Purchases / Transactions / Tracking */}
+        {/* Tabs: Purchases / Transactions */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
           <div className="flex border-b border-gray-800">
             <button
@@ -381,16 +375,6 @@ export default function AdminPage() {
               }`}
             >
               Transactions ({transactions.length})
-            </button>
-            <button
-              onClick={() => setActiveTab("tracking")}
-              className={`flex-1 text-sm font-bold py-3 px-4 transition-colors ${
-                activeTab === "tracking"
-                  ? "text-white border-b-2 border-emerald-500 bg-gray-800/50"
-                  : "text-gray-500 hover:text-gray-300"
-              }`}
-            >
-              Tracking {trackingData ? `(${trackingData.overallWritten}/${trackingData.overallTotal})` : ""}
             </button>
           </div>
 
@@ -509,105 +493,6 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* Tracking Tab */}
-          {activeTab === "tracking" && (
-            <div className="p-5 space-y-6">
-              {!trackingData ? (
-                <div className="text-center py-10">
-                  <div className="w-10 h-10 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                  <p className="text-gray-400 text-sm">Loading tracking data...</p>
-                </div>
-              ) : (
-                <>
-                  {/* Overall Progress */}
-                  <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-sm font-bold text-white">Overall Progress</h3>
-                      <span className="text-emerald-400 text-2xl font-black">{trackingData.overallPercent}%</span>
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-3 mb-1">
-                      <div
-                        className="bg-emerald-500 h-3 rounded-full transition-all duration-500"
-                        style={{ width: `${trackingData.overallPercent}%` }}
-                      ></div>
-                    </div>
-                    <p className="text-gray-400 text-xs mt-1">
-                      {trackingData.overallWritten} of {trackingData.overallTotal} posts written
-                    </p>
-                  </div>
-
-                  {/* Category Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {trackingData.categories.map((cat: any, i: number) => {
-                      const colors = [
-                        { bar: "bg-emerald-500", text: "text-emerald-400" },
-                        { bar: "bg-blue-500", text: "text-blue-400" },
-                        { bar: "bg-purple-500", text: "text-purple-400" },
-                        { bar: "bg-amber-500", text: "text-amber-400" },
-                        { bar: "bg-rose-500", text: "text-rose-400" },
-                      ];
-                      const c = colors[i % colors.length];
-                      return (
-                        <div key={i} className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider truncate">{cat.label}</h4>
-                            <span className={`${c.text} text-sm font-bold ml-2`}>{cat.percent}%</span>
-                          </div>
-                          <div className="w-full bg-gray-700 rounded-full h-2 mb-1.5">
-                            <div
-                              className={`${c.bar} h-2 rounded-full transition-all duration-500`}
-                              style={{ width: `${cat.percent}%` }}
-                            ></div>
-                          </div>
-                          <p className="text-gray-500 text-[11px]">
-                            {cat.written} of {cat.total} posts
-                          </p>
-                          {cat.posts.length > 0 && (
-                            <div className="mt-2 space-y-0.5">
-                              {cat.posts.slice(0, 5).map((p: any) => (
-                                <div key={p.serialNumber} className="flex items-center gap-1.5 text-[11px]">
-                                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${p.status === "written" ? "bg-emerald-500" : "bg-gray-600"}`}></span>
-                                  <span className="text-gray-500 font-mono">{p.serialNumber}.</span>
-                                  <span className={p.status === "written" ? "text-gray-300 truncate" : "text-gray-600 truncate"}>
-                                    {p.title.slice(0, 50)}{p.title.length > 50 ? "..." : ""}
-                                  </span>
-                                </div>
-                              ))}
-                              {cat.posts.length > 5 && (
-                                <p className="text-gray-600 text-[11px] mt-1">
-                                  ... and {cat.posts.length - 5} more
-                                </p>
-                              )}
-                            </div>
-                          )}
-                          {cat.total === 0 && (
-                            <p className="text-gray-600 text-[11px] italic mt-2">No posts in plan</p>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Recent Written */}
-                  {trackingData.recentWritten.length > 0 && (
-                    <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-4">
-                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Recently Written</h3>
-                      <div className="space-y-1.5">
-                        {trackingData.recentWritten.slice(0, 10).map((p: any) => (
-                          <div key={p.serialNumber} className="flex items-center gap-2 text-xs">
-                            <span className="text-emerald-500 font-bold">+</span>
-                            <span className="text-gray-500 font-mono">{p.serialNumber}.</span>
-                            <span className="text-gray-300 truncate">{p.title.slice(0, 60)}</span>
-                            <span className="text-gray-600 text-[10px] ml-auto shrink-0">{p.category.split(":")[0]}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          )}
         </div>
 
         {/* Configuration Info */}
