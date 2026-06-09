@@ -26,16 +26,8 @@ export interface BlogPost {
     content: string;
 }
 
-// ── Cache ──
-
-const IS_DEV = process.env.NODE_ENV !== "production";
-let cache: BlogPost[] | null = null;
-
 function loadAllPosts(): BlogPost[] {
-    if (!IS_DEV && cache) return cache;
-
     if (!fs.existsSync(blogDirectory)) {
-        if (!IS_DEV) cache = [];
         return [];
     }
 
@@ -74,7 +66,6 @@ function loadAllPosts(): BlogPost[] {
             return b.meta.date.localeCompare(a.meta.date);
         });
 
-    if (!IS_DEV) cache = posts;
     return posts;
 }
 

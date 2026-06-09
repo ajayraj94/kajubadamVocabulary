@@ -433,11 +433,11 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
               const isExternal = 'external' in tab && tab.external;
               const TabWrapper = isExternal ? Link : 'button';
               const wrapperProps = isExternal
-                ? { key: tab.id, href: '/blog', className: `flex-none transition-all duration-200 select-none hover:-translate-y-0.5 active:scale-95` }
-                : { key: tab.id, onClick: () => setActiveTab(tab.id), className: `flex-none transition-all duration-200 select-none ${isActive ? 'shadow-md shadow-black/5' : 'hover:-translate-y-0.5 active:scale-95'}` };
+                ? { href: '/blog', className: `flex-none transition-all duration-200 select-none hover:-translate-y-0.5 active:scale-95` }
+                : { onClick: () => setActiveTab(tab.id), className: `flex-none transition-all duration-200 select-none ${isActive ? 'shadow-md shadow-black/5' : 'hover:-translate-y-0.5 active:scale-95'}` };
 
               return (
-                <TabWrapper {...wrapperProps}>
+                <TabWrapper key={tab.id} {...wrapperProps}>
                   {/* Mobile: stacked icon + label pill */}
                   <div
                     className={`md:hidden flex flex-col items-center justify-center rounded-2xl px-3.5 py-2 min-w-[60px] transition-all duration-200 border ${isActive && !isExternal

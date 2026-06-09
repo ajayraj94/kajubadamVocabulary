@@ -1,12 +1,21 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { getBlogPost } from "@/lib/blog";
 import BlogNav from "@/app/_components/BlogNav";
+import BlogPostRenderer from "@/app/_components/BlogPostRenderer";
 
 const SITE_URL = process.env.SITE_URL || "https://kajubadamvocabulary.in";
+
+// ── JSON-LD helper ──
+function JsonLd({ data }: { data: Record<string, unknown> }) {
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+        />
+    );
+}
 
 // ── SEO metadata ──
 export async function generateMetadata({
@@ -58,41 +67,105 @@ export default async function BlogPostPage({
         notFound();
     }
 
+    // Build JSON-LD schema
+    const cleanBody = post.content
+        .replace(/\*\*/g, "")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+
+    const schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Article",
+                "@id": `${SITE_URL}/blog/${slug}#article`,
+                headline: post.meta.title,
+                description: post.meta.description,
+                articleBody: cleanBody.substring(0, 5000),
+                datePublished: post.meta.date,
+                author: {
+                    "@type": "Organization",
+                    name: "kajubadam Vocabulary",
+                    url: SITE_URL,
+                },
+                publisher: {
+                    "@type": "Organization",
+                    name: "kajubadam Vocabulary",
+                    url: SITE_URL,
+                },
+                inLanguage: ["en", "hi"],
+                about: {
+                    "@type": "Thing",
+                    name: "Competitive Exam English Preparation",
+                    description: "Vocabulary, phrasal verbs, idioms, and grammar for SSC CGL, Banking, and UPSC exams.",
+                },
+                educationalLevel: "Advanced",
+                teaches: "English Vocabulary for Competitive Exams",
+            },
+            {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+                    { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+                    { "@type": "ListItem", position: 3, name: post.meta.title, item: `${SITE_URL}/blog/${slug}` },
+                ],
+            },
+        ],
+    };
+
     return (
         <div className="min-h-screen bg-gray-50/40 font-sans">
             <BlogNav />
 
-            {/* Header */}
-            <div className="bg-white border-b border-gray-100">
-                <div className="max-w-[800px] mx-auto px-4 lg:px-8 py-5 md:py-6">
+            {/* ═══ HERO HEADER — Daily News Reading Style ═══ */}
+            <div className="relative overflow-hidden bg-gradient-to-br from-[#0f172a] via-[#d97706] to-[#0f172a] border-b border-amber-500/20">
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-amber-500/10 blur-3xl animate-pulse" style={{animationDuration: '4s'}}></div>
+                    <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl animate-pulse" style={{animationDuration: '6s'}}></div>
+                </div>
+
+                <div className="relative max-w-[1200px] mx-auto px-4 lg:px-8 py-4 md:py-6">
                     <Link
                         href="/blog"
-                        className="inline-flex items-center gap-1 text-[12px] font-semibold text-gray-400 hover:text-[#1c4a8a] transition-colors mb-3"
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-200/80 hover:text-amber-200 transition-colors mb-2"
                     >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
                         </svg>
                         Back to Blog
                     </Link>
-                    <div className="flex items-center gap-2 mb-2">
-                        <span className="text-[11px] font-semibold text-gray-400">
+
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                        <span className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-300 text-[9px] font-bold px-2 py-0.5 rounded-full border border-amber-400/20">
+                            <span className="w-1 h-1 bg-amber-400 rounded-full animate-pulse"></span>
+                            Blog
+                        </span>
+                        <span className="text-amber-300/40 text-[9px]">·</span>
+                        <span className="text-[11px] font-semibold text-amber-200/80">
                             {new Date(post.meta.date).toLocaleDateString("en-IN", {
                                 year: "numeric",
                                 month: "long",
                                 day: "numeric",
                             })}
                         </span>
-                        <span className="text-[10px] text-gray-300">·</span>
-                        <span className="text-[11px] font-medium text-[#1c4a8a] bg-[#1c4a8a]/5 px-2 py-0.5 rounded-full">
+                        <span className="text-amber-300/40 text-[9px]">·</span>
+                        <span className="text-[10px] font-medium text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded-full">
                             {post.meta.readingTime}
                         </span>
                     </div>
+
+                    <h1 className="text-[20px] md:text-[28px] font-black text-white tracking-tight leading-tight max-w-3xl">
+                        <span className="bg-gradient-to-r from-yellow-200 via-amber-200 to-orange-200 bg-clip-text text-transparent">
+                            {post.meta.title}
+                        </span>
+                    </h1>
+
                     {post.meta.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mb-2">
+                        <div className="flex flex-wrap gap-1 mt-2">
                             {post.meta.tags.map((tag) => (
                                 <span
                                     key={tag}
-                                    className="text-[10px] font-semibold text-gray-400 bg-gray-50 border border-gray-100 px-2 py-0.5 rounded-full"
+                                    className="text-[8px] font-semibold text-amber-200/60 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded-full"
                                 >
                                     #{tag}
                                 </span>
@@ -102,127 +175,17 @@ export default async function BlogPostPage({
                 </div>
             </div>
 
-            {/* Content */}
-            <div className="max-w-[800px] mx-auto px-4 lg:px-8 py-6 md:py-8">
-                <article className="bg-white border border-gray-100 rounded-xl p-6 md:p-8 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] blog-content">
-                    <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                            h1: ({ children, ...props }) => (
-                                <h1 className="text-[24px] md:text-[30px] font-black text-gray-900 tracking-tight leading-tight mt-0 mb-4" {...props}>
-                                    {children}
-                                </h1>
-                            ),
-                            h2: ({ children, ...props }) => (
-                                <h2 className="text-[18px] md:text-[22px] font-extrabold text-gray-800 tracking-tight mt-8 mb-3 pb-1 border-b border-gray-100" {...props}>
-                                    {children}
-                                </h2>
-                            ),
-                            h3: ({ children, ...props }) => (
-                                <h3 className="text-[16px] md:text-[18px] font-bold text-gray-700 mt-6 mb-2" {...props}>
-                                    {children}
-                                </h3>
-                            ),
-                            h4: ({ children, ...props }) => (
-                                <h4 className="text-[15px] font-extrabold text-gray-700 mt-5 mb-2" {...props}>
-                                    {children}
-                                </h4>
-                            ),
-                            h5: ({ children, ...props }) => (
-                                <h5 className="text-[14px] font-bold text-gray-600 mt-4 mb-1.5" {...props}>
-                                    {children}
-                                </h5>
-                            ),
-                            p: ({ children, ...props }) => (
-                                <p className="text-[14px] md:text-[15px] text-gray-600 leading-[1.8] mb-4" {...props}>
-                                    {children}
-                                </p>
-                            ),
-                            ul: ({ children, ...props }) => (
-                                <ul className="space-y-1.5 mb-4 pl-5" {...props}>
-                                    {children}
-                                </ul>
-                            ),
-                            ol: ({ children, ...props }) => (
-                                <ol className="space-y-1.5 mb-4 pl-5 list-decimal" {...props}>
-                                    {children}
-                                </ol>
-                            ),
-                            li: ({ children, ...props }) => (
-                                <li className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed" {...props}>
-                                    {children}
-                                </li>
-                            ),
-                            strong: ({ children, ...props }) => (
-                                <strong className="font-bold text-gray-800" {...props}>
-                                    {children}
-                                </strong>
-                            ),
-                            a: ({ href, children, ...props }) => {
-                                const isInternal = href && (href.startsWith("/") || href.startsWith(SITE_URL));
-                                return (
-                                    <a
-                                        href={href}
-                                        target={isInternal ? undefined : "_blank"}
-                                        rel={isInternal ? undefined : "noopener noreferrer"}
-                                        className="text-[#1c4a8a] font-semibold hover:text-blue-700 underline decoration-[#1c4a8a]/30 hover:decoration-[#1c4a8a]/60 transition-all"
-                                        {...props}
-                                    >
-                                        {children}
-                                    </a>
-                                );
-                            },
-                            blockquote: ({ children, ...props }) => (
-                                <blockquote className="border-l-4 border-[#1c4a8a]/20 bg-[#1c4a8a]/5 rounded-r-xl px-4 py-3 my-4 text-[14px] text-gray-600 italic" {...props}>
-                                    {children}
-                                </blockquote>
-                            ),
-                            code: ({ children, ...props }) => (
-                                <code className="bg-gray-100 text-[13px] font-mono px-1.5 py-0.5 rounded text-gray-800" {...props}>
-                                    {children}
-                                </code>
-                            ),
-                            pre: ({ children, ...props }) => (
-                                <pre className="bg-[#f8fafc] border border-gray-100 rounded-xl p-4 md:p-5 overflow-x-auto text-[13px] leading-relaxed mb-4" {...props}>
-                                    {children}
-                                </pre>
-                            ),
-                            em: ({ children, ...props }) => (
-                                <em className="italic text-gray-500" {...props}>
-                                    {children}
-                                </em>
-                            ),
-                            hr: (props) => (
-                                <hr className="border-gray-100 my-3 opacity-40" {...props} />
-                            ),
-                            table: ({ children, ...props }) => (
-                                <div className="overflow-x-auto mb-4">
-                                    <table className="w-full text-[13px] md:text-[14px] border-collapse" {...props}>
-                                        {children}
-                                    </table>
-                                </div>
-                            ),
-                            th: ({ children, ...props }) => (
-                                <th className="bg-gray-50 border border-gray-200 px-3 py-2 text-left font-bold text-gray-700" {...props}>
-                                    {children}
-                                </th>
-                            ),
-                            td: ({ children, ...props }) => (
-                                <td className="border border-gray-200 px-3 py-2 text-gray-600" {...props}>
-                                    {children}
-                                </td>
-                            ),
-                        }}
-                    >
-                        {post.content}
-                    </ReactMarkdown>
+            {/* ═══ CONTENT — Daily News Reading Layout ═══ */}
+            <div className="max-w-[1200px] mx-auto px-4 lg:px-8 py-6 md:py-8">
+                <article className="blog-content">
+                    <BlogPostRenderer content={post.content} />
                 </article>
 
                 {/* Navigation */}
-                <div className="mt-6 flex items-center justify-between">
+                <div className="mt-8 flex items-center justify-between border-t border-amber-100 pt-6">
                     <Link
                         href="/blog"
-                        className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gray-400 hover:text-[#1c4a8a] transition-colors"
+                        className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gray-400 hover:text-[#d97706] transition-colors"
                     >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
@@ -231,7 +194,7 @@ export default async function BlogPostPage({
                     </Link>
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gray-400 hover:text-[#1c4a8a] transition-colors"
+                        className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gray-400 hover:text-[#d97706] transition-colors"
                     >
                         Home
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -240,33 +203,39 @@ export default async function BlogPostPage({
                     </Link>
                 </div>
 
-                {/* CTA */}
-                <div className="mt-8 bg-gradient-to-br from-[#1c4a8a]/5 to-blue-50 border border-[#1c4a8a]/10 rounded-xl p-5 md:p-6 text-center">
+                {/* CTA — Amber Theme */}
+                <div className="mt-8 bg-gradient-to-br from-amber-50 via-white to-orange-50/40 border border-amber-200/60 rounded-2xl p-6 md:p-8 text-center shadow-sm">
+                    <span className="inline-flex items-center gap-1.5 bg-amber-100 text-amber-700 text-[10px] font-bold px-3 py-1 rounded-full mb-3">
+                        📚 Free Blog
+                    </span>
                     <p className="text-[14px] md:text-[15px] font-bold text-gray-800 mb-1">
                         🎯 Master 11,762+ Exam Words with Stories
                     </p>
-                    <p className="text-[12px] md:text-[13px] text-gray-500 mb-3">
+                    <p className="text-[12px] md:text-[13px] text-gray-500 mb-4">
                         Bilingual stories + interactive quizzes — one-time payment, lifetime access
                     </p>
-                    <div className="flex flex-wrap justify-center gap-2">
+                    <div className="flex flex-wrap justify-center gap-3">
                         <Link
                             href="/pricing"
-                            className="inline-flex items-center gap-1.5 bg-[#1c4a8a] hover:bg-blue-900 text-white font-bold text-[12px] px-5 py-2 rounded-full transition-all active:scale-95 shadow-sm"
+                            className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 text-[#0f172a] font-extrabold text-[12px] px-5 py-2.5 rounded-full shadow-[0_2px_10px_-2px_rgba(251,191,36,0.5)] hover:shadow-[0_4px_16px_-2px_rgba(251,191,36,0.7)] hover:scale-105 transition-all duration-200 active:scale-95"
                         >
-                            View Pricing
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            Get Full Access — Lifetime ₹299
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
                         </Link>
                         <Link
                             href="/daily-news"
-                            className="inline-flex items-center gap-1.5 bg-white border border-gray-200 hover:border-[#1c4a8a]/30 text-gray-600 hover:text-[#1c4a8a] font-bold text-[12px] px-5 py-2 rounded-full transition-all active:scale-95"
+                            className="inline-flex items-center gap-1.5 bg-white border border-amber-200 hover:border-amber-300 text-gray-600 hover:text-amber-700 font-bold text-[12px] px-5 py-2.5 rounded-full transition-all active:scale-95"
                         >
-                            Free Daily News
+                            📰 Free Daily News
                         </Link>
                     </div>
                 </div>
             </div>
+
+            {/* JSON-LD */}
+            <JsonLd data={schema} />
         </div>
     );
 }

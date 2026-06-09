@@ -42,7 +42,7 @@
 | Daily News | 9 (31 May – 8 June 2026) | All free |
 | Error Detection PYQ | 716 questions | Page 1 free (50 Q), rest paid |
 | Sentence Improvement PYQ | 790 questions | Page 1 free (50 Q), rest paid |
-| **Blog Posts** | **10** (serialNumber 1-10) | **All free** |
+| **Blog Posts** | **11** (serialNumber 1-11) | **All free** |
 | Static Pages | Home, About, Contact, Pricing, Privacy, Terms, Disclaimer, Blog | All free |
 
 ### Site Structure
@@ -97,6 +97,7 @@
 | 008 | `fill-in-the-blanks-get-phrasal-verbs-quiz-part-8` | Idioms & Phrasal Verbs |
 | 009 | `most-common-phrasal-verbs-take-part-9` | Idioms & Phrasal Verbs |
 | 010 | `confusing-phrasal-verbs-take-part-10` | Idioms & Phrasal Verbs |
+| 011 | `take-phrasal-verbs-previous-year-questions` | Idioms & Phrasal Verbs |
 
 ---
 
@@ -138,12 +139,12 @@ A Python script `scripts/track.py` tracks blog post progress and annotates strat
 
 | File | Range | Current |
 |------|-------|---------|
-| `1.catogery 4_ 210 post.md` | 1-210 | **10/210** (4%) |
+| `1.catogery 4_ 210 post.md` | 1-210 | **11/210** (5%) |
 | `2.catogery 3 _ 200 post.md` | 211-410 | **0/200** (0%) |
 | `3.catogery 2_ 180 post.md` | 411-590 | **0/180** (0%) |
 | `4.catogery 1_ 260 post.md` | 591-850 | **0/260** (0%) |
 | `5.catogery 5 _ 150 post.md` | 851-1000 | **0/150** (0%) |
-| **Total** | **1-1000** | **10/1000** (1%) |
+| **Total** | **1-1000** | **11/1000** (1%) |
 
 **Usage:** `python scripts/track.py` — updates all strategy files with fresh banners + ✅/❌ markers
 **How it works:** Reads `serialNumber` from blog post frontmatter, compares to strategy file ranges, annotates each post line
