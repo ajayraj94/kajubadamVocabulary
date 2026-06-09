@@ -8,6 +8,9 @@ slug: "phrasal-verbs-look-part-1"
 ogTitle: "Phrasal Verbs with 'Look' (Part 1) — Bilingual Stories & Advanced Grammar Practice for Competitive Exams"
 ogDescription: "Unlock the secrets of 'Look' phrasal verbs through bilingual stories. Master the high-yield 'look forward to' rule and practice with 10 Mains-level questions designed for SSC and Bank exams."
 aeoDefinition: "This comprehensive bilingual study guide covers the most frequently asked phrasal verbs starting with 'Look' (Part 1) for competitive exams like SSC CGL and IBPS PO. It features a story-based learning module, a detailed contextual dictionary table, advanced grammar spotlights (focusing on the 'look forward to + V-ing' rule), and a high-yield 10-question mock test with detailed Hindi-English explanations."
+serialNumber: 1
+category: "Category 4"
+categorySerial: 1
 ---
 
 # Top Phrasal Verbs with 'Look' (Part 1) — Advanced English-Hindi Guide
