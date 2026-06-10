@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getBlogPost } from "@/lib/blog";
+import { getBlogPost, getAdjacentPosts, extractFaqFromContent } from "@/lib/blog";
 import BlogNav from "@/app/_components/BlogNav";
 import BlogPostRenderer from "@/app/_components/BlogPostRenderer";
 
@@ -67,50 +67,72 @@ export default async function BlogPostPage({
         notFound();
     }
 
+    const adjacent = getAdjacentPosts(slug);
+
     // Build JSON-LD schema
     const cleanBody = post.content
         .replace(/\*\*/g, "")
         .replace(/\n{3,}/g, "\n\n")
         .trim();
 
+    // Extract FAQ items for FAQPage schema
+    const faqItems = extractFaqFromContent(post.content);
+
+    const graphItems: Record<string, unknown>[] = [
+        {
+            "@type": "Article",
+            "@id": `${SITE_URL}/blog/${slug}#article`,
+            headline: post.meta.title,
+            description: post.meta.description,
+            articleBody: cleanBody.substring(0, 5000),
+            datePublished: post.meta.date,
+            author: {
+                "@type": "Organization",
+                name: "kajubadam Vocabulary",
+                url: SITE_URL,
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "kajubadam Vocabulary",
+                url: SITE_URL,
+            },
+            inLanguage: ["en", "hi"],
+            about: {
+                "@type": "Thing",
+                name: "Competitive Exam English Preparation",
+                description: "Vocabulary, phrasal verbs, idioms, and grammar for SSC CGL, Banking, and UPSC exams.",
+            },
+            educationalLevel: "Advanced",
+            teaches: "English Vocabulary for Competitive Exams",
+        },
+        {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+                { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+                { "@type": "ListItem", position: 3, name: post.meta.title, item: `${SITE_URL}/blog/${slug}` },
+            ],
+        },
+    ];
+
+    // Add FAQPage schema if we have FAQ items
+    if (faqItems.length > 0) {
+        graphItems.push({
+            "@type": "FAQPage",
+            mainEntity: faqItems.map((faq) => ({
+                "@type": "Question",
+                name: faq.question,
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faq.answer,
+                },
+            })),
+        });
+    }
+
     const schema = {
         "@context": "https://schema.org",
-        "@graph": [
-            {
-                "@type": "Article",
-                "@id": `${SITE_URL}/blog/${slug}#article`,
-                headline: post.meta.title,
-                description: post.meta.description,
-                articleBody: cleanBody.substring(0, 5000),
-                datePublished: post.meta.date,
-                author: {
-                    "@type": "Organization",
-                    name: "kajubadam Vocabulary",
-                    url: SITE_URL,
-                },
-                publisher: {
-                    "@type": "Organization",
-                    name: "kajubadam Vocabulary",
-                    url: SITE_URL,
-                },
-                inLanguage: ["en", "hi"],
-                about: {
-                    "@type": "Thing",
-                    name: "Competitive Exam English Preparation",
-                    description: "Vocabulary, phrasal verbs, idioms, and grammar for SSC CGL, Banking, and UPSC exams.",
-                },
-                educationalLevel: "Advanced",
-                teaches: "English Vocabulary for Competitive Exams",
-            },
-            {
-                "@type": "BreadcrumbList",
-                itemListElement: [
-                    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-                    { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
-                    { "@type": "ListItem", position: 3, name: post.meta.title, item: `${SITE_URL}/blog/${slug}` },
-                ],
-            },
-        ],
+        "@graph": graphItems,
     };
 
     return (
@@ -120,20 +142,29 @@ export default async function BlogPostPage({
             {/* ═══ HERO HEADER — Daily News Reading Style ═══ */}
             <div className="relative overflow-hidden bg-gradient-to-br from-[#0f172a] via-[#d97706] to-[#0f172a] border-b border-amber-500/20">
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-amber-500/10 blur-3xl animate-pulse" style={{animationDuration: '4s'}}></div>
-                    <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl animate-pulse" style={{animationDuration: '6s'}}></div>
+                    <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-amber-500/10 blur-3xl animate-pulse" style={{ animationDuration: '4s' }}></div>
+                    <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl animate-pulse" style={{ animationDuration: '6s' }}></div>
                 </div>
 
                 <div className="relative max-w-[1200px] mx-auto px-4 lg:px-8 py-4 md:py-6">
-                    <Link
-                        href="/blog"
-                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-200/80 hover:text-amber-200 transition-colors mb-2"
-                    >
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+                    {/* ═══ VISIBLE BREADCRUMB NAVIGATION ═══ */}
+                    <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[11px] font-medium mb-2">
+                        <Link href="/" className="text-amber-200/70 hover:text-amber-200 transition-colors">
+                            Home
+                        </Link>
+                        <svg className="w-3 h-3 text-amber-300/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                         </svg>
-                        Back to Blog
-                    </Link>
+                        <Link href="/blog" className="text-amber-200/70 hover:text-amber-200 transition-colors">
+                            Blog
+                        </Link>
+                        <svg className="w-3 h-3 text-amber-300/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                        </svg>
+                        <span className="text-amber-200/80 font-bold truncate max-w-[300px]">
+                            {post.meta.title}
+                        </span>
+                    </nav>
 
                     <div className="flex items-center gap-1.5 mb-1.5">
                         <span className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-300 text-[9px] font-bold px-2 py-0.5 rounded-full border border-amber-400/20">
@@ -181,8 +212,59 @@ export default async function BlogPostPage({
                     <BlogPostRenderer content={post.content} />
                 </article>
 
-                {/* Navigation */}
-                <div className="mt-8 flex items-center justify-between border-t border-amber-100 pt-6">
+                {/* ═══ PREVIOUS / NEXT POST NAVIGATION ═══ */}
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-amber-100 pt-6">
+                    {/* Previous Post */}
+                    {adjacent.prev ? (
+                        <Link
+                            href={`/blog/${adjacent.prev.slug}`}
+                            className="group flex items-start gap-3 bg-white border border-gray-200 hover:border-[#d97706]/30 rounded-xl p-4 transition-all hover:shadow-md"
+                        >
+                            <div className="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-amber-100 flex items-center justify-center shrink-0 transition-colors mt-0.5">
+                                <svg className="w-4 h-4 text-gray-400 group-hover:text-[#d97706] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </div>
+                            <div className="min-w-0">
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                    ← Previous Post
+                                </span>
+                                <p className="text-[13px] font-semibold text-gray-700 group-hover:text-[#d97706] leading-snug mt-0.5 line-clamp-2 transition-colors">
+                                    {adjacent.prev.title}
+                                </p>
+                            </div>
+                        </Link>
+                    ) : (
+                        <div />
+                    )}
+
+                    {/* Next Post */}
+                    {adjacent.next ? (
+                        <Link
+                            href={`/blog/${adjacent.next.slug}`}
+                            className="group flex items-start gap-3 bg-white border border-gray-200 hover:border-[#d97706]/30 rounded-xl p-4 transition-all hover:shadow-md md:text-right"
+                        >
+                            <div className="min-w-0 flex-1 md:order-1 order-2">
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                    Next Post →
+                                </span>
+                                <p className="text-[13px] font-semibold text-gray-700 group-hover:text-[#d97706] leading-snug mt-0.5 line-clamp-2 transition-colors">
+                                    {adjacent.next.title}
+                                </p>
+                            </div>
+                            <div className="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-amber-100 flex items-center justify-center shrink-0 transition-colors mt-0.5 md:order-2 order-1">
+                                <svg className="w-4 h-4 text-gray-400 group-hover:text-[#d97706] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </Link>
+                    ) : (
+                        <div />
+                    )}
+                </div>
+
+                {/* Bottom links */}
+                <div className="mt-6 flex items-center justify-between border-t border-amber-100 pt-6">
                     <Link
                         href="/blog"
                         className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gray-400 hover:text-[#d97706] transition-colors"
