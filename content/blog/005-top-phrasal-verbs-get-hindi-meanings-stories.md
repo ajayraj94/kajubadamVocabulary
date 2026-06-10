@@ -17,13 +17,13 @@ categorySerial: 5
 
 Mastering verbs that generate multiple idiomatic meanings is a primary requirement for cracking the English section of competitive exams such as **SSC CGL Tier 2**, **IBPS PO**, and **SBI PO Mains**. Among these verb families, **"Get"** is arguably one of the most versatile and heavily tested. 
 
-When "get" is paired with different prepositions, its meaning can shift from escaping a penalty to communicating an idea clearly. To prevent confusion under exam pressure, the academic experts at **kajubadamvocabulary.in** have structured this guide around our scientifically proven **Bilingual Story Method** [13]. By contextualizing these verbs within a logical narrative, your brain forms immediate semantic hooks, making retrieval during exams far more reliable [13].
+When "get" is paired with different prepositions, its meaning can shift from escaping a penalty to communicating an idea clearly. To prevent confusion under exam pressure, the academic experts at **kajubadamvocabulary.in** have structured this guide around our scientifically proven **Bilingual Story Method** . By contextualizing these verbs within a logical narrative, your brain forms immediate semantic hooks, making retrieval during exams far more reliable .
 
 ---
 
 ## 💡 Learn Through Stories: Rohan's Academic Struggle — रोहन का शैक्षणिक संघर्ष
 
-Below is a short, realistic story incorporating eight critical phrasal verbs with **"Get"**. Each sentence in English is immediately followed by its precise Hindi translation [13].
+Below is a short, realistic story incorporating eight critical phrasal verbs with **"Get"**. Each sentence in English is immediately followed by its precise Hindi translation .
 
 ---
 
@@ -307,7 +307,7 @@ A common point of confusion is understanding which phrasal verbs can be split by
 ---
 
 ## 🎓 Keep Learning with kajubadamvocabulary.in
-अपनी परीक्षाओं की तैयारी को और अधिक सशक्त बनाने के लिए इन सभी महत्वपूर्ण नियमों को नोट करें और दैनिक जीवन में इनका अभ्यास करें [13]。
+अपनी परीक्षाओं की तैयारी को और अधिक सशक्त बनाने के लिए इन सभी महत्वपूर्ण नियमों को नोट करें और दैनिक जीवन में इनका अभ्यास करें 。
 
 *   **Next Post to Read:** [Advanced 'Get' Phrasal Verbs (Get away, Get over, Get along) Explained in Hindi](/blog/advanced-phrasal-verbs-get-away-over-along-hindi)
 *   **Recommended Resource:** [Bank PO & SSC PYQs on 'Get' Phrasal Verbs with Detailed Solutions](/blog/bank-po-ssc-pyqs-phrasal-verbs-get-bilingual)

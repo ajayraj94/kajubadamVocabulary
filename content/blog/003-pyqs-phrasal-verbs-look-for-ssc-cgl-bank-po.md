@@ -17,13 +17,13 @@ categorySerial: 3
 
 In competitive exams like **SSC CGL (Tier 1 & Tier 2)**, **IBPS PO**, **SBI PO**, and **UPSC CDS**, phrasal verbs are a major source of errors in the English Language section. Among these, the verb family **"Look"** is highly favored by examiners because its meaning shifts dramatically with minor prepositional changes. 
 
-Many candidates lose marks not because they do not know the basic vocabulary, but because they overlook the structural rules that govern these phrasal verbs. For instance, questions on "look forward to" combined with base verbs instead of gerunds are repeatedly asked to trap students. This guide combines past trends with our unique **Bilingual Story Method** and detailed grammar spotlights to ensure you master these high-yield rules for your upcoming exams [13].
+Many candidates lose marks not because they do not know the basic vocabulary, but because they overlook the structural rules that govern these phrasal verbs. For instance, questions on "look forward to" combined with base verbs instead of gerunds are repeatedly asked to trap students. This guide combines past trends with our unique **Bilingual Story Method** and detailed grammar spotlights to ensure you master these high-yield rules for your upcoming exams .
 
 ---
 
 ## 💡 Learn Through Stories: The Judicial Investigation — न्यायिक जांच
 
-Here is a short story designed to help you recall eight critical phrasal verbs with **"Look"**. To build associations quickly, each sentence in English is followed immediately by its precise Hindi translation [13].
+Here is a short story designed to help you recall eight critical phrasal verbs with **"Look"**. To build associations quickly, each sentence in English is followed immediately by its precise Hindi translation .
 
 ---
 
@@ -292,7 +292,7 @@ In exam-level questions, **"look up"** is tested in two distinct ways: semantic 
 ---
 
 ## 🎓 Keep Learning with kajubadamvocabulary.in
-अपनी तैयारी को और मजबूत बनाने के लिए इन महत्वपूर्ण व्याकरण के नियमों को अपनी रिवीजन नोटबुक में लिखें और नियमित रूप से अभ्यास करें [13]।
+अपनी तैयारी को और मजबूत बनाने के लिए इन महत्वपूर्ण व्याकरण के नियमों को अपनी रिवीजन नोटबुक में लिखें और नियमित रूप से अभ्यास करें ।
 
 *   **Next Post to Read:** [Interactive Quiz: Test Your Knowledge on 'Look' Phrasal Verbs (Bilingual)](/blog/interactive-quiz-look-phrasal-verbs-bilingual-test)
 *   **Recommended Resource:** [Top 15 Phrasal Verbs with 'Get' with Hindi Meanings & Stories](/blog/top-phrasal-verbs-get-hindi-meanings-stories)

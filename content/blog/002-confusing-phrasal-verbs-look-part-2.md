@@ -17,13 +17,13 @@ categorySerial: 2
 
 In competitive examinations like **SSC CGL Tier 2**, **IBPS PO**, and **SBI PO Mains**, examiners frequently exploit the subtle boundaries between closely related phrasal verbs. While Part 1 of our "Look" series focused on highly common variations, Part 2 targets confusing pairs and advanced usage. 
 
-A minor change in the preposition following the verb "look" can alter the entire meaning of a sentence. For instance, "looking over" a dossier implies a general inspection, whereas "looking through" it suggests searching for specific details or reading it rapidly. To help aspirants navigate these confusing shifts, the editorial team at **kajubadamvocabulary.in** has developed this guide using our structured **Bilingual Story Method** [13]. This approach leverages contextual narrative association to ensure that confusing terms are stored in your long-term memory rather than memorized in isolation [13].
+A minor change in the preposition following the verb "look" can alter the entire meaning of a sentence. For instance, "looking over" a dossier implies a general inspection, whereas "looking through" it suggests searching for specific details or reading it rapidly. To help aspirants navigate these confusing shifts, the editorial team at **kajubadamvocabulary.in** has developed this guide using our structured **Bilingual Story Method** . This approach leverages contextual narrative association to ensure that confusing terms are stored in your long-term memory rather than memorized in isolation .
 
 ---
 
 ## 💡 Learn Through Stories: The Antique Shop Mystery — एंटीक शॉप का रहस्य
 
-Below is a short narrative incorporating eight advanced phrasal verbs with **"Look"**. Each English sentence is presented alongside its equivalent Hindi translation to help you build quick, intuitive associations [13].
+Below is a short narrative incorporating eight advanced phrasal verbs with **"Look"**. Each English sentence is presented alongside its equivalent Hindi translation to help you build quick, intuitive associations .
 
 ---
 
@@ -303,7 +303,7 @@ II. Before submitting the proposal, the manager wanted to ________ the main bull
 ---
 
 ## 🎓 Keep Learning with kajubadamvocabulary.in
-अपनी परीक्षाओं में उत्कृष्ट प्रदर्शन के लिए इन सभी व्याकरण नियमों और अंतरालों को अपनी अभ्यास नोटबुक में दर्ज करें [13]।
+अपनी परीक्षाओं में उत्कृष्ट प्रदर्शन के लिए इन सभी व्याकरण नियमों और अंतरालों को अपनी अभ्यास नोटबुक में दर्ज करें ।
 
 *   **Next Post to Read:** [Previous Year SSC CGL/Bank Questions on 'Look' Phrasal Verbs with Solutions (Part 3)](/blog/pyqs-phrasal-verbs-look-part-3)
 *   **Recommended Resource:** [Interactive Quiz: Test Your Knowledge on 'Look' Phrasal Verbs (Bilingual)](/blog/interactive-quiz-look-phrasal-verbs-bilingual-test)

@@ -15,15 +15,15 @@ categorySerial: 11
 
 # Previous Year Questions (PYQs) on 'Take' Phrasal Verbs for Competitive Exams
 
-In central government and banking competitive examinations like **SSC CGL (Tier 1 & Tier 2)**, **SBI PO**, and **IBPS PO Mains**, the syllabus for vocabulary is exceptionally vast. Among the high-yield sections, phrasal verbs associated with the root verb **"Take"**—such as *take in*, *take after*, *take to*, and *take off*—are consistently tested [13]. 
+In central government and banking competitive examinations like **SSC CGL (Tier 1 & Tier 2)**, **SBI PO**, and **IBPS PO Mains**, the syllabus for vocabulary is exceptionally vast. Among the high-yield sections, phrasal verbs associated with the root verb **"Take"**—such as *take in*, *take after*, *take to*, and *take off*—are consistently tested . 
 
-Examiners often target candidates on subtle grammatical dependencies, such as the gerund construction that must follow the phrasal verb "take to." To help you navigate these tricky exam traps, the academic team at **kajubadamvocabulary.in** has designed this comprehensive bilingual study guide. By integrating our scientifically proven **Bilingual Story Method**, we ensure you retain these phrasal verbs contextually, allowing for high accuracy under actual exam conditions [13].
+Examiners often target candidates on subtle grammatical dependencies, such as the gerund construction that must follow the phrasal verb "take to." To help you navigate these tricky exam traps, the academic team at **kajubadamvocabulary.in** has designed this comprehensive bilingual study guide. By integrating our scientifically proven **Bilingual Story Method**, we ensure you retain these phrasal verbs contextually, allowing for high accuracy under actual exam conditions .
 
 ---
 
 ## 💡 Learn Through Stories: Karan's Rigorous Preparation — करन की कठिन तैयारी
 
-Below is a short, contextual story containing eight critical phrasal verbs with **"Take"**. Each English sentence is followed immediately by its precise Hindi translation [13].
+Below is a short, contextual story containing eight critical phrasal verbs with **"Take"**. Each English sentence is followed immediately by its precise Hindi translation .
 
 ---
 
@@ -298,7 +298,7 @@ Because the word **"to"** functions as a **preposition** in this phrasal verb, i
 ---
 
 ## 🎓 Keep Learning with kajubadamvocabulary.in
-अपनी तैयारी को उत्कृष्ट स्तर पर बनाए रखने के लिए इन सभी महत्वपूर्ण नियमों को नोट करें और दैनिक अभ्यास करते रहें [13].
+अपनी तैयारी को उत्कृष्ट स्तर पर बनाए रखने के लिए इन सभी महत्वपूर्ण नियमों को नोट करें और दैनिक अभ्यास करते रहें .
 
 *   **Next Post to Read:** [Practice Exercise & Matching Quiz: Phrasal Verbs with 'Take'](/blog/matching-quiz-take-phrasal-verbs)
 *   **Recommended Resource:** [Confusing Phrasal Verbs: Take after vs Take to vs Take off](/blog/confusing-phrasal-verbs-take)

@@ -17,13 +17,13 @@ categorySerial: 7
 
 In premium competitive examinations such as **SBI PO**, **IBPS PO Mains**, and **SSC CGL Tier 2**, questions on vocabulary application are designed to test structural precision rather than simple vocabulary recognition. Among the various verb families, phrasal verbs constructed with **"Get"** appear frequently in error spotting, sentence improvement, and cloze tests. 
 
-Examiners often target subtle grammatical boundaries, such as the gerund constraint following "get down to" or the prepositions required for three-word phrasal verbs. To simplify your preparation, the academic team at **kajubadamvocabulary.in** has compiled these past exam trends into a cohesive study guide. By utilizing our scientifically proven **Bilingual Story Method**, this post ensures that you build strong contextual retention, helping you easily identify these common traps on exam day [13].
+Examiners often target subtle grammatical boundaries, such as the gerund constraint following "get down to" or the prepositions required for three-word phrasal verbs. To simplify your preparation, the academic team at **kajubadamvocabulary.in** has compiled these past exam trends into a cohesive study guide. By utilizing our scientifically proven **Bilingual Story Method**, this post ensures that you build strong contextual retention, helping you easily identify these common traps on exam day .
 
 ---
 
 ## 💡 Learn Through Stories: Vikrant's Banking Audit — विक्रांत का बैंकिंग ऑडिट
 
-Below is a short, realistic narrative incorporating eight highly-repeated phrasal verbs with **"Get"**. To help you build associations quickly, each sentence in English is followed immediately by its precise Hindi translation [13].
+Below is a short, realistic narrative incorporating eight highly-repeated phrasal verbs with **"Get"**. To help you build associations quickly, each sentence in English is followed immediately by its precise Hindi translation .
 
 ---
 
@@ -297,7 +297,7 @@ In SSC and banking PYQs, **"get through"** is highly favored due to its semantic
 ---
 
 ## 🎓 Keep Learning with kajubadamvocabulary.in
-अपनी तैयारी को और अधिक सशक्त बनाने के लिए इन सभी महत्वपूर्ण नियमों को नोट करें और दैनिक जीवन में इनका अभ्यास करें [13].
+अपनी तैयारी को और अधिक सशक्त बनाने के लिए इन सभी महत्वपूर्ण नियमों को नोट करें और दैनिक जीवन में इनका अभ्यास करें .
 
 *   **Next Post to Read:** [Fill in the Blanks: 'Get' Phrasal Verbs Quiz with Answers & Hindi Translation](/blog/fill-in-the-blanks-phrasal-verbs-get-quiz-answers)
 *   **Recommended Resource:** [Most Common Phrasal Verbs with 'Take' with Hindi Meanings](/blog/most-common-phrasal-verbs-take-hindi-meanings)

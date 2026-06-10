@@ -17,13 +17,13 @@ categorySerial: 10
 
 In advanced competitive examinations such as **SSC CGL Tier 2**, **IBPS PO**, and **SBI PO Mains**, examiners frequently construct questions around phrasal verbs that look very similar but carry completely unrelated meanings. Among these, the triad of **"Take after,"** **"Take to,"** and **"Take off"** is highly notorious for confusing candidates. 
 
-A minor change in the preposition following "Take" shifts the meaning from inheriting family traits to forming a new habit or achieving rapid business success. To prevent confusion under exam pressure, the academic experts at **kajubadamvocabulary.in** have structured this guide around our unique **Bilingual Story Method** [13]. By contextualizing these confusing verbs within a logical narrative, your brain forms immediate semantic hooks, making retrieval during exams highly reliable [13].
+A minor change in the preposition following "Take" shifts the meaning from inheriting family traits to forming a new habit or achieving rapid business success. To prevent confusion under exam pressure, the academic experts at **kajubadamvocabulary.in** have structured this guide around our unique **Bilingual Story Method** . By contextualizing these confusing verbs within a logical narrative, your brain forms immediate semantic hooks, making retrieval during exams highly reliable .
 
 ---
 
 ## 💡 Learn Through Stories: Dev's Strategic Rise — देव का रणनीतिक उदय
 
-Below is a short, realistic story incorporating eight essential phrasal verbs with **"Take"**, specifically focusing on our confusing triad. Each English sentence is immediately followed by its precise Hindi translation [13].
+Below is a short, realistic story incorporating eight essential phrasal verbs with **"Take"**, specifically focusing on our confusing triad. Each English sentence is immediately followed by its precise Hindi translation .
 
 ---
 
@@ -296,7 +296,7 @@ In competitive exams, **"take off"** is tested across three completely different
 ---
 
 ## 🎓 Keep Learning with kajubadamvocabulary.in
-अपनी तैयारी को और अधिक सशक्त बनाने के लिए इन सभी महत्वपूर्ण नियमों को नोट करें और दैनिक जीवन में इनका अभ्यास करें [13].
+अपनी तैयारी को और अधिक सशक्त बनाने के लिए इन सभी महत्वपूर्ण नियमों को नोट करें और दैनिक जीवन में इनका अभ्यास करें .
 
 *   **Next Post to Read:** [Previous Year Questions (PYQs) on 'Take' Phrasal Verbs with Solutions (Post 11)](/blog/pyqs-phrasal-verbs-take-part-11)
 *   **Recommended Resource:** [Practice Exercise & Matching Quiz: Phrasal Verbs with 'Take' (Post 12)](/blog/practice-exercise-take-phrasal-verbs-part-12)

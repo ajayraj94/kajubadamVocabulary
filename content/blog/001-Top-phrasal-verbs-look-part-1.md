@@ -17,13 +17,13 @@ categorySerial: 1
 
 Venture capital, banking, and government competitive exams like **SSC CGL Tier 2**, **IBPS PO**, and **SBI PO Mains** frequently test candidates on their command over prepositional phrases and phrasal verbs. Among these, the verb family **"Look"** is one of the most prolific and highly repeated. 
 
-Memorizing these phrasal verbs in isolation often leads to confusion under exam pressure. To solve this, the experts at **kajubadamvocabulary.in** have structured this guide around our unique, scientifically proven **Bilingual Story Method** [13]. By contextualizing these words within a coherent narrative, your brain retains the semantic connections far more effectively than through rote memorization [13].
+Memorizing these phrasal verbs in isolation often leads to confusion under exam pressure. To solve this, the experts at **kajubadamvocabulary.in** have structured this guide around our unique, scientifically proven **Bilingual Story Method** . By contextualizing these words within a coherent narrative, your brain retains the semantic connections far more effectively than through rote memorization .
 
 ---
 
 ## 💡 Learn Through Stories: The Missing Heirloom — : खोया हुआ पुश्तैनी आभूषण
 
-Below is a short, contextual story containing five critical phrasal verbs with **"Look"**. To help you build associations quickly, each sentence in English is immediately followed by its precise Hindi translation [13].
+Below is a short, contextual story containing five critical phrasal verbs with **"Look"**. To help you build associations quickly, each sentence in English is immediately followed by its precise Hindi translation .
 
 ---
 
@@ -314,7 +314,7 @@ Candidates often make mistakes by dropping one of the prepositions in complex ph
 ---
 
 ## 🎓 Keep Learning with kajubadamvocabulary.in
-अपनी तैयारी को और मजबूत बनाने के लिए इन फ्रेज़ल वर्ब्स को अपनी डायरी में नोट करें और रोज़ाना इनका प्रयोग वाक्यों में करें [13]।
+अपनी तैयारी को और मजबूत बनाने के लिए इन फ्रेज़ल वर्ब्स को अपनी डायरी में नोट करें और रोज़ाना इनका प्रयोग वाक्यों में करें ।
 
 *   **Next Post to Read:** [Phrasal Verbs with 'Look' (Part 2) — Advanced Bilingual Exercises](/blog/confusing-phrasal-verbs-look-part-2)
 *   **Recommended Resource:** [SSC Error Detection 716 PYQs with Bilingual Explanations](/error-detection)

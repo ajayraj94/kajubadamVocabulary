@@ -17,13 +17,13 @@ categorySerial: 4
 
 To secure a high score in the English Language section of **SSC CGL Tier 2**, **IBPS PO**, and **SBI PO Mains**, passive reading is never enough. You must actively test your recall and application of complex grammatical structures. Phrasal verbs, specifically those originating from the verb **"Look,"** are highly context-dependent, making them prime targets for exam-level questions.
 
-This interactive study guide and quiz are designed to transition your knowledge from passive recognition to active mastery. We begin with a short, memorable bilingual narrative to anchor the core meanings of eight target phrasal verbs [13]. This is followed by two critical grammar spotlights addressing common examiner traps, leading into a 10-question advanced practice set accompanied by exhaustive bilingual explanations.
+This interactive study guide and quiz are designed to transition your knowledge from passive recognition to active mastery. We begin with a short, memorable bilingual narrative to anchor the core meanings of eight target phrasal verbs . This is followed by two critical grammar spotlights addressing common examiner traps, leading into a 10-question advanced practice set accompanied by exhaustive bilingual explanations.
 
 ---
 
 ## 💡 Learn Through Stories: The Warehouse Audit — गोदाम का ऑडिट
 
-Read the following story to contextualize eight key phrasal verbs with **"Look"**. Each English sentence is paired directly with its Hindi translation to reinforce semantic connection [13].
+Read the following story to contextualize eight key phrasal verbs with **"Look"**. Each English sentence is paired directly with its Hindi translation to reinforce semantic connection .
 
 ---
 
@@ -290,7 +290,7 @@ The phrasal verb **"look to"** has two distinct grammatical applications in adva
 ---
 
 ## 🎓 Keep Learning with kajubadamvocabulary.in
-अपनी तैयारी को उत्कृष्ट स्तर पर ले जाने के लिए इन सभी व्याकरण नियमों को आत्मसात करें और नियमित अभ्यास सेट हल करते रहें [13]。
+अपनी तैयारी को उत्कृष्ट स्तर पर ले जाने के लिए इन सभी व्याकरण नियमों को आत्मसात करें और नियमित अभ्यास सेट हल करते रहें 。
 
 *   **Next Post to Read:** [Top 15 Phrasal Verbs with 'Get' with Hindi Meanings & Stories](/blog/top-phrasal-verbs-get-hindi-meanings-stories)
 *   **Recommended Resource:** [Advanced 'Get' Phrasal Verbs (Get away, Get over, Get along) Explained in Hindi](/blog/advanced-phrasal-verbs-get-away-over-along-hindi)
