@@ -41,7 +41,6 @@ export async function generateMetadata({
             siteName: "kajubadam Vocabulary",
             locale: "en_IN",
             type: "article",
-            publishedTime: post.meta.date,
         },
         twitter: {
             card: "summary_large_image",
@@ -85,7 +84,6 @@ export default async function BlogPostPage({
             headline: post.meta.title,
             description: post.meta.description,
             articleBody: cleanBody.substring(0, 5000),
-            datePublished: post.meta.date,
             author: {
                 "@type": "Organization",
                 name: "kajubadam Vocabulary",
@@ -170,14 +168,6 @@ export default async function BlogPostPage({
                         <span className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-300 text-[9px] font-bold px-2 py-0.5 rounded-full border border-amber-400/20">
                             <span className="w-1 h-1 bg-amber-400 rounded-full animate-pulse"></span>
                             Blog
-                        </span>
-                        <span className="text-amber-300/40 text-[9px]">·</span>
-                        <span className="text-[11px] font-semibold text-amber-200/80">
-                            {new Date(post.meta.date).toLocaleDateString("en-IN", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                            })}
                         </span>
                         <span className="text-amber-300/40 text-[9px]">·</span>
                         <span className="text-[10px] font-medium text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded-full">

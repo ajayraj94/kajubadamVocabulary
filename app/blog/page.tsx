@@ -117,7 +117,7 @@ export default function BlogPage() {
                                 href={`/blog/${post.slug}`}
                                 className="group relative bg-white rounded-2xl p-5 shadow-[0_2px_12px_-3px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_-8px_rgba(217,119,6,0.15)] transition-all duration-300 flex flex-col min-h-[200px] border border-transparent hover:border-amber-200/40"
                             >
-                                {/* Top row: serial number + date + reading time */}
+                                {/* Top row: serial number + reading time */}
                                 <div className="flex items-center justify-between mb-3">
                                     <div className="flex items-center gap-2">
                                         {post.serialNumber && (
@@ -125,13 +125,6 @@ export default function BlogPage() {
                                                 {post.serialNumber}
                                             </span>
                                         )}
-                                        <span className="text-[12px] font-bold text-[#d97706] tracking-tight">
-                                            {new Date(post.date).toLocaleDateString("en-IN", {
-                                                year: "numeric",
-                                                month: "short",
-                                                day: "numeric",
-                                            })}
-                                        </span>
                                     </div>
                                     <span className="text-[9px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">
                                         {post.readingTime}
