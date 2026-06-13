@@ -8,6 +8,7 @@ import { usePurchaseAccess } from "@/hooks/usePurchaseAccess";
 import { FREE_SLUGS } from "@/lib/access";
 import { getProductPrice } from "@/lib/products";
 import ShareButtons from "@/components/ShareButtons";
+import BlogNav from "@/app/_components/BlogNav";
 
 interface Story {
   slug: string;
@@ -52,6 +53,13 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
     if (TABS_IDS.includes(tabParam as TabId)) {
       setActiveTab(tabParam as TabId);
       sessionStorage.setItem("activeTab", tabParam);
+      // Scroll to content section when coming from another page (e.g. /blog)
+      requestAnimationFrame(() => {
+        const contentEl = document.getElementById("content");
+        if (contentEl) {
+          contentEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
     } else if (TABS_IDS.includes(savedTab as TabId)) {
       setActiveTab(savedTab as TabId);
     }
@@ -130,8 +138,24 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
     }
   };
 
+  const handleVocabNavClick = (tab: "part1" | "part2") => {
+    setActiveTab(tab);
+    // Update URL without page reload so tab is preserved on refresh
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", tab);
+    window.history.replaceState({}, "", url.toString());
+    // Smooth scroll to the content section
+    const contentEl = document.getElementById("content");
+    if (contentEl) {
+      contentEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/40 font-sans relative">
+      {/* ── BLOG NAV — 7 toggle navigation items ── */}
+      <BlogNav onVocabClick={handleVocabNavClick} />
+
       {/* ── HEADER ── */}
       <header className="bg-white pt-3 pb-0 border-b border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         {/* Top row: Logo + Total + Auth */}
