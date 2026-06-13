@@ -231,6 +231,10 @@ export function usePurchaseAccess(): PurchaseAccess {
     setUserEmailState(null);
     setUserName(null);
     setUserAvatar(null);
+    setHasPart1(false);
+    setHasPart2(false);
+    setHasErrorDetection(false);
+    setHasSentenceImprovement(false);
   };
 
   const unlockPart1 = async (email?: string, onSuccess?: (product: string) => void) => {

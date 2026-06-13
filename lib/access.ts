@@ -234,11 +234,15 @@ export function isLoggedIn(): boolean {
   return !!localStorage.getItem(STORAGE_KEYS.userEmail);
 }
 
-/** Clear all user data on logout. */
+/** Clear all user data including purchase access on logout. */
 export function logout(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_KEYS.userEmail);
   localStorage.removeItem(STORAGE_KEYS.userName);
   localStorage.removeItem(STORAGE_KEYS.userAvatar);
-  // Do NOT clear purchases — they persist even when logged out
+  // Clear all purchase data — server is the source of truth.
+  // Purchases will be restored from Supabase on next login via syncPurchasesFromServer().
+  for (const id of PRODUCT_IDS) {
+    setAccess(id, false);
+  }
 }
