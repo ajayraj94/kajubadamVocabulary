@@ -321,7 +321,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                 </svg>
               </Link>
               <Link
-                href="#content"
+                href="/blog"
                 className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-[13px] md:text-[14px] px-6 py-3.5 rounded-full border border-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
