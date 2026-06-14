@@ -66,9 +66,9 @@ function loadAllPosts(): BlogPost[] {
             };
         })
         .sort((a, b) => {
-            // Sort by serialNumber if available, otherwise by date
+            // Sort by serialNumber descending (latest first), otherwise by date
             if (a.meta.serialNumber !== undefined && b.meta.serialNumber !== undefined) {
-                return a.meta.serialNumber - b.meta.serialNumber;
+                return b.meta.serialNumber - a.meta.serialNumber;
             }
             return b.meta.date.localeCompare(a.meta.date);
         });

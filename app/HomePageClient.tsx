@@ -29,12 +29,12 @@ interface Props {
 
 export default function HomePageClient({ part1Stories, part2Stories, dailyNews, totalErrorDetectionQuestions, errorDetectionTotalPages, totalSentenceImprovementQuestions, sentenceImprovementTotalPages }: Props) {
   const TABS = [
-    { id: 'part1', label: 'VOCAB PART 1', shortLabel: 'P1', icon: '📚', activeColor: '#1c4a8a' },
-    { id: 'part2', label: 'VOCAB PART 2', shortLabel: 'P2', icon: '📚', activeColor: '#1c4a8a' },
+    { id: 'blog', label: 'BLOG', shortLabel: 'Blog', icon: '📝', activeColor: '#1c4a8a', external: true },
     { id: 'daily', label: 'DAILY NEWS VOCAB', shortLabel: 'News', icon: '📰', activeColor: '#FF7722' },
     { id: 'error-detection', label: 'ERROR DETECTION', shortLabel: 'Error', icon: '🔍', activeColor: '#8B0000' },
     { id: 'sentence-improvement', label: 'SENTENCE IMPROVEMENT', shortLabel: 'Improve', icon: '✏️', activeColor: '#0d7a3e' },
-    { id: 'blog', label: 'BLOG', shortLabel: 'Blog', icon: '📝', activeColor: '#1c4a8a', external: true },
+    { id: 'part1', label: 'VOCAB PART 1', shortLabel: 'P1', icon: '📚', activeColor: '#1c4a8a' },
+    { id: 'part2', label: 'VOCAB PART 2', shortLabel: 'P2', icon: '📚', activeColor: '#1c4a8a' },
   ] as const;
   type TabId = typeof TABS[number]['id'];
 
@@ -444,14 +444,13 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
       </div>
 
       {/* ── TABS: Horizontal scroll on mobile, centered on desktop ── */}
-      <div id="content" className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.06)]">
+      <div id="content" className="bg-white border-b-2 border-amber-400/50 sticky top-0 z-40 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.06)]">
         <div className="max-w-[1600px] mx-auto relative">
           {/* Gradient fade edges (mobile only) to hint at scrollability */}
           <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none md:hidden"></div>
           <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none md:hidden"></div>
 
-          {/* Scrollable tab strip */}
-          <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-1.5 md:gap-2 px-4 md:px-8 md:justify-center py-2.5 md:py-2">
+          {/* Scrollable tab strip */}            <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-1.5 md:gap-2 px-4 md:px-8 md:justify-center py-2.5 md:py-2 border border-amber-400/30 rounded-xl mx-4 md:mx-8">
             {TABS.map((tab) => {
               const isActive = activeTab === tab.id;
               const isExternal = 'external' in tab && tab.external;
@@ -465,8 +464,8 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                   {/* Mobile: stacked icon + label pill */}
                   <div
                     className={`md:hidden flex flex-col items-center justify-center rounded-2xl px-3.5 py-2 min-w-[60px] transition-all duration-200 border ${isActive && !isExternal
-                      ? 'border-gray-200/80'
-                      : 'border-transparent hover:border-gray-100'
+                      ? 'border-amber-400/50'
+                      : 'border-amber-400/50 hover:border-amber-500/70'
                       }`}
                     style={{
                       backgroundColor: isActive && !isExternal ? `${tab.activeColor}0d` : 'transparent',
@@ -495,8 +494,8 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
                   {/* Desktop: inline icon + label */}
                   <div
                     className={`hidden md:inline-flex items-center gap-2 font-bold tracking-wide transition-all duration-200 rounded-xl px-4 py-2 border ${isActive && !isExternal
-                      ? 'shadow-sm'
-                      : 'text-gray-400 border-transparent hover:text-gray-700 hover:border-gray-200 hover:bg-gray-50/80'
+                      ? 'shadow-sm border-amber-400/50'
+                      : 'text-gray-500 border-amber-400/50 hover:text-gray-800 hover:border-amber-500/70 hover:bg-amber-50/60'
                       }`}
                     style={{
                       color: isActive && !isExternal ? tab.activeColor : undefined,
@@ -517,10 +516,10 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
       {/* ── MAIN CONTENT (reduced padding) ── */}
       <main className="max-w-[1600px] mx-auto px-4 lg:px-8 py-1">
         {/* ── SSC ERROR DETECTION TAB ── */}
-        {activeTab === "error-detection" ? (
-          <div className="py-1">
+        {activeTab === "error-detection" ? (            <div className="py-1">
             <div className="mb-2">
               <div className="flex items-center gap-3 mb-1">
+                <span className="inline-flex items-center justify-center w-7 h-7 bg-white text-amber-700 text-[12px] font-bold rounded-lg border-2 border-amber-500 shadow-sm">3</span>
                 <div className="bg-[#8B0000] text-white w-8 h-8 rounded-xl flex items-center justify-center text-base font-black shadow-md">ED</div>
                 <div>
                   <h2 className="text-[18px] font-extrabold text-gray-800 tracking-tight leading-none">SSC Error Detection 716 PYQ</h2>
@@ -583,6 +582,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
           <div className="py-1">
             <div className="mb-2">
               <div className="flex items-center gap-3 mb-1">
+                <span className="inline-flex items-center justify-center w-7 h-7 bg-white text-amber-700 text-[12px] font-bold rounded-lg border-2 border-amber-500 shadow-sm">4</span>
                 <div className="bg-[#0d7a3e] text-white w-8 h-8 rounded-xl flex items-center justify-center text-base font-black shadow-md">SI</div>
                 <div>
                   <h2 className="text-[18px] font-extrabold text-gray-800 tracking-tight leading-none">SSC Sentence Improvement 790 PYQ</h2>
@@ -648,7 +648,10 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
             {/* Stories title */}
             <div className="mb-0.5 pl-1 flex flex-col md:flex-row md:items-end justify-between gap-0.5">
               <div>
-                <h2 className="text-[18px] font-extrabold text-gray-800 tracking-tight leading-none mb-0.5">{activeTab === "part1" ? "Vocab Part 1" : "Vocab Part 2"}</h2>
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="inline-flex items-center justify-center w-7 h-7 bg-white text-amber-700 text-[12px] font-bold rounded-lg border-2 border-amber-500 shadow-sm">{activeTab === "part1" ? "5" : "6"}</span>
+                  <h2 className="text-[18px] font-extrabold text-gray-800 tracking-tight leading-none">{activeTab === "part1" ? "Vocab Part 1" : "Vocab Part 2"}</h2>
+                </div>
                 <p className="text-[#1c4a8a] text-[13px] font-semibold bg-[#1c4a8a]/5 inline-block px-2 py-0.5 rounded-md border border-[#1c4a8a]/10">{activeMasteredCount} / {activeStories.length} Stories Mastered</p>
               </div>
               <div className="text-right text-[12px] text-gray-400 font-medium">

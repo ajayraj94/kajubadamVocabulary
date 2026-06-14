@@ -37,7 +37,7 @@ export default function BlogPage() {
     const posts = getAllBlogPosts();
 
     return (
-        <div className="min-h-screen bg-gray-50/40 font-sans">
+        <div className="min-h-screen bg-amber-50/60 font-sans">
             <BlogNav />
 
             {/* ═══ HERO HEADER — Daily News Tab Style ═══ */}
@@ -115,13 +115,13 @@ export default function BlogPage() {
                             <Link
                                 key={post.slug}
                                 href={`/blog/${post.slug}`}
-                                className="group relative bg-white rounded-2xl p-5 shadow-[0_2px_12px_-3px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_-8px_rgba(217,119,6,0.15)] transition-all duration-300 flex flex-col min-h-[200px] border border-transparent hover:border-amber-200/40"
+                                className="group relative bg-white rounded-2xl p-5 shadow-[0_4px_20px_-6px_rgba(0,0,0,0.18)] hover:shadow-[0_8px_30px_-8px_rgba(217,119,6,0.25)] transition-all duration-300 flex flex-col min-h-[200px] border border-amber-200/50 hover:border-amber-400/70"
                             >
                                 {/* Top row: serial number + reading time */}
                                 <div className="flex items-center justify-between mb-3">
                                     <div className="flex items-center gap-2">
                                         {post.serialNumber && (
-                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-gradient-to-br from-amber-500 to-orange-500 text-white text-[10px] font-black rounded-lg shadow-sm">
+                                            <span className="inline-flex items-center justify-center w-7 h-7 bg-white text-amber-700 text-[12px] font-bold rounded-lg border-2 border-amber-500 shadow-sm">
                                                 {post.serialNumber}
                                             </span>
                                         )}
