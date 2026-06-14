@@ -29,8 +29,8 @@ interface Props {
 
 export default function HomePageClient({ part1Stories, part2Stories, dailyNews, totalErrorDetectionQuestions, errorDetectionTotalPages, totalSentenceImprovementQuestions, sentenceImprovementTotalPages }: Props) {
   const TABS = [
-    { id: 'blog', label: 'BLOG', shortLabel: 'Blog', icon: '📝', activeColor: '#1c4a8a', external: true },
     { id: 'daily', label: 'DAILY NEWS VOCAB', shortLabel: 'News', icon: '📰', activeColor: '#FF7722' },
+    { id: 'blog', label: 'BLOG', shortLabel: 'Blog', icon: '📝', activeColor: '#1c4a8a', external: true },
     { id: 'error-detection', label: 'ERROR DETECTION', shortLabel: 'Error', icon: '🔍', activeColor: '#8B0000' },
     { id: 'sentence-improvement', label: 'SENTENCE IMPROVEMENT', shortLabel: 'Improve', icon: '✏️', activeColor: '#0d7a3e' },
     { id: 'part1', label: 'VOCAB PART 1', shortLabel: 'P1', icon: '📚', activeColor: '#1c4a8a' },
@@ -450,7 +450,7 @@ export default function HomePageClient({ part1Stories, part2Stories, dailyNews, 
           <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none md:hidden"></div>
           <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none md:hidden"></div>
 
-          {/* Scrollable tab strip */}            <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-1.5 md:gap-2 px-4 md:px-8 md:justify-center py-2.5 md:py-2 border border-amber-400/30 rounded-xl mx-4 md:mx-8">
+          {/* Scrollable tab strip */}            <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-1.5 md:gap-2 px-4 md:px-8 md:justify-center py-2.5 md:py-2 mx-4 md:mx-8">
             {TABS.map((tab) => {
               const isActive = activeTab === tab.id;
               const isExternal = 'external' in tab && tab.external;

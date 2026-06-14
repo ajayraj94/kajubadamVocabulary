@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const NAV_ITEMS = [
     { href: "/", label: "Home", icon: "🏠", highlight: true },
-    { href: "/blog", label: "Blog", icon: "📝", highlight: false },
     { href: "/daily-news", label: "Daily News", icon: "📰", highlight: false },
+    { href: "/blog", label: "Blog", icon: "📝", highlight: false },
     { href: "/error-detection/1", label: "Error Detection", icon: "🔍", highlight: false },
     { href: "/sentence-improvement/1", label: "Sentence Improve", icon: "✏️", highlight: false },
     { href: "/?tab=part1", label: "Vocab Part 1", icon: "📚", highlight: false, vocab: "part1" as const },
