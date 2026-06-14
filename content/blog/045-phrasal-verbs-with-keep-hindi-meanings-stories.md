@@ -15,7 +15,7 @@ categorySerial: 45
 
 # Phrasal Verbs with 'Keep' with Hindi Meanings, Stories & Memory Tricks
 
-In competitive examinations like **SSC CGL Tier 2, SBI PO, IBPS PO, and UPSC CDS**, phrasal verbs are a frequent source of tricky questions. Among these, the verb family constructed around **"Keep"** is highly targeted by examiners. Phrasal verbs like *keep up*, *keep off*, *keep on*, and *keep back* may look simple, but their contextual meanings and grammar rules can be highly deceptive [1]. 
+In competitive examinations like **SSC CGL Tier 2, SBI PO, IBPS PO, and UPSC CDS**, phrasal verbs are a frequent source of tricky questions. Among these, the verb family constructed around **"Keep"** is highly targeted by examiners. Phrasal verbs like *keep up*, *keep off*, *keep on*, and *keep back* may look simple, but their contextual meanings and grammar rules can be highly deceptive . 
 
 A slight change in the preposition can alter a sentence's meaning entirely—transforming it from maintaining a fast pace (*keep up with*) to avoiding stepping on a surface (*keep off*) or concealing vital facts (*keep back*). To help you master these nuances, the academic editorial team at **kajubadamvocabulary.in** has designed this comprehensive, exam-oriented study guide using our highly effective **Bilingual Story Method**.
 
@@ -69,13 +69,13 @@ He knew he must never keep back any critical information about poachers from the
 
 ## 📝 The Core Vocabulary Masterclass — मुख्य शब्दकोश तालिका
 
-This masterclass table details the grammatical behaviors, precise meanings, and exam-style examples of the eight key phrasal verbs with **"Keep"** [1].
+This masterclass table details the grammatical behaviors, precise meanings, and exam-style examples of the eight key phrasal verbs with **"Keep"** .
 
 | Phrasal Verb | English Meaning | Hindi Meaning | Exam-Style Example | Grammar Trap / Key Usage |
 | :--- | :--- | :--- | :--- | :--- |
 | **Keep up** | To maintain a high standard, speed, state, or level of performance. | किसी स्तर, गति, या स्थिति को बनाए रखना। | It is difficult to **keep up** this high level of concentration during a three-hour exam. | Separable transitive verb. If using a pronoun, place it in the middle (e.g., keep it up). |
-| **Keep up with** | To move or progress at the same rate as someone; stay informed [1]. | समान गति से आगे बढ़ना या कदम मिलाकर चलना [1]; संपर्क में रहना। | In this fast-paced digital era, professionals must work hard to **keep up with** technology. | Inseparable three-word phrasal verb. Requires both 'up' and 'with' before the object. |
-| **Keep off** | To stay away from; or prevent from stepping on a specific area [1]. | किसी स्थान से दूर रहना [1] या उस पर पैर न रखना। | The security guard instructed the tourists to **keep off** the newly laid grass. | Often used in imperative signs on public property. |
+| **Keep up with** | To move or progress at the same rate as someone; stay informed . | समान गति से आगे बढ़ना या कदम मिलाकर चलना ; संपर्क में रहना। | In this fast-paced digital era, professionals must work hard to **keep up with** technology. | Inseparable three-word phrasal verb. Requires both 'up' and 'with' before the object. |
+| **Keep off** | To stay away from; or prevent from stepping on a specific area . | किसी स्थान से दूर रहना  या उस पर पैर न रखना। | The security guard instructed the tourists to **keep off** the newly laid grass. | Often used in imperative signs on public property. |
 | **Keep on** | To continue doing something; to persist with an action. | किसी कार्य को लगातार जारी रखना। | Despite facing multiple failures, the scientist decided to **keep on** conducting the experiments. | Must be followed directly by a gerund (V-ing form) when indicating action. |
 | **Keep from** | To prevent or restrain oneself or someone else from doing something. | किसी कार्य को करने से स्वयं को रोकना या दूसरों को बचाना। | He tried his best to **keep from** laughing during the serious official meeting. | Requires the preposition 'from' followed strictly by a gerund. |
 | **Keep back** | To withhold or conceal information; or to maintain a safe physical distance. | जानकारी छिपाना; या सुरक्षित दूरी बनाए रखना। | The suspect tried to **keep back** key details of the robbery during his interrogation. | Separable when meaning to conceal information. Pronoun goes in the middle. |
@@ -287,7 +287,7 @@ Understanding where to place direct objects and pronouns with **"keep back"** is
 2. **Keep out:** इसका प्रयोग किसी त्रिविमीय स्थान (3D space) जैसे कमरा, इमारत, बाड़ से घिरे क्षेत्र या खतरनाक क्षेत्र में प्रवेश करने से रोकने के लिए किया जाता है (जैसे: *Danger! Keep out*).
 
 ### Q2. "Keep up" और "Keep up with" में क्या अंतर है?
-**Answer:** इन दोनों में मुख्य अंतर इस प्रकार है [1]:
+**Answer:** इन दोनों में मुख्य अंतर इस प्रकार है :
 *   **Keep up:** इसका अर्थ होता है किसी स्तर, गुणवत्ता या गति को बिना गिरे लगातार बनाए रखना (जैसे: *Keep up the good work*).
 *   **Keep up with:** इसका अर्थ होता है किसी अन्य व्यक्ति या बदलती हुई स्थिति (जैसे तकनीक या फैशन) के साथ कदम मिलाकर चलना ताकि आप उनसे पीछे न छूटें (जैसे: *It is hard to keep up with the latest fashion*).
 

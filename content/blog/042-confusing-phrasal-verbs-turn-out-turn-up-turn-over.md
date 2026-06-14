@@ -15,7 +15,7 @@ categorySerial: 42
 
 # Confusing Phrasal Verbs: Turn out vs Turn up vs Turn over with Sentences & Hindi Meanings
 
-Among the vast array of phrasal verbs in the English language, those originating from the base verb **"Turn"** present unique challenges [1]. In particular, **"Turn out," "Turn up,"** and **"Turn over"** are highly confusing because each one carries multiple, distinct meanings depending on the context [1]. A student preparing for competitive examinations like **SSC CGL, SBI PO, IBPS PO, or UPSC CDS** cannot afford to guess their meanings blindly, as examiners frequently use these subtle shifts to design tricky close tests and error-detection questions.
+Among the vast array of phrasal verbs in the English language, those originating from the base verb **"Turn"** present unique challenges . In particular, **"Turn out," "Turn up,"** and **"Turn over"** are highly confusing because each one carries multiple, distinct meanings depending on the context . A student preparing for competitive examinations like **SSC CGL, SBI PO, IBPS PO, or UPSC CDS** cannot afford to guess their meanings blindly, as examiners frequently use these subtle shifts to design tricky close tests and error-detection questions.
 
 For instance, does a lost object *turn out* or *turn up*? Does a business *turn up* a profit or *turn over* millions? To build permanent semantic clarity, this guide by the academic team at **kajubadamvocabulary.in** uses a contextual narrative, followed by a comparative masterclass and ten advanced mock questions to help you achieve absolute precision in your examinations.
 
@@ -69,13 +69,13 @@ Fortunately, the key witness, who had been missing for weeks, finally turned up 
 
 ## 📝 The Core Vocabulary Masterclass — मुख्य शब्दकोश तालिका
 
-To help you distinguish these confusing forms, we have structured their primary meanings, syntactic behaviors, and common exam traps below [1].
+To help you distinguish these confusing forms, we have structured their primary meanings, syntactic behaviors, and common exam traps below .
 
 | Phrasal Verb | English Meaning | Hindi Meaning | Exam-Style Example | Grammar Trap / Key Usage |
 | :--- | :--- | :--- | :--- | :--- |
 | **Turn out (Result)** | To prove to be; to have a particular result in the end. | अंततः साबित होना या परिणाम निकलना। | The initial business plan **turned out** to be highly profitable despite the risks. | Intransitive; does not take a passive voice form when meaning to prove to be. |
 | **Turn out (Gather)** | To assemble or gather in public for an event or rally. | किसी कार्यक्रम या रैली के लिए भारी संख्या में एकत्र होना। | Thousands of supporters **turned out** in the rain to hear the leader speak. | Intransitive; often followed by adverbial or prepositional phrases. |
-| **Turn up (Arrive)** | To arrive or appear, especially unexpectedly or after a delay [1]. | अप्रत्याशित रूप से पहुँचना या उपस्थित होना। | We waited for over two hours, but the guest speaker did not **turn up**. | Intransitive; cannot be used with a direct object in this sense. |
+| **Turn up (Arrive)** | To arrive or appear, especially unexpectedly or after a delay . | अप्रत्याशित रूप से पहुँचना या उपस्थित होना। | We waited for over two hours, but the guest speaker did not **turn up**. | Intransitive; cannot be used with a direct object in this sense. |
 | **Turn up (Discover)** | To be found, especially after being lost or searched for. | खोई हुई या छिपी हुई वस्तु का मिल जाना। | The missing gold ring finally **turned up** under the sofa during spring cleaning. | Intransitive; used for objects that were previously lost or misplaced. |
 | **Turn over (Transfer)** | To legally transfer control, responsibility, or charge to another. | नियंत्रण, प्रभार या जिम्मेदारी किसी अन्य को सौंपना। | The military commander was ordered to **turn over** the checkpost to local police. | Transitive and highly separable (e.g., turn it over to him). |
 | **Turn over (Revenue)** | To generate a specific amount of sales or financial transaction. | विशिष्ट सीमा तक व्यापार या राजस्व उत्पन्न करना। | The small startup is projecting to **turn over** five million dollars next year. | Do not confuse the phrasal verb with the single-word noun *turnover*. |

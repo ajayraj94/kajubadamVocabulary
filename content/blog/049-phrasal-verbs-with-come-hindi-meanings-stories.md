@@ -15,7 +15,7 @@ categorySerial: 49
 
 # Phrasal Verbs with 'Come' with Hindi Meanings, Stories & Memory Tricks
 
-In the English language section of competitive examinations like **SSC CGL Tier 2, SBI PO, IBPS PO, and UPSC CDS**, phrasal verbs are a frequent source of tricky questions. Among these, the verb family constructed around **"Come"** is heavily targeted by examiners. Phrasal verbs like *come across*, *come by*, *come up with*, and *come down with* may look simple, but their contextual meanings and grammatical behaviors can be highly deceptive [1]. 
+In the English language section of competitive examinations like **SSC CGL Tier 2, SBI PO, IBPS PO, and UPSC CDS**, phrasal verbs are a frequent source of tricky questions. Among these, the verb family constructed around **"Come"** is heavily targeted by examiners. Phrasal verbs like *come across*, *come by*, *come up with*, and *come down with* may look simple, but their contextual meanings and grammatical behaviors can be highly deceptive . 
 
 A slight change in the preposition can alter a sentence's meaning entirely—transforming it from finding something by chance (*come across*) to obtaining something rare (*come by*), producing a new idea (*come up with*), or falling ill with a sickness (*come down with*). To help you master these nuances, the academic editorial team at **kajubadamvocabulary.in** has designed this comprehensive, exam-oriented study guide using our highly effective **Bilingual Story Method**.
 
@@ -69,7 +69,7 @@ Despite his temporary illness, the detailed report of his grand discovery would 
 
 ## 📝 The Core Vocabulary Masterclass — मुख्य शब्दकोश तालिका
 
-This comparative table highlights the grammatical behaviors, precise meanings, and exam-style examples of the eight key phrasal verbs with **"Come"** [1].
+This comparative table highlights the grammatical behaviors, precise meanings, and exam-style examples of the eight key phrasal verbs with **"Come"** .
 
 | Phrasal Verb | English Meaning | Hindi Meaning | Exam-Style Example | Grammar Trap / Key Usage |
 | :--- | :--- | :--- | :--- | :--- |

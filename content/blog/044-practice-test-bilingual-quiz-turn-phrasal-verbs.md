@@ -15,7 +15,7 @@ categorySerial: 44
 
 # Practice Test and Bilingual Quiz on 'Turn' Phrasal Verbs
 
-To secure a high percentile in competitive English sections—whether in **SSC CGL, Bank PO, NDA, or CDS**—active testing is crucial. Passive reading of phrasal verbs can lead to confusion under exam pressure, where a single incorrect preposition can completely change a sentence's meaning [1]. 
+To secure a high percentile in competitive English sections—whether in **SSC CGL, Bank PO, NDA, or CDS**—active testing is crucial. Passive reading of phrasal verbs can lead to confusion under exam pressure, where a single incorrect preposition can completely change a sentence's meaning . 
 
 To build precise retention, the academic editorial team at **kajubadamvocabulary.in** has compiled this advanced practice test and interactive bilingual quiz. We begin with a cohesive, real-world narrative using our **Bilingual Story Method** to establish visual memory hooks. Following this is a structured dictionary table, two deep grammar spotlights on tricky patterns, and ten advanced multiple-choice questions with thorough bilingual explanations.
 
@@ -69,14 +69,14 @@ By the end of the evening, Pooja managed to turn over the commercial distributio
 
 ## 📝 The Core Vocabulary Masterclass — मुख्य शब्दकोश तालिका
 
-This masterclass table details the grammatical behaviors, definitions, and examples of the phrasal verbs featured in the practice test [1].
+This masterclass table details the grammatical behaviors, definitions, and examples of the phrasal verbs featured in the practice test .
 
 | Phrasal Verb | English Meaning | Hindi Meaning | Exam-Style Example | Grammar Trap / Key Usage |
 | :--- | :--- | :--- | :--- | :--- |
 | **Turn on** | To activate an appliance; or to suddenly attack someone; or to excite. | चालू करना; अचानक हमला करना; या उत्तेजित/आकर्षित करना। | The automated security system will **turn on** exactly at midnight. | Highly separable for devices, but inseparable when meaning to attack. |
 | **Turn off** | To deactivate a device; or to cause someone to lose interest/feel disgusted. | बंद करना; या किसी को निराश/अरुचि पैदा करना। | The raw smell of the chemicals **turned off** many potential buyers. | Separable. Pronoun objects must be placed in the middle. |
-| **Turn down** | To reject or refuse an offer [1]; or to reduce the volume or intensity. | अस्वीकार करना [1]; या आवाज़/तीव्रता कम करना। | You should not **turn down** such a lucrative job offer from a reputed firm. | Separable. Do not write "turn down it"; write "turn it down". |
-| **Turn up** | To arrive or appear [1]; or to find by chance; or to increase volume. | उपस्थित होना [1]; अचानक मिल जाना; या आवाज़ बढ़ाना। | We were about to leave when she finally **turned up** with the files. | Intransitive when meaning to arrive. No direct object allowed. |
+| **Turn down** | To reject or refuse an offer ; or to reduce the volume or intensity. | अस्वीकार करना ; या आवाज़/तीव्रता कम करना। | You should not **turn down** such a lucrative job offer from a reputed firm. | Separable. Do not write "turn down it"; write "turn it down". |
+| **Turn up** | To arrive or appear ; or to find by chance; or to increase volume. | उपस्थित होना ; अचानक मिल जाना; या आवाज़ बढ़ाना। | We were about to leave when she finally **turned up** with the files. | Intransitive when meaning to arrive. No direct object allowed. |
 | **Turn out** | To prove to be; or to produce goods; or to extinguish a light. | अंततः साबित होना; उत्पादन करना; या लाइट बंद करना। | The weather **turned out** to be much warmer than we had anticipated. | Intransitive when meaning to prove to be; passive voice is forbidden. |
 | **Turn over** | To hand over control; or to generate revenue; or to ponder deeply. | नियंत्रण सौंपना; राजस्व उत्पन्न करना; या गहराई से विचार करना। | The committee spent days **turning over** the proposal in their minds. | Highly polysemous. Carefully evaluate context for the "ponder" meaning. |
 | **Turn into** | To transform or change from one state to another. | एक अवस्था से दूसरी अवस्था में परिवर्तित होना। | Over time, her passion for photography **turned into** a full-time career. | Inseparable transitive; requires an object immediately after 'into'. |
@@ -169,8 +169,8 @@ When coordinating multiple actions in a sentence involving **"turn to,"** mainta
 
 **Correct Answer - B**
 **Detailed Explanation:**
-- **English:** The first blank requires a verb meaning to reduce the volume of the loud background music, which is "turn down" [1]. The second blank requires a verb indicating that he accidentally increased the volume instead, which is "turned up" [1]. This makes option (B) the most logical and grammatically correct combination.
-- **Hindi:** पहले रिक्त स्थान में बहुत तेज़ पृष्ठभूमि संगीत की आवाज़ को "धीमा करने" के अर्थ में "turn down" की आवश्यकता है [1]। दूसरे रिक्त स्थान में गलती से आवाज़ को "बढ़ाने" के अर्थ में "turned up" की आवश्यकता है [1]। अतः विकल्प (B) तार्किक और व्याकरणिक दोनों रूप से पूरी तरह उपयुक्त संयोजन है।
+- **English:** The first blank requires a verb meaning to reduce the volume of the loud background music, which is "turn down" . The second blank requires a verb indicating that he accidentally increased the volume instead, which is "turned up" . This makes option (B) the most logical and grammatically correct combination.
+- **Hindi:** पहले रिक्त स्थान में बहुत तेज़ पृष्ठभूमि संगीत की आवाज़ को "धीमा करने" के अर्थ में "turn down" की आवश्यकता है । दूसरे रिक्त स्थान में गलती से आवाज़ को "बढ़ाने" के अर्थ में "turned up" की आवश्यकता है । अतः विकल्प (B) तार्किक और व्याकरणिक दोनों रूप से पूरी तरह उपयुक्त संयोजन है।
 
 ---
 
@@ -203,8 +203,8 @@ When coordinating multiple actions in a sentence involving **"turn to,"** mainta
 
 **Correct Answer - B**
 **Detailed Explanation:**
-- **English:** The sentence describes visitors being refused entry at the gates because the venue was at maximum capacity. The correct phrasal verb for refusing entry, admittance, or passage to someone is "turn away." "Turn down" is used for rejecting applications or offers, not physical entry [1].
-- **Hindi:** यहाँ प्रदर्शनी स्थल के पूरी तरह भर जाने के कारण सुरक्षाकर्मियों द्वारा उत्सुक आगंतुकों को गेट से ही "वापस भेजने या प्रवेश देने से मना करने" का संदर्भ है। किसी को शारीरिक रूप से प्रवेश देने से मना करने के अर्थ में सही फ्रेज़ल वर्ब **"turn away"** होता है। "Turn down" का प्रयोग प्रस्तावों को ठुकराने के लिए किया जाता है [1]।
+- **English:** The sentence describes visitors being refused entry at the gates because the venue was at maximum capacity. The correct phrasal verb for refusing entry, admittance, or passage to someone is "turn away." "Turn down" is used for rejecting applications or offers, not physical entry .
+- **Hindi:** यहाँ प्रदर्शनी स्थल के पूरी तरह भर जाने के कारण सुरक्षाकर्मियों द्वारा उत्सुक आगंतुकों को गेट से ही "वापस भेजने या प्रवेश देने से मना करने" का संदर्भ है। किसी को शारीरिक रूप से प्रवेश देने से मना करने के अर्थ में सही फ्रेज़ल वर्ब **"turn away"** होता है। "Turn down" का प्रयोग प्रस्तावों को ठुकराने के लिए किया जाता है ।
 
 ---
 

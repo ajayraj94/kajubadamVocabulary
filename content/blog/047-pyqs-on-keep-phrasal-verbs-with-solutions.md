@@ -15,7 +15,7 @@ categorySerial: 47
 
 # Previous Year Questions (PYQs) on 'Keep' Phrasal Verbs with Solutions
 
-For candidates preparing for highly competitive exams like **SSC CGL, SBI PO, IBPS PO, UPSC CDS, and NDA**, vocabulary-based questions can often determine the final merit list. Among these, phrasal verbs constructed with the base verb **"Keep"** are frequently tested [1]. Because these verbs appear similar, examiners often use them to create challenging error-spotting, sentence improvement, and cloze test questions [1].
+For candidates preparing for highly competitive exams like **SSC CGL, SBI PO, IBPS PO, UPSC CDS, and NDA**, vocabulary-based questions can often determine the final merit list. Among these, phrasal verbs constructed with the base verb **"Keep"** are frequently tested . Because these verbs appear similar, examiners often use them to create challenging error-spotting, sentence improvement, and cloze test questions .
 
 For example, do you know the exact difference between *keep up with* and *keep pace with*, or when to follow *keep on* with a gerund? To help you master these distinctions, the academic team at **kajubadamvocabulary.in** has compiled actual and simulated previous year questions. We have paired them with our standard **Bilingual Story Method** and detailed grammatical breakdowns to help you secure maximum marks in your examinations.
 
@@ -69,13 +69,13 @@ Her breakthrough article eventually forced the regulatory board to keep down the
 
 ## 📝 The Core Vocabulary Masterclass — मुख्य शब्दकोश तालिका
 
-This table breaks down the syntax, meanings, and common exam traps of the eight key phrasal verbs with **"Keep"** tested in recent exams [1].
+This table breaks down the syntax, meanings, and common exam traps of the eight key phrasal verbs with **"Keep"** tested in recent exams .
 
 | Phrasal Verb | English Meaning | Hindi Meaning | Exam-Style Example | Grammar Trap / Key Usage |
 | :--- | :--- | :--- | :--- | :--- |
 | **Keep up** | To maintain a high standard, quality, or level of performance. | किसी स्तर, गुणवत्ता या गति को बनाए रखना। | The academy is determined to **keep up** its legacy of producing top officers. | Separable; pronoun must go in the middle (e.g., keep it up). |
-| **Keep up with** | To move or progress at the same rate; stay informed about [1]. | समान गति से आगे बढ़ना या कदम मिलाकर चलना [1]; संपर्क में रहना। | In this competitive market, we must work hard to **keep up with** our rivals. | Three-word inseparable phrasal verb. Do not drop 'with'. |
-| **Keep off** | To stay away from; avoid stepping on a physical area [1]. | किसी स्थान से दूर रहना [1] या उस पर पैर न रखना। | The forest department put up signs asking tourists to **keep off** the cliffs. | Often tested in the context of maintaining safety distances. |
+| **Keep up with** | To move or progress at the same rate; stay informed about . | समान गति से आगे बढ़ना या कदम मिलाकर चलना ; संपर्क में रहना। | In this competitive market, we must work hard to **keep up with** our rivals. | Three-word inseparable phrasal verb. Do not drop 'with'. |
+| **Keep off** | To stay away from; avoid stepping on a physical area . | किसी स्थान से दूर रहना  या उस पर पैर न रखना। | The forest department put up signs asking tourists to **keep off** the cliffs. | Often tested in the context of maintaining safety distances. |
 | **Keep on** | To continue doing something; to persist with an action. | किसी कार्य को लगातार जारी रखना। | She decided to **keep on** writing despite receiving multiple rejections. | Must be followed directly by a gerund (V-ing form). |
 | **Keep back** | To withhold or conceal information; or maintain distance. | जानकारी छिपाना; या सुरक्षित दूरी बनाए रखना। | The government was accused of trying to **keep back** the climate report. | Separable when meaning to conceal information. |
 | **Keep from** | To prevent or restrain oneself or another from doing something. | किसी कार्य को करने से स्वयं को रोकना या दूसरों को बचाना। | Regular maintenance will **keep** the machinery **from** breaking down. | Requires the preposition 'from' followed strictly by a gerund. |
@@ -89,9 +89,9 @@ This table breaks down the syntax, meanings, and common exam traps of the eight 
 ### ⚡ Spotlight 1: Prepositional Collisions in "Keep up with" vs. "Keep pace with" (Redundancy Trap)
 A highly repeated error pattern in competitive exams is the redundant mixing of **"keep up with"** and **"keep pace with."**
 
-*   **The Rule:** Both "keep up with" and "keep pace with" are grammatically correct and carry the same meaning: to move, progress, or stay updated at the same rate as someone or something [1]. However, combining them into "keep up pace with" or "keep pace up with" is incorrect.
+*   **The Rule:** Both "keep up with" and "keep pace with" are grammatically correct and carry the same meaning: to move, progress, or stay updated at the same rate as someone or something . However, combining them into "keep up pace with" or "keep pace up with" is incorrect.
 *   ❌ **Incorrect:** The young runner struggled to *keep up pace with* the international athletes.
-*   ✅ **Correct:** The young runner struggled to **keep up with** the international athletes [1].
+*   ✅ **Correct:** The young runner struggled to **keep up with** the international athletes .
 *   ✅ **Correct:** The young runner struggled to **keep pace with** the international athletes.
 
 ### ⚡ Spotlight 2: Transitive Splitting of "Keep back" with Pronouns
@@ -117,8 +117,8 @@ Understanding where to place direct objects and pronouns with **"keep back"** is
 
 **Correct Answer - C**
 **Detailed Explanation:**
-- **English:** The error is in part (III). As explained in Grammar Spotlight 1, blending "keep up with" and "keep pace with" into "keep up pace with" is grammatically redundant. The sentence should correctly use either **"keep up with"** or **"keep pace with"** to express staying at the same level as the online giants [1].
-- **Hindi:** त्रुटि वाक्य के भाग (III) में है। जैसा कि व्याकरण स्पॉटलाइट 1 में स्पष्ट किया गया है, "keep up with" और "keep pace with" को मिलाकर "keep up pace with" लिखना एक गंभीर पुनरुक्ति दोष (redundancy) है। इसे सही करने के लिए या तो केवल **"keep up with"** का प्रयोग करें या **"keep pace with"** का [1]।
+- **English:** The error is in part (III). As explained in Grammar Spotlight 1, blending "keep up with" and "keep pace with" into "keep up pace with" is grammatically redundant. The sentence should correctly use either **"keep up with"** or **"keep pace with"** to express staying at the same level as the online giants .
+- **Hindi:** त्रुटि वाक्य के भाग (III) में है। जैसा कि व्याकरण स्पॉटलाइट 1 में स्पष्ट किया गया है, "keep up with" और "keep pace with" को मिलाकर "keep up pace with" लिखना एक गंभीर पुनरुक्ति दोष (redundancy) है। इसे सही करने के लिए या तो केवल **"keep up with"** का प्रयोग करें या **"keep pace with"** का ।
 
 ---
 
@@ -134,8 +134,8 @@ Understanding where to place direct objects and pronouns with **"keep back"** is
 
 **Correct Answer - B**
 **Detailed Explanation:**
-- **English:** The first blank requires a phrasal verb meaning to withhold or conceal laboratory reports, which is "keep back." The second blank requires a phrasal verb indicating the prosecution staying updated or keeping pace with the new evidence, which is "keep up with" [1]. Therefore, option (B) is the only logically and grammatically correct combination.
-- **Hindi:** पहले रिक्त स्थान में प्रयोगशाला रिपोर्टों को "छिपाने या रोकने" के अर्थ में "keep back" की आवश्यकता है। दूसरे रिक्त स्थान में नए साक्ष्यों के तीव्र विकास के साथ "तालमेल बनाए रखने/अपडेट रहने" के अर्थ में "keep up with" की आवश्यकता है [1]। अतः विकल्प (B) व्याकरण और संदर्भ दोनों की दृष्टि से सबसे उपयुक्त है।
+- **English:** The first blank requires a phrasal verb meaning to withhold or conceal laboratory reports, which is "keep back." The second blank requires a phrasal verb indicating the prosecution staying updated or keeping pace with the new evidence, which is "keep up with" . Therefore, option (B) is the only logically and grammatically correct combination.
+- **Hindi:** पहले रिक्त स्थान में प्रयोगशाला रिपोर्टों को "छिपाने या रोकने" के अर्थ में "keep back" की आवश्यकता है। दूसरे रिक्त स्थान में नए साक्ष्यों के तीव्र विकास के साथ "तालमेल बनाए रखने/अपडेट रहने" के अर्थ में "keep up with" की आवश्यकता है । अतः विकल्प (B) व्याकरण और संदर्भ दोनों की दृष्टि से सबसे उपयुक्त है।
 
 ---
 
@@ -151,8 +151,8 @@ Understanding where to place direct objects and pronouns with **"keep back"** is
 
 **Correct Answer - A**
 **Detailed Explanation:**
-- **English:** The rescue team is being advised to adhere strictly to the directions on the map. The phrasal verb "keep to" means to adhere strictly to a path, rule, promise, or plan. "Keep off" means to stay away from a physical area, which is incorrect in this context [1]. Hence, option (A) is the correct replacement.
-- **Hindi:** यहाँ बचाव दल (rescue team) को गुफा में खोने से बचने के लिए मूल मानचित्र के निर्देशों का "दृढ़ता से पालन करने" का निर्देश दिया जा रहा है। किसी निर्धारित मार्ग, नियम या योजना का पालन करने के लिए सही फ्रेज़ल वर्ब **"keep to"** होता है। "Keep off" का अर्थ भौतिक स्थान से दूर रहना होता है, इसलिए विकल्प (A) सही सुधार है [1]।
+- **English:** The rescue team is being advised to adhere strictly to the directions on the map. The phrasal verb "keep to" means to adhere strictly to a path, rule, promise, or plan. "Keep off" means to stay away from a physical area, which is incorrect in this context . Hence, option (A) is the correct replacement.
+- **Hindi:** यहाँ बचाव दल (rescue team) को गुफा में खोने से बचने के लिए मूल मानचित्र के निर्देशों का "दृढ़ता से पालन करने" का निर्देश दिया जा रहा है। किसी निर्धारित मार्ग, नियम या योजना का पालन करने के लिए सही फ्रेज़ल वर्ब **"keep to"** होता है। "Keep off" का अर्थ भौतिक स्थान से दूर रहना होता है, इसलिए विकल्प (A) सही सुधार है ।
 
 ---
 
@@ -236,8 +236,8 @@ Understanding where to place direct objects and pronouns with **"keep back"** is
 
 **Correct Answer - B**
 **Detailed Explanation:**
-- **English:** The researchers are being advised to stay away from the unstable crater edge. The phrasal verb "keep off" means to stay away from or avoid stepping on a physical area [1]. "Keep to" means to adhere to rules, and "keep back" means to maintain distance, making "keep off" the most precise choice for a physical edge.
-- **Hindi:** यहाँ शोधकर्ताओं को सक्रिय ज्वालामुखी स्थल के पास अत्यधिक अस्थिर क्रेटर के किनारे से "दूर रहने" की सलाह दी जा रही है। किसी खतरनाक भौतिक सतह या स्थान से दूर रहने या उस पर कदम न रखने के अर्थ में सही फ्रेज़ल वर्ब **"keep off"** होता है [1]। अतः विकल्प (B) सबसे उपयुक्त उत्तर है।
+- **English:** The researchers are being advised to stay away from the unstable crater edge. The phrasal verb "keep off" means to stay away from or avoid stepping on a physical area . "Keep to" means to adhere to rules, and "keep back" means to maintain distance, making "keep off" the most precise choice for a physical edge.
+- **Hindi:** यहाँ शोधकर्ताओं को सक्रिय ज्वालामुखी स्थल के पास अत्यधिक अस्थिर क्रेटर के किनारे से "दूर रहने" की सलाह दी जा रही है। किसी खतरनाक भौतिक सतह या स्थान से दूर रहने या उस पर कदम न रखने के अर्थ में सही फ्रेज़ल वर्ब **"keep off"** होता है । अतः विकल्प (B) सबसे उपयुक्त उत्तर है।
 
 ---
 
@@ -281,11 +281,11 @@ Understanding where to place direct objects and pronouns with **"keep back"** is
 ## ❓ Frequently Asked Questions (FAQ)
 
 ### Q1. परीक्षा में "Keep up with" और "Keep pace with" के त्रुटि पैटर्न को कैसे पहचानें?
-**Answer:** परीक्षा में अक्सर इन दोनों को मिलाकर "keep up pace with" लिख दिया जाता है, जो पूरी तरह से अशुद्ध है [1]। आपको याद रखना है कि या तो केवल **"keep up with"** का प्रयोग करें [1], या फिर **"keep pace with"** का। इन दोनों का अर्थ समान होता है (कदम मिलाकर चलना)।
+**Answer:** परीक्षा में अक्सर इन दोनों को मिलाकर "keep up pace with" लिख दिया जाता है, जो पूरी तरह से अशुद्ध है । आपको याद रखना है कि या तो केवल **"keep up with"** का प्रयोग करें , या फिर **"keep pace with"** का। इन दोनों का अर्थ समान होता है (कदम मिलाकर चलना)।
 
 ### Q2. "Keep off" और "Keep out" के प्रयोग में मुख्य अंतर क्या है?
-**Answer:** इन दोनों के बीच मुख्य अंतर इस प्रकार है [1]:
-*   **Keep off:** इसका प्रयोग मुख्य रूप से किसी समतल भौतिक सतह (जैसे घास, गीला फर्श, या रेलवे ट्रैक) पर पैर न रखने या उससे दूर रहने के लिए किया जाता है [1]।
+**Answer:** इन दोनों के बीच मुख्य अंतर इस प्रकार है :
+*   **Keep off:** इसका प्रयोग मुख्य रूप से किसी समतल भौतिक सतह (जैसे घास, गीला फर्श, या रेलवे ट्रैक) पर पैर न रखने या उससे दूर रहने के लिए किया जाता है ।
 *   **Keep out:** इसका प्रयोग किसी त्रि-आयामी स्थान (3D space) जैसे कमरा, इमारत, बाड़ से घिरे क्षेत्र या खतरनाक सीमा के अंदर प्रवेश करने से रोकने के लिए किया जाता है।
 
 ### Q3. "Keep down" का प्रयोग कब "दबाने" और कब "कम करने" के अर्थ में होता है?

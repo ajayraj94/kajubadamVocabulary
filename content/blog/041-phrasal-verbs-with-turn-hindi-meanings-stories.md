@@ -15,7 +15,7 @@ categorySerial: 41
 
 # Phrasal Verbs with 'Turn' with Hindi Meanings, Stories & Memory Tricks
 
-In high-stakes competitive examinations such as **SSC CGL Tier 2, UPSC CDS, NDA, and SBI PO**, phrasal verbs based on the verb **"Turn"** are frequently used to test a candidate's precision [1]. Because "Turn" can combine with multiple prepositions—like *up, down, out, over, off, into, and away*—to yield entirely distinct definitions, rote memorization often falls short [1]. A single error in matching the particle with the context can lead to heavy negative marking.
+In high-stakes competitive examinations such as **SSC CGL Tier 2, UPSC CDS, NDA, and SBI PO**, phrasal verbs based on the verb **"Turn"** are frequently used to test a candidate's precision . Because "Turn" can combine with multiple prepositions—like *up, down, out, over, off, into, and away*—to yield entirely distinct definitions, rote memorization often falls short . A single error in matching the particle with the context can lead to heavy negative marking.
 
 To address this challenge, the academic editorial team at **kajubadamvocabulary.in** has compiled this comprehensive study guide. We employ a cognitive learning strategy that integrates a bilingual, situational story to create visual memory hooks, followed by a detailed grammatical masterclass and ten rigorous, exam-style practice questions with exhaustive explanations.
 
@@ -69,12 +69,12 @@ Within a single year, the small garage startup began to turn over millions of ru
 
 ## 📝 The Core Vocabulary Masterclass — मुख्य शब्दकोश तालिका
 
-This table systematically breaks down the syntax, meanings, and common usage traps of the core phrasal verbs containing **"Turn"** [1].
+This table systematically breaks down the syntax, meanings, and common usage traps of the core phrasal verbs containing **"Turn"** .
 
 | Phrasal Verb | English Meaning | Hindi Meaning | Exam-Style Example | Grammar Trap / Key Usage |
 | :--- | :--- | :--- | :--- | :--- |
-| **Turn down** | To reject or refuse an offer/request; or to reduce volume/heat [1]. | किसी प्रस्ताव को अस्वीकार करना [1]; या आवाज़/तापमान धीमा करना। | The committee decided to **turn down** the candidate's application due to a lack of references. | Highly separable. Pronoun must sit in the middle (e.g., turn it down). |
-| **Turn up** | To arrive or appear unexpectedly [1]; or to increase volume/heat. | अप्रत्याशित रूप से पहुँचना या प्रकट होना [1]; या आवाज़/तीव्रता बढ़ाना। | We had lost all hope of finding the key, but it finally **turned up** in the drawer. | Intransitive when meaning to arrive/appear; no direct object is required. |
+| **Turn down** | To reject or refuse an offer/request; or to reduce volume/heat . | किसी प्रस्ताव को अस्वीकार करना ; या आवाज़/तापमान धीमा करना। | The committee decided to **turn down** the candidate's application due to a lack of references. | Highly separable. Pronoun must sit in the middle (e.g., turn it down). |
+| **Turn up** | To arrive or appear unexpectedly ; or to increase volume/heat. | अप्रत्याशित रूप से पहुँचना या प्रकट होना ; या आवाज़/तीव्रता बढ़ाना। | We had lost all hope of finding the key, but it finally **turned up** in the drawer. | Intransitive when meaning to arrive/appear; no direct object is required. |
 | **Turn out** | To prove to be; or to produce; or to extinguish a light. | अंततः साबित होना या परिणाम निकलना; उत्पादन करना; या लाइट बुझाना। | Despite the morning rain, the outdoor event **turned out** to be a massive success. | Often followed by an infinitive construction like "to be" or a "that" clause. |
 | **Turn into** | To transform or convert from one form to another. | एक रूप से दूसरे रूप में परिवर्तित या तब्दील होना। | With years of dedicated practice, the raw recruit **turned into** a highly skilled soldier. | Inseparable transitive; requires an object immediately after 'into'. |
 | **Turn over** | To hand over control; or to rotate/flip; or to generate revenue. | नियंत्रण सौंपना; पलटना; या विशिष्ट मात्रा में व्यापार/राजस्व कमाना। | The outgoing CEO will formally **turn over** the charge to the new executive tomorrow. | Highly polysemous; examine context carefully to differentiate revenue from transfer. |
@@ -95,11 +95,11 @@ In competitive exams, examiners often create error-spotting questions by putting
 *   *Explanation:* Since the strategy itself resulted in failure without any external agent performing the "turning out" action, using the passive auxiliary verb *was* is grammatically incorrect.
 
 ### ⚡ Spotlight 2: Separability Dynamics of "Turn down"
-Understanding pronoun placement with transitive separable phrasal verbs like **"turn down"** is crucial for sentence improvement tasks [1].
+Understanding pronoun placement with transitive separable phrasal verbs like **"turn down"** is crucial for sentence improvement tasks .
 
-*   **The Rule:** When "turn down" has a noun phrase as its direct object, the noun can appear either after the preposition or in the middle. However, if the direct object is replaced by a **pronoun** (such as *it*, *them*, *him*, *her*), that pronoun **must** be placed between the verb "turn" and the particle "down" [1].
+*   **The Rule:** When "turn down" has a noun phrase as its direct object, the noun can appear either after the preposition or in the middle. However, if the direct object is replaced by a **pronoun** (such as *it*, *them*, *him*, *her*), that pronoun **must** be placed between the verb "turn" and the particle "down" .
 *   ❌ **Incorrect:** The salary offer was exceptionally low, so the candidate decided to turn down it immediately.
-*   ✅ **Correct:** The salary offer was exceptionally low, so the candidate decided to **turn it down** immediately [1].
+*   ✅ **Correct:** The salary offer was exceptionally low, so the candidate decided to **turn it down** immediately .
 
 ---
 
@@ -134,8 +134,8 @@ Understanding pronoun placement with transitive separable phrasal verbs like **"
 
 **Correct Answer - C**
 **Detailed Explanation:**
-- **English:** The error lies in part (III). The phrasal verb "turn down" (meaning to reject) is a transitive separable phrasal verb [1]. When the direct object is a pronoun (in this case, "it"), it must be placed between the verb "turn" and the particle "down." Therefore, "turn down it" must be corrected to **"turn it down."**
-- **Hindi:** त्रुटि वाक्य के भाग (III) में है। किसी प्रस्ताव को "अस्वीकार करने" के अर्थ में "turn down" एक separable (विभाजित होने वाला) फ्रेज़ल वर्ब है [1]। जब ऑब्जेक्ट एक सर्वनाम (pronoun) हो (यहाँ "it"), तो उसे अनिवार्य रूप से वर्ब और पार्टिकल के बीच में रखा जाना चाहिए। अतः "turn down it" के स्थान पर **"turn it down"** का प्रयोग होना चाहिए।
+- **English:** The error lies in part (III). The phrasal verb "turn down" (meaning to reject) is a transitive separable phrasal verb . When the direct object is a pronoun (in this case, "it"), it must be placed between the verb "turn" and the particle "down." Therefore, "turn down it" must be corrected to **"turn it down."**
+- **Hindi:** त्रुटि वाक्य के भाग (III) में है। किसी प्रस्ताव को "अस्वीकार करने" के अर्थ में "turn down" एक separable (विभाजित होने वाला) फ्रेज़ल वर्ब है । जब ऑब्जेक्ट एक सर्वनाम (pronoun) हो (यहाँ "it"), तो उसे अनिवार्य रूप से वर्ब और पार्टिकल के बीच में रखा जाना चाहिए। अतः "turn down it" के स्थान पर **"turn it down"** का प्रयोग होना चाहिए।
 
 ---
 
@@ -278,7 +278,7 @@ Understanding pronoun placement with transitive separable phrasal verbs like **"
 ## ❓ Frequently Asked Questions (FAQ)
 
 ### Q1. "Turn down" के दो अलग-अलग अर्थ क्या हैं और उन्हें वाक्य में कैसे पहचानें?
-**Answer:** "Turn down" के मुख्य रूप से दो अर्थ होते हैं [1]:
+**Answer:** "Turn down" के मुख्य रूप से दो अर्थ होते हैं :
 1. **अस्वीकार करना (To reject):** जब इसका प्रयोग किसी नौकरी के प्रस्ताव, व्यावसायिक योजना या निमंत्रण के संदर्भ में होता है (जैसे: *He turned down the job offer*).
 2. **आवाज़ या तीव्रता कम करना (To reduce volume/heat):** जब इसका प्रयोग किसी इलेक्ट्रॉनिक उपकरण, टीवी, या गैस स्टोव के संदर्भ में होता है (जैसे: *Please turn down the volume*).
 

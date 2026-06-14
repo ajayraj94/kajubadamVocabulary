@@ -15,7 +15,7 @@ categorySerial: 50
 
 # Confusing Phrasal Verbs: Come across vs Come by vs Come up with with Sentences & Hindi Meanings
 
-Phrasal verbs originating from the base verb **"Come"** are highly favored by examiners in competitive exams like **SSC CGL, SBI PO, IBPS PO, and UPSC CDS** [1]. Among these, **"Come across," "Come by,"** and **"Come up with"** are particularly confusing because they often appear in similar contexts but convey entirely different actions [1]. 
+Phrasal verbs originating from the base verb **"Come"** are highly favored by examiners in competitive exams like **SSC CGL, SBI PO, IBPS PO, and UPSC CDS** . Among these, **"Come across," "Come by,"** and **"Come up with"** are particularly confusing because they often appear in similar contexts but convey entirely different actions . 
 
 For example, do you *come across* an opportunity, *come by* a rare asset, or *come up with* a solution? A minor prepositional shift changes the sentence from expressing an accidental discovery (*come across*) to a hard-earned acquisition (*come by*) or the cognitive act of inventing an idea (*come up with*).
 
@@ -71,7 +71,7 @@ Despite the setback, Amit delivered the pitch so brilliantly that the skeptical 
 
 ## 📝 The Core Vocabulary Masterclass — मुख्य शब्दकोश तालिका
 
-This comparative table highlights the syntactic differences, precise meanings, and exam traps of these closely related phrasal verbs [1].
+This comparative table highlights the syntactic differences, precise meanings, and exam traps of these closely related phrasal verbs .
 
 | Phrasal Verb | English Meaning | Hindi Meaning | Exam-Style Example | Grammar Trap / Key Usage |
 | :--- | :--- | :--- | :--- | :--- |

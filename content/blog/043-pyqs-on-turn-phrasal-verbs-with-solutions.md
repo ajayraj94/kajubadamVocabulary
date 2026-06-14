@@ -15,7 +15,7 @@ categorySerial: 43
 
 # Previous Year Questions (PYQs) on 'Turn' Phrasal Verbs with Solutions
 
-For aspirants targeting elite administrative and banking positions through exams like **SSC CGL, SBI PO, IBPS PO, UPSC CDS, and NDA**, mastery over phrasal verbs is non-negotiable [1]. Among the various verb families, the **"Turn"** family is heavily targeted by examiners due to its highly versatile and easily confusing nature [1]. Year after year, questions testing the difference between *turn down*, *turn up*, *turn out*, and *turn over* appear in sentence improvement, error spotting, and fill-in-the-blank sections [1].
+For aspirants targeting elite administrative and banking positions through exams like **SSC CGL, SBI PO, IBPS PO, UPSC CDS, and NDA**, mastery over phrasal verbs is non-negotiable . Among the various verb families, the **"Turn"** family is heavily targeted by examiners due to its highly versatile and easily confusing nature . Year after year, questions testing the difference between *turn down*, *turn up*, *turn out*, and *turn over* appear in sentence improvement, error spotting, and fill-in-the-blank sections .
 
 To help you secure maximum marks under pressure, the academic team at **kajubadamvocabulary.in** has compiled actual and simulated previous year questions. We have paired them with our standard **Bilingual Story Method** and extensive grammatical breakdowns, giving you both the conceptual clarity and the practical skills needed to solve these questions accurately.
 
@@ -69,16 +69,16 @@ With all exits blocked, the fugitives were turned away at the international bord
 
 ## 📝 The Core Vocabulary Masterclass — मुख्य शब्दकोश तालिका
 
-This table breaks down the syntax, meanings, and common exam traps of the eight key phrasal verbs tested in recent exams [1].
+This table breaks down the syntax, meanings, and common exam traps of the eight key phrasal verbs tested in recent exams .
 
 | Phrasal Verb | English Meaning | Hindi Meaning | Exam-Style Example | Grammar Trap / Key Usage |
 | :--- | :--- | :--- | :--- | :--- |
 | **Turn to** | To consult or appeal to someone for help, guidance, or relief. | मदद, सलाह या राहत के लिए किसी की ओर रुख करना। | In times of deep emotional distress, children naturally **turn to** their parents. | Inseparable; followed directly by a noun or pronoun. |
-| **Turn down** | To reject an offer, application, or request; or to reduce volume [1]. | अस्वीकार करना [1]; या आवाज़/तीव्रता कम करना। | The bank manager had to **turn down** the loan application due to poor credit ratings. | Highly separable transitive verb; pronoun must be placed in the middle. |
+| **Turn down** | To reject an offer, application, or request; or to reduce volume . | अस्वीकार करना ; या आवाज़/तीव्रता कम करना। | The bank manager had to **turn down** the loan application due to poor credit ratings. | Highly separable transitive verb; pronoun must be placed in the middle. |
 | **Turn against** | To become hostile towards someone; or to betray a former ally. | किसी के खिलाफ हो जाना या शत्रुतापूर्ण व्यवहार करना। | The trusted lieutenant suddenly **turned against** the rebel commander during the raid. | Inseparable; indicates a transition from loyalty to enmity. |
 | **Turn over** | To hand over custody, control, or charge of something to another. | प्रभार, नियंत्रण, या अभिरक्षा किसी अन्य को सौंपना। | The local police were ordered to **turn over** the high-profile case to the CBI. | Highly separable. Pronouns must split the verb (e.g., turn it over). |
 | **Turn into** | To transform, convert, or change into something else. | एक रूप या स्थिति से दूसरे रूप में परिवर्तित होना। | With proper training, even raw data can **turn into** highly valuable business intelligence. | Inseparable; requires the preposition 'into' followed by the new form. |
-| **Turn up** | To arrive or appear unexpectedly [1]; or to be found by chance. | अप्रत्याशित रूप से पहुँचना [1]; या अचानक मिल जाना। | Thousands of spectators did not expect the legendary player to **turn up** at the charity match. | Intransitive when meaning to arrive. Do not use an object directly. |
+| **Turn up** | To arrive or appear unexpectedly ; or to be found by chance. | अप्रत्याशित रूप से पहुँचना ; या अचानक मिल जाना। | Thousands of spectators did not expect the legendary player to **turn up** at the charity match. | Intransitive when meaning to arrive. Do not use an object directly. |
 | **Turn out** | To prove to be; or to gather collectively for a public event. | अंततः साबित होना या परिणाम निकलना; या भारी संख्या में एकत्रित होना. | The heavy storm in the morning **turned out** to be a blessing in disguise for the reservoirs. | Intransitive when meaning to prove to be; cannot be used in passive voice. |
 | **Turn away** | To refuse admittance, entry, or passage to someone. | किसी को प्रवेश देने से इनकार करना या द्वार से वापस भेज देना. | The refugees were unfortunately **turned away** at the border crossing due to lack of papers. | Transitive and separable when meaning to deny entry to individuals. |
 
@@ -134,8 +134,8 @@ When "turn over" is used to represent the transfer of charge, custody, or physic
 
 **Correct Answer - B**
 **Detailed Explanation:**
-- **English:** The first blank requires a verb meaning to reject or refuse an application, which is "turn down" [1]. The second blank requires a verb indicating Rohan arriving or appearing unexpectedly with recommendations, which is "turn up" [1]. This combination makes option (B) the only grammatically and contextually sound choice.
-- **Hindi:** पहले रिक्त स्थान में रोहन के आवेदन को अनुभव की कमी के कारण "अस्वीकार करने/ठुकराने" के अर्थ में "turn down" की आवश्यकता है [1]। दूसरे रिक्त स्थान में रोहन के अंतिम क्षणों में शानदार सिफारिशों के साथ "पहुँचने या हाजिर होने" के अर्थ में "turn up" की आवश्यकता है [1]। अतः विकल्प (B) व्याकरण और अर्थ दोनों की दृष्टि से सर्वोत्तम विकल्प है।
+- **English:** The first blank requires a verb meaning to reject or refuse an application, which is "turn down" . The second blank requires a verb indicating Rohan arriving or appearing unexpectedly with recommendations, which is "turn up" . This combination makes option (B) the only grammatically and contextually sound choice.
+- **Hindi:** पहले रिक्त स्थान में रोहन के आवेदन को अनुभव की कमी के कारण "अस्वीकार करने/ठुकराने" के अर्थ में "turn down" की आवश्यकता है । दूसरे रिक्त स्थान में रोहन के अंतिम क्षणों में शानदार सिफारिशों के साथ "पहुँचने या हाजिर होने" के अर्थ में "turn up" की आवश्यकता है । अतः विकल्प (B) व्याकरण और अर्थ दोनों की दृष्टि से सर्वोत्तम विकल्प है।
 
 ---
 
@@ -202,7 +202,7 @@ When "turn over" is used to represent the transfer of charge, custody, or physic
 
 **Correct Answer - A**
 **Detailed Explanation:**
-- **English:** The sentence refers to a large mass or crowd of citizens collectively gathering for a public protest. While "turned up" is used for the arrival of specific individuals [1], "turned out" is the precise idiomatic choice when referring to large crowds assembling collectively for a public event, rally, or vote. Therefore, option (A) is the correct improvement.
+- **English:** The sentence refers to a large mass or crowd of citizens collectively gathering for a public protest. While "turned up" is used for the arrival of specific individuals , "turned out" is the precise idiomatic choice when referring to large crowds assembling collectively for a public event, rally, or vote. Therefore, option (A) is the correct improvement.
 - **Hindi:** यह वाक्य अनुचित कर कानून के खिलाफ विरोध प्रदर्शन करने के लिए राजधानी की सड़कों पर एक विशाल जनसमूह या भीड़ के "एकत्र होने" को दर्शाता है। किसी सार्वजनिक आयोजन, रैली या विरोध प्रदर्शन के लिए भारी संख्या में लोगों के एकत्र होने के लिए सही फ्रेज़ल वर्ब **"turn out"** होता है। इसलिए विकल्प (A) सही सुधार है।
 
 ---
@@ -219,8 +219,8 @@ When "turn over" is used to represent the transfer of charge, custody, or physic
 
 **Correct Answer - C**
 **Detailed Explanation:**
-- **English:** The error is in part (III). "Turn down" (meaning to reject) is a transitive separable phrasal verb [1]. When the object of a separable phrasal verb is a pronoun (here, "it" referring to the proposal), the pronoun must split the verb and its particle [1]. Thus, "turn down it" must be corrected to **"turn it down."**
-- **Hindi:** त्रुटि वाक्य के भाग (III) में है। "Turn down" (अस्वीकार करना) एक separable (विभाजित होने वाला) फ्रेज़ल वर्ब है [1]। जब इसका ऑब्जेक्ट एक सर्वनाम होता है (यहाँ बजट प्रस्ताव के लिए "it"), तो उस सर्वनाम को वर्ब और पार्टिकल के बीच में आना चाहिए। अतः "turn down it" के स्थान पर **"turn it down"** का प्रयोग होना चाहिए।
+- **English:** The error is in part (III). "Turn down" (meaning to reject) is a transitive separable phrasal verb . When the object of a separable phrasal verb is a pronoun (here, "it" referring to the proposal), the pronoun must split the verb and its particle . Thus, "turn down it" must be corrected to **"turn it down."**
+- **Hindi:** त्रुटि वाक्य के भाग (III) में है। "Turn down" (अस्वीकार करना) एक separable (विभाजित होने वाला) फ्रेज़ल वर्ब है । जब इसका ऑब्जेक्ट एक सर्वनाम होता है (यहाँ बजट प्रस्ताव के लिए "it"), तो उस सर्वनाम को वर्ब और पार्टिकल के बीच में आना चाहिए। अतः "turn down it" के स्थान पर **"turn it down"** का प्रयोग होना चाहिए।
 
 ---
 
@@ -236,8 +236,8 @@ When "turn over" is used to represent the transfer of charge, custody, or physic
 
 **Correct Answer - B**
 **Detailed Explanation:**
-- **English:** The sentence describes latecomers being refused entry or turned back at the gates because the venue was full. The phrasal verb "turn away" means to refuse admittance, entry, or passage to someone. "Turn down" is incorrect because it refers to rejecting offers or applications, not physical entry [1].
-- **Hindi:** सभागार (auditorium) के भर जाने के कारण देर से आने वालों को प्रवेश द्वार से "प्रवेश देने से मना कर दिया गया" या वापस भेज दिया गया। किसी स्थान पर शारीरिक प्रवेश से मना करने या द्वार से वापस भेजने के अर्थ में सही फ्रेज़ल वर्ब **"turn away"** होता है। "Turn down" का प्रयोग प्रस्तावों को ठुकराने के लिए किया जाता है [1]।
+- **English:** The sentence describes latecomers being refused entry or turned back at the gates because the venue was full. The phrasal verb "turn away" means to refuse admittance, entry, or passage to someone. "Turn down" is incorrect because it refers to rejecting offers or applications, not physical entry .
+- **Hindi:** सभागार (auditorium) के भर जाने के कारण देर से आने वालों को प्रवेश द्वार से "प्रवेश देने से मना कर दिया गया" या वापस भेज दिया गया। किसी स्थान पर शारीरिक प्रवेश से मना करने या द्वार से वापस भेजने के अर्थ में सही फ्रेज़ल वर्ब **"turn away"** होता है। "Turn down" का प्रयोग प्रस्तावों को ठुकराने के लिए किया जाता है ।
 
 ---
 
@@ -278,8 +278,8 @@ When "turn over" is used to represent the transfer of charge, custody, or physic
 ## ❓ Frequently Asked Questions (FAQ)
 
 ### Q1. परीक्षा में "Turn down" और "Turn away" के बीच के अंतर को कैसे पहचानें?
-**Answer:** इन दोनों के बीच मुख्य अंतर उनके संदर्भ में होता है [1]:
-*   **Turn down:** इसका प्रयोग अमूर्त चीज़ों (abstract things) जैसे नौकरी के प्रस्ताव [1], आवेदन, ऋण अनुरोध, या याचिका को अस्वीकार करने के लिए किया जाता है।
+**Answer:** इन दोनों के बीच मुख्य अंतर उनके संदर्भ में होता है :
+*   **Turn down:** इसका प्रयोग अमूर्त चीज़ों (abstract things) जैसे नौकरी के प्रस्ताव , आवेदन, ऋण अनुरोध, या याचिका को अस्वीकार करने के लिए किया जाता है।
 *   **Turn away:** इसका प्रयोग मुख्य रूप से किसी व्यक्ति को किसी भौतिक स्थान (जैसे सीमा, हॉल, कार्यालय, या घर के गेट) में प्रवेश देने से मना करने या द्वार से वापस भेजने के लिए किया जाता है।
 
 ### Q2. "Turn over" का प्रयोग कब separable और कब inseparable रूप में होता है?
