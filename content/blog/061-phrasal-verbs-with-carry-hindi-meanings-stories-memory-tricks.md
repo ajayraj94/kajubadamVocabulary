@@ -1,4 +1,3 @@
-```markdown
 ---
 title: "Phrasal Verbs with 'Carry' with Hindi Meanings, Stories & Memory Tricks (Carry on, Carry out, Carry away) for SSC CGL, NDA, CDS & Bank PO"
 metaDescription: "Master essential phrasal verbs with 'Carry' for competitive exams. Learn Carry on, Carry out, Carry away with bilingual stories, memory tricks, and 10 detailed practice questions."
